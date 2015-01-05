@@ -28,6 +28,6 @@ La vérification confirme mon hypothese.
 J'ai obligé de convertir le format de Fat32 à NTFS
 
   > lancer 'Invite de Commandes' en tant que d'administrateur  
-  > taper `convert f: /fs:ntfs`
+  >  taper `convert f: /fs:ntfs`
 
 La durée de conversation est 5 minutes environ, je peut finalement démarrer ma tache de sauvegarde.
