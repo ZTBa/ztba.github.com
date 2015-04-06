@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "une simple tache de sauvegarde"
+title: "une tache simple de sauvegarde"
 description: ""
 category: skills
 tags: [windows,skill]
