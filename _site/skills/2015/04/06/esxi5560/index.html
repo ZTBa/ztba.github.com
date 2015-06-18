@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>
+      
+        升级ESXi5.5到6.0 - 
+      
+      灵犀一点 Sparkle
+    </title>
+    <meta name="description" content="">
+    <meta name="author" content="T.Z">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link href="/assets/themes/hooligan/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/hooligan/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/assets/themes/hooligan/css-social-buttons/css/zocial.stripped.css">
+    <link href="/assets/themes/hooligan/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/hooligan/css/darkstrap.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/hooligan/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- fav and touch icons -->
+    <!-- Update these with your own images
+      <link rel="shortcut icon" href="images/favicon.ico">
+      <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+      <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+      <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    -->
+  </head>
+
+  <body>
+    <div id="page-wrap">
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="container">
+            <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" href="/">灵犀一点 Sparkle</a>
+
+            <div class="nav-collapse">
+              <ul class="nav">
+                
+                
+                
+
+
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+
+
+
+              </ul>
+              <ul class="nav pull-right social visible-desktop">
+                <li class="divider-vertical"></li>
+                
+                
+                
+                
+                
+                
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="content">
+          
+<div class="page-header">
+  <h1>
+    升级ESXi5.5到6.0 
+    
+      <small>如何省下35€--在仅有板载realtek 8111e千兆网卡的组装机上跑ESXi6.0</small>
+    
+  </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    
+<h2 id="section">主机配置</h2>
+<p>ASUS P7H55-M的主板，cpu是i7 860，8个Go的内存。  跑ESXi5.5很久了，突然听说6.0推出，大喜，手忙脚乱的升级去也</p>
+
+<h2 id="section-1">升级</h2>
+<p>在<a href="http://isite.tw/2015/03/13/13049">这个</a>网站上下载Offline Bundle，然后使用</p>
+
+<pre><code>ssh root@ip_esxi
+</code></pre>
+
+<p>命令登录到ESXi的控制台，键入升级命令如下</p>
+
+<pre><code>esxcli software vib install -d path/VMware-ESXi-6.0.0-2494585-depot.zip
+</code></pre>
+
+<p>之后重启，新版本就被部署了</p>
+
+<h2 id="section-2">网卡驱动</h2>
+<p>重启后vSphere Client怎么都连不上，无奈插显示器直接操作，结果发现竟然无法找到网络适配器。经官网确认，网卡型号为realtek 8111e千兆卡。网上找了好几个vib驱动，最后大都指向两个vib文件
+<em>VMware_bootbank_net-r8168_8.013.00-3vmw.510.0.0.799733</em> 和 <em>VMware_bootbank_net-r8169_6.011.00-2vmw.510.0.0.799733</em> 。 
+尝试安装，都有依赖文件缺失的问题，没法用。后来在<a href="http://www.vdicloud.nl/2015/02/07/realtek-nic-on-vsphere-6">这个</a>帖子里发现了封装过的<a href="http://vibsdepot.v-front.de/depot/vft/net51-drivers-1.0/net51-drivers-1.0.0-1vft.510.0.0.799733.x86_64.vib">驱动</a>，下载后使用如下命令安装</p>
+
+<pre><code>esxcli software acceptance set --level=CommunitySupported
+esxcli software vib install -d path/net51-drivers-1.0.0-1vft.510.0.0.799733.x86_64.vib 
+</code></pre>
+
+<p>重启后网卡顺利被识别。</p>
+
+<p>最后一步：退出维护模式，否则无法启动guest。</p>
+
+    <hr>
+    <div class="pagination btn-group">
+      
+        <a class="btn prev" href="/lessons/2015/01/13/git" title="如何搭建一个私有git服务器">&larr; Previous</a>
+      
+        <a class="btn" href="/archive.html">Archive</a>
+      
+        <a class="btn next" href="/private/2015/06/04/" title="交规备考">Next &rarr;</a>
+      
+    </div>
+    <hr>
+    
+  </div>
+  
+  <div class="span4">
+    <section>
+      <h4>Published</h4>
+      <div class="date"><span>06 April 2015</span></div>
+    </section>
+    
+      <section>
+        <h4>Category</h4>
+        <span class="category">
+          skills
+        </span>
+      </section>
+         
+    
+      <section>
+        <h4>Tags</h4>
+        <ul class="tag_box">
+          
+          
+
+
+  
+     
+    	<li><a href="/tags.html#tutorial-ref">tutorial <span>4</span></a></li>
+     
+    	<li><a href="/tags.html#linux-ref">linux <span>5</span></a></li>
+    
+  
+
+
+
+        </ul>
+      </section>
+             
+  </div>
+</div>
+
+
+        </div>
+      </div> <!-- /container -->
+
+      <div class="footer-push"></div>
+    </div><!--/.page-wrap -->
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2015 T.Z
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://github.com/dhulihan/hooligan" target="_blank">The Hooligan Theme</a>
+        </p>
+      </div>
+    </footer>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/assets/themes/hooligan/js/jquery.min.js"><\/script>')</script>
+    <script src="/assets/themes/hooligan/bootstrap/js/bootstrap.min.js"></script>
+
+    
+  </body>
+</html>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57706060-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

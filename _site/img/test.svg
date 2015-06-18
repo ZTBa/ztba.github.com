@@ -1,0 +1,29 @@
+<svg width="568" height="400"
+  xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+>
+ <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
+ <g>
+  <title>Layer 1</title>
+   <rect
+       style="fill:#cccccc"
+       id="rect2989"
+       width="562.85718"
+       height="325.71429"
+       x="0"
+       y="0" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#ffb380"
+       id="path2993"
+       sodipodi:cx="421.42856"
+       sodipodi:cy="339.50504"
+       sodipodi:rx="170"
+       sodipodi:ry="64.285713"
+       d="m 491.42856,169.50504 a 170,64.285713 0 1 1 -340,0 170,64.285713 0 1 1 340,0 z"
+       transform="matrix(1.092437,0,0,1.2,-31.812724,-29.329579)" />
+	<text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_4" y="72" x="210" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#000000" fill="#000000">没意料到的事情，意料之外</text>
+	<text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_5" y="190" x="300" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#000000" fill="#000000">意料到的事情，意料之中</text>
+	<text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_7" y="363" x="210" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#000000" fill="#cccccc">所有可意料与不可意料的事情</text>
+</g>
+</svg>
