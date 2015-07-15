@@ -167,6 +167,8 @@ Here's a sample "posts list".
 
 <ul class="posts">
   
+    <li><span>15 Jul 2015</span> &raquo; <a href="/2015/07/15/compile-opencv-under-debian">Compile OpenCV under Debian</a></li>
+  
     <li><span>04 Jun 2015</span> &raquo; <a href="/private/2015/06/04/">交规备考</a></li>
   
     <li><span>06 Apr 2015</span> &raquo; <a href="/skills/2015/04/06/esxi5560">升级ESXi5.5到6.0</a></li>
@@ -210,289 +212,105 @@ layout: page
     <a href="/index.md.bk">Hello World!</a>
 
 
-    <a href="/private/2015/06/04/">交规备考</a>
+    <a href="/2015/07/15/compile-opencv-under-debian">Compile OpenCV under Debian</a>
 
 </h1>
 <div class="entry-content">
-<h2 id="section">缘由</h2>
+<h1 id="section">依赖环境的安装</h1>
 
-<p>就当日记了</p>
+<h2 id="ffmpeg">FFMPEG相关模块</h2>
 
-<h2 id="section-1">倒数12天</h2>
+<p>首先添加deb-multimedia提供的库文件支持到本地库列表中</p>
 
-<p>出错点:</p>
+<pre><code>su -
+echo "deb http://www.deb-multimedia.org wheezy main non-free" &gt;&gt; /etc/apt/sources.list.d/deb-multimedia.list
+echo "deb-src http://www.deb-multimedia.org wheezy main non-free" &gt;&gt; /etc/apt/sources.list.d/deb-multimedia.list
+apt-get update
+</code></pre>
 
-<ul>
-  <li>
-    <p>关于让路的问题, 又栽跟头了. 平地载重车让轻车, 窄巷迎面来卡车, 我应当停下来等待对方拐到空地给我让路.</p>
-  </li>
-  <li>
-    <p><strong>右侧来车优先</strong>标识牌说明什么: 首先是优先权归右方, 其次是前面有个路口-_-!</p>
-  </li>
-  <li>
-    <p>有可能需要到医生处进一步检查才能获取驾驶资格的情况, 包括了<strong>酒精依赖(dépendance d’alcool)</strong>. 何等心大的警察才敢放酒鬼上路啊.</p>
-  </li>
-  <li>
-    <p>所有至死车祸中, 最首要原因是, 酒驾. 我还以为是超速呢</p>
-  </li>
-  <li>
-    <p>工程车屁股上一个大的左下/右下闪烁箭头说明, 前方有施工, 或有事故. 后一个当时没想到</p>
-  </li>
-  <li>
-    <p>一字并肩红绿灯, 区分了直行道和左转道, 所以我在左转道而我侧亮绿灯时, 不用考虑让对面直行车先走的问题, 直接左转</p>
-  </li>
-  <li>
-    <p>一个生词: euphorique a. 欣快的, 满足的</p>
-  </li>
-</ul>
+<p>之后安装公匙</p>
 
-<h2 id="section-2">倒数11天</h2>
+<pre><code>apt-get install deb-multimedia-keyring
+apt-get update
+</code></pre>
 
-<p>出错点:</p>
+<p>最后安装依赖文件</p>
 
-<ul>
-  <li>
-    <p>前车不到最高限速, 我欲超车, 应当<strong>加速到最大许可速度</strong>, 以缩短超车过程</p>
-  </li>
-  <li>
-    <p>stationnement paygant的标识牌作用于整个zone, 所以前面路口有这个牌, 右边拐进去也同样有效, 付费泊车</p>
-  </li>
-  <li>
-    <p>红绿灯熄灭, 则使用默认右侧优先原则</p>
-  </li>
-  <li>
-    <p>vent lateral标识牌仅说明有风这件事, 无关风向sens风力densité</p>
-  </li>
-  <li>
-    <p>陷阱: 边境有海关douanier和警察policier标识, 则没有gendarmerie什么事, 宪兵乱入</p>
-  </li>
-</ul>
+<pre><code>sudo apt-get install build-essential checkinstall git cmake libfaac-dev libjack-jackd2-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libsdl1.2-dev libtheora-dev libva-dev libvdpau-dev libvorbis-dev libx11-dev libxfixes-dev libxvidcore-dev texi2html yasm zlib1g-dev libsdl1.2-dev libvpx-dev
+</code></pre>
 
-<h2 id="section-3">倒数10天</h2>
+<p>此处曾经出现过libfaac-dev找不到的情况, 后来发现是因为没有apt-get update的原因</p>
 
-<p>出错点:</p>
+<h2 id="section-1">安装其他库文件</h2>
 
-<ul>
-  <li>
-    <p>关于道左泊车的问题, 实在分不清是否为单行道时, 还是保守些, 不停.</p>
-  </li>
-  <li>
-    <p>阴险的陷阱: 图片显示场景, 问题却问标识牌<strong>可能</strong>出现的情况, 所以不据图判断, peut annoncer的范围完全依据交规</p>
-  </li>
-  <li>
-    <p>500kg PTAC必备的东西: deux Feux Stop; deux clignotants. 其实是每个车都应当有的停车灯和转弯指示灯. 当然还有属于自己的车牌号carte immatriculation, 但已经问滥了</p>
-  </li>
-  <li>
-    <p>stationnement unilatéral仅作用于所在路侧</p>
-  </li>
-  <li>
-    <p>夏季久旱下阵雨, 路况 particulierement glisante, 而不是 legerement glisante. 非常滑而不是有些滑 (神选择, 给跪了)</p>
-  </li>
-  <li>
-    <p>概念问题, camionnette &lt;3.5t</p>
-  </li>
-  <li>
-    <p>即使在zone de rencontre, 步行人也禁止sationnement sur chaussée, 话说pieton如何stationnement这样一个高难度的技术问题难道真没人关心么</p>
-  </li>
-  <li>
-    <p>一类狡猾问题: 地标和路标的组合可能性判读, 例如右侧路口是虚线栏车线, 则不可能是stop牌(那会是实线栏车线)而是倒三角牌</p>
-  </li>
-  <li>
-    <p>我与后车同处插车道, 后车闪黄灯, 可我车快, <strong>不让</strong>, 立刻完成插车动作.</p>
-  </li>
-  <li>
-    <p>傻B问题的傻B回答: 闪烁的黄灯会是permanent么, 不会, 因为后面会变红灯.</p>
-  </li>
-  <li>
-    <p>占用残疾人停车位的后果: 罚款amende, 车被拖走mise en fourriere, 但不扣分</p>
-  </li>
-  <li>
-    <p>12年底开始, 轮胎标识能耗efficacité energitique,湿地稳定adherence sur sol mouille以及噪音级别bruit de roulement exterieur</p>
-  </li>
-  <li>
-    <p>新车必备: un essuie-glace avant, 前脸雨刷；un lave-glace avant, 前脸除冰</p>
-  </li>
-  <li>
-    <p>superviser期间, 车上必备 livret d’appentissage, certificat d’immatriculation,  l’avenant d’assurance.</p>
-  </li>
-</ul>
+<p>Gstreamer:</p>
 
-<h2 id="section-4">倒数9天</h2>
+<pre><code>sudo apt-get install libgstreamer0.10-0 libgstreamer0.10-dev gstreamer0.10-tools gstreamer0.10-plugins-base libgstreamer-plugins-base0.10-dev gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly gstreamer0.10-plugins-bad gstreamer0.10-ffmpeg
+</code></pre>
 
-<p>出错点:</p>
+<p>libgtk2:</p>
 
-<ul>
-  <li>
-    <p>面对双向行驶危险牌, 我应当减速, 立刻</p>
-  </li>
-  <li>
-    <p>居民区里的路口处, 急减速, 备刹车</p>
-  </li>
-  <li>
-    <p>紧虚线间隔右侧慢车道, 我不占道</p>
-  </li>
-  <li>
-    <p>了解风险, 可以limite risque</p>
-  </li>
-  <li>
-    <p>下雪天应当开启ventilation, FC, essuie-glace</p>
-  </li>
-  <li>
-    <p>半空中悬吊的红绿灯, 作用于所有道, (区别于右侧红绿灯?)</p>
-  </li>
-  <li>
-    <p><strong>面对</strong>交警时, 步行人与机动车一样都要停下来</p>
-  </li>
-  <li>
-    <p>居民区外, 重车 (&gt;3.5t) 长车 (&gt;7m)要预留50m的安全距离, 这种情况下已经抛弃2秒安全距离的限定了 (因为多半大于2秒)</p>
-  </li>
-  <li>
-    <p>autopartage利于快速租车和方便泊车.</p>
-  </li>
-  <li>
-    <p>小于3.5t, B照； 介于3.5t和4.25, B照加formation；大于4.25t, BE照</p>
-  </li>
-</ul>
+<pre><code>sudo apt-get install libgtk2.0-0 libgtk2.0-dev  
+</code></pre>
 
-<h2 id="section-5">倒数8天</h2>
+<p>libjepg:</p>
 
-<p>出错点:</p>
+<pre><code>sudo apt-get install libjpeg8 libjpeg8-dev 
+</code></pre>
 
-<ul>
-  <li>
-    <p>右侧紧虚线标出BUS专用道,  (即使地上不是处处标识BUS字样). 我即使要右转, 也不可占用此道</p>
-  </li>
-  <li>
-    <p>黑话 un siege dos à la route背向前的车载婴儿摇篮, 使用方法当然要关闭气囊désactiver l’airebage passage</p>
-  </li>
-  <li>
-    <p>lieu dit后面是居民区, 当然限速50kmh, 但不能说是lieu dit limite de vitesse</p>
-  </li>
-  <li>
-    <p>confiscation为没收车, 之后或者报废, 或者拍卖, 总之别想再要回来了</p>
-  </li>
-  <li>
-    <p>车祸至死步行人中, 一半以上大于65岁</p>
-  </li>
-  <li>
-    <p>隧道中降温液亮红灯, 不可立即停车, 而要到一处arret urgent再停</p>
-  </li>
-  <li>
-    <p>在转盘口上不可能看见carrefour sens geratoire的标识牌, 只有可能是ceder les passages的提示牌</p>
-  </li>
-  <li>
-    <p>路口处横贯道路的实心stop地标线说明什么: 这条路单向 sens unique, 否则应当是右边往中心线处画一个直角框</p>
-  </li>
-  <li>
-    <p>在路右停泊车左侧暂时停一下并非绝对禁止,  只要所在路够宽, 不塞车</p>
-  </li>
-  <li>
-    <p>高速, 为方便右侧车插入, 我可以占用左侧超车道.</p>
-  </li>
-  <li>
-    <p>但凡车祸, 无论肉体corporel或器材materiel, 我都不可逃逸 délit de fuite</p>
-  </li>
-  <li>
-    <p>fleche rabattement me concerne的意思并不一定是我在并道, 而是指我在地标指导的行车方向上</p>
-  </li>
-  <li>
-    <p>判断超车许可时, 只要后方欲超车辆没有拐上左侧超车道, 即使闪黄灯表明超车意图, 我亦可无视之. 自行超车.</p>
-  </li>
-</ul>
+<h2 id="section-2">编译库文件</h2>
 
-<h2 id="section-6">倒数3天</h2>
+<pre><code>mkdir ~/source  
+mkdir ~/source/x264  
+mkdir ~/source/v4l  
+mkdir ~/source/opencv  
+mkdir ~/source/ffmpeg  
+</code></pre>
 
-<p>出错点:</p>
+<h3 id="compile-x264">Compile X264</h3>
 
-<ul>
-  <li>
-    <p>注意看路最左边的地标线， 如果是实线则说明这是单向道， 超车方面有优势。</p>
-  </li>
-  <li>
-    <p>所有进行非前行操作toutes les manoeuvres（倒车，调头，泊车等）的车自动丧失优先权， 所有这些操作不得妨碍后车前进。</p>
-  </li>
-  <li>
-    <p>区分endroit fréquenté par les enfants标识牌和l’aire de pieton标识牌，以及chemin obligatoire pour piétons标识牌， 分别是红边三角， 蓝底方框和蓝底圆形。但图案都是大人牵小孩的手。</p>
-  </li>
-  <li>
-    <p>看见有reduit de voie的标识牌就结束超车行为，尽早并入右道。</p>
-  </li>
-</ul>
+<pre><code>cd ~/source/x264  
+wget ftp://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120528-2245-stable.tar.bz2  
+tar xvf x264-snapshot-20120528-2245-stable.tar.bz2  
+cd x264-snapshot-20120528-2245-stable  
+./configure --enable-shared --enable-pic
+make  
+sudo make install  
+</code></pre>
 
-<h2 id="section-7">倒数2天</h2>
+<h3 id="compile-ffmpeg">Compile ffmpeg</h3>
+<pre><code>cd ~/source/ffmpeg  
+wget http://ffmpeg.org/releases/ffmpeg-0.11.1.tar.bz2  
+tar xvf ffmpeg-0.11.1.tar.bz2  
+cd ffmpeg-0.11.1  
+./configure --enable-gpl --enable-libfaac --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libxvid --enable-nonfree --enable-postproc --enable-version3 --enable-x11grab --enable-shared --enable-libvpx --enable-pic
+make  
+sudo make install  
+</code></pre>
 
-<p>出错点:</p>
+<h3 id="compile-v4l">Compile v4l</h3>
+<pre><code>cd ~/source/v4l  
+wget http://www.linuxtv.org/downloads/v4l-utils/v4l-utils-0.8.8.tar.bz2  
+tar xvf v4l-utils-0.8.8.tar.bz2  
+cd v4l-utils-0.8.8  
+make  
+sudo make install  
+</code></pre>
 
-<ul>
-  <li>
-    <p>出隧道, 为避免刺目, 可以降下遮阳板pare-soleil, 也可以<strong>戴上太阳镜</strong>, 话说戴太阳镜时失控风险真的没人在意么</p>
-  </li>
-  <li>
-    <p>路口棋盘格damiers代表意义除了traverser une voie de bus, 还有<strong>une zone de danger potentiel</strong></p>
-  </li>
-  <li>
-    <p>第一个见证车祸的人, 原则上要做三件事: 保护自己, 呼叫救援, 拯救伤者. 具体项目包括gilet, 112, reconforter le blessé</p>
-  </li>
-  <li>
-    <p>正立红边三角中心感叹号, 表示除了已有对应标识牌之外的其他危险性, 补充危险.</p>
-  </li>
-  <li>
-    <p>在居民区内, 距离pieton以及<strong>vehicule 2 roues / 3 roues</strong>都要至少1m安全距离</p>
-  </li>
-  <li>
-    <p>危险提示牌要求并入左道, 但后方正在被超车, 不变道</p>
-  </li>
-  <li>
-    <p>尽管有优先权, 但左拐时依然要让车 (对面来向)</p>
-  </li>
-  <li>
-    <p>区分changer à autre chaussé 与 changer à autre cote de pleine-terre警示牌</p>
-  </li>
-</ul>
+<h1 id="opencv">终于可以编译OpenCV本体了</h1>
+<p>此处一个小插曲, 下载了 OpenCV3.0.0正式版试图编译, 结果在24%进度报错, 原因是cap_ffmpeg.cpp文件在45行处使用了一个未声明enum类型变量AVCodecID. 尝试所有方案,未遂. 重新回到2.4.9版本,一次编译就过了.
+还有改进空间啊OpenCV Team.</p>
 
-<h2 id="section-8">倒数1天</h2>
-
-<p>出错点:</p>
-
-<ul>
-  <li>
-    <p>前车在倒车停泊，按理应当为我让路，但认为obligatoirement me laisser passer就不对了， 这么绝对的事不可能</p>
-  </li>
-  <li>
-    <p>尽量靠右的原则哪怕到了路口也依然有效</p>
-  </li>
-  <li>
-    <p>不占用BUS道不代表右转或泊车也不能traverser</p>
-  </li>
-  <li>
-    <p>墨镜3级以内可以在autoroute上戴， 但不能在隧道里戴（dans le tunnel），不同于上面sortie de tunnel</p>
-  </li>
-  <li>
-    <p>插入正常行驶道应当尽量接近许可速度上限</p>
-  </li>
-  <li>
-    <p>蓝虚线说明免费限时泊车，以及<strong>controle par disque</strong></p>
-  </li>
-  <li>
-    <p>急刹车，亮F.Stop和F.Detresse</p>
-  </li>
-  <li>
-    <p>摩托车的危险性包括se faufiler钻缝以及gabarit形态？</p>
-  </li>
-  <li>
-    <p>出了付费泊车区，默认免费最多7天的泊车权利</p>
-  </li>
-</ul>
-
-<h2 id="section-9">考试体验</h2>
-
-<p>convocation上标注的时间是14h30, 保险起见13h10就到考场了. 没曾想真正开始验明身份一直拖到了15h00. 按照注册学校分批进入, 出示证件后会分发一个遥控器, 显示姓名的头三个字母. 所有人落座后, 主考老师重申考场纪律和操作方法, 然后键入红AB红CD绿, 激活考试模式 (强烈的魂斗罗即视感).</p>
-
-<p>考试内容远易于模拟题, 没有太多的陷阱. 40道题答完, 屏幕上竟然没有成绩. 顿时傻眼, 心理还纠结过莫非激活方法不对考试无效了, 幸亏主考老师解释说当天晚上考试成绩将发送给各考生所在驾校. 当初谁信誓旦旦的说考完就知道成绩的!</p>
-
-<p>回到家电话一直开着, 却一夜未响. 第二天有等了一个上午, 依然没消息. 心不由得沉了下去. 下午打电话到驾校, 竟然始终占线. 一怒之下决定亲自跑一趟. 一进门就看见秘书桌上我的资料, 赶紧询问结果, 得知顺利过关才长出一口气. 再问拖延原因, 才知道虽然号称网上查成绩, 却要到48小时后. 考场所做的是当天成绩通过信件邮寄到驾校, 最早也要隔天驾校才有可能拿到学生的成绩.</p>
-
-<p>虽然历时久远, 好在结果尽如人意. 留下一时感悟, 方便后人.</p>
+<pre><code>cd ~/source/opencv
+wget http://kent.dl.sourceforge.net/project/opencvlibrary/opencv-unix/2.4.9/opencv-2.4.9.zip  
+unzip opencv-2.4.9.zip  
+cd opencv-2.4.9  
+mkdir release  
+cd release  
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D BUILD_NEW_PYTHON_SUPPORT=ON ..
+make
+sudo make install
+</code></pre>
 </div>
 
 </div>

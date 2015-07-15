@@ -4,13 +4,117 @@
  <title>灵犀一点 Sparkle</title>
  <link href="http://username.github.io/" rel="self"/>
  <link href="http://username.github.io"/>
- <updated>2015-06-22T10:17:16+02:00</updated>
+ <updated>2015-07-15T16:53:32+02:00</updated>
  <id>http://username.github.io</id>
  <author>
    <name>T.Z</name>
    <email>blah@email.test</email>
  </author>
 
+ 
+ <entry>
+   <title>Compile OpenCV under Debian</title>
+   <link href="http://username.github.io/2015/07/15/compile-opencv-under-debian"/>
+   <updated>2015-07-15T00:00:00+02:00</updated>
+   <id>http://username.github.io/2015/07/15/compile-opencv-under-debian</id>
+   <content type="html">
+&lt;h1 id=&quot;section&quot;&gt;依赖环境的安装&lt;/h1&gt;
+
+&lt;h2 id=&quot;ffmpeg&quot;&gt;FFMPEG相关模块&lt;/h2&gt;
+
+&lt;p&gt;首先添加deb-multimedia提供的库文件支持到本地库列表中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;su -
+echo &quot;deb http://www.deb-multimedia.org wheezy main non-free&quot; &amp;gt;&amp;gt; /etc/apt/sources.list.d/deb-multimedia.list
+echo &quot;deb-src http://www.deb-multimedia.org wheezy main non-free&quot; &amp;gt;&amp;gt; /etc/apt/sources.list.d/deb-multimedia.list
+apt-get update
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;之后安装公匙&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apt-get install deb-multimedia-keyring
+apt-get update
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最后安装依赖文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install build-essential checkinstall git cmake libfaac-dev libjack-jackd2-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libsdl1.2-dev libtheora-dev libva-dev libvdpau-dev libvorbis-dev libx11-dev libxfixes-dev libxvidcore-dev texi2html yasm zlib1g-dev libsdl1.2-dev libvpx-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;此处曾经出现过libfaac-dev找不到的情况, 后来发现是因为没有apt-get update的原因&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;安装其他库文件&lt;/h2&gt;
+
+&lt;p&gt;Gstreamer:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install libgstreamer0.10-0 libgstreamer0.10-dev gstreamer0.10-tools gstreamer0.10-plugins-base libgstreamer-plugins-base0.10-dev gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly gstreamer0.10-plugins-bad gstreamer0.10-ffmpeg
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;libgtk2:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install libgtk2.0-0 libgtk2.0-dev  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;libjepg:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install libjpeg8 libjpeg8-dev 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;编译库文件&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir ~/source  
+mkdir ~/source/x264  
+mkdir ~/source/v4l  
+mkdir ~/source/opencv  
+mkdir ~/source/ffmpeg  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;compile-x264&quot;&gt;Compile X264&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;cd ~/source/x264  
+wget ftp://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120528-2245-stable.tar.bz2  
+tar xvf x264-snapshot-20120528-2245-stable.tar.bz2  
+cd x264-snapshot-20120528-2245-stable  
+./configure --enable-shared --enable-pic
+make  
+sudo make install  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;compile-ffmpeg&quot;&gt;Compile ffmpeg&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;cd ~/source/ffmpeg  
+wget http://ffmpeg.org/releases/ffmpeg-0.11.1.tar.bz2  
+tar xvf ffmpeg-0.11.1.tar.bz2  
+cd ffmpeg-0.11.1  
+./configure --enable-gpl --enable-libfaac --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libxvid --enable-nonfree --enable-postproc --enable-version3 --enable-x11grab --enable-shared --enable-libvpx --enable-pic
+make  
+sudo make install  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;compile-v4l&quot;&gt;Compile v4l&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;cd ~/source/v4l  
+wget http://www.linuxtv.org/downloads/v4l-utils/v4l-utils-0.8.8.tar.bz2  
+tar xvf v4l-utils-0.8.8.tar.bz2  
+cd v4l-utils-0.8.8  
+make  
+sudo make install  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;opencv&quot;&gt;终于可以编译OpenCV本体了&lt;/h1&gt;
+&lt;p&gt;此处一个小插曲, 下载了 OpenCV3.0.0正式版试图编译, 结果在24%进度报错, 原因是cap_ffmpeg.cpp文件在45行处使用了一个未声明enum类型变量AVCodecID. 尝试所有方案,未遂. 重新回到2.4.9版本,一次编译就过了.
+还有改进空间啊OpenCV Team.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd ~/source/opencv
+wget http://kent.dl.sourceforge.net/project/opencvlibrary/opencv-unix/2.4.9/opencv-2.4.9.zip  
+unzip opencv-2.4.9.zip  
+cd opencv-2.4.9  
+mkdir release  
+cd release  
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D BUILD_NEW_PYTHON_SUPPORT=ON ..
+make
+sudo make install
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>交规备考</title>
