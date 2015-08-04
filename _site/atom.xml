@@ -4,13 +4,163 @@
  <title>灵犀一点 Sparkle</title>
  <link href="http://username.github.io/" rel="self"/>
  <link href="http://username.github.io"/>
- <updated>2015-07-15T16:53:32+02:00</updated>
+ <updated>2015-08-04T11:54:12+02:00</updated>
  <id>http://username.github.io</id>
  <author>
    <name>T.Z</name>
    <email>blah@email.test</email>
  </author>
 
+ 
+ <entry>
+   <title>利用Gitlab内置nginx添加新网站</title>
+   <link href="http://username.github.io/lessons/2015/08/04/gitlabnginx"/>
+   <updated>2015-08-04T00:00:00+02:00</updated>
+   <id>http://username.github.io/lessons/2015/08/04/gitlabnginx</id>
+   <content type="html">
+&lt;p&gt;Gitlab整合了仿制Github所需要的几乎所有服务器端程序,例如内置了nginx. 作为静态网站服务的首选服务, nginx强大灵活的分流配置一直为广大程序员喜爱.&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;目标&lt;/h2&gt;
+&lt;p&gt;利用现成的Gitlab内置nginx服务器, 添加新的静态网站到指定端口&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;改菜谱&lt;/h2&gt;
+&lt;p&gt;Gitlab利用一种叫做菜谱cookbook的方法管理不同模板template的配置文件,每次gitlab-ctl reconfigure都是重新生成配置文件的过程. 换言之, 原先直接对配置文件的修改在这里是行不通的, 因为只要重启服务就会被覆盖.&lt;/p&gt;
+
+&lt;p&gt;修改nginx的菜谱&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	sudo vi /opt/gitlab/embedded/cookbooks/gitlab/templates/default/nginx.conf.erb 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;找到 &lt;strong&gt;include &amp;lt;%= @gitlab_http_config %&amp;gt;;&lt;/strong&gt; 这一行, 在其上方添加客制配置文件路径 &lt;strong&gt;nginx[‘custom_nginx_config’] = “include /etc/nginx/conf.d/*.conf;”&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;修改后完整的菜谱为&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	# This file is managed by gitlab-ctl. Manual changes will be
+	# erased! To change the contents below, edit /etc/gitlab/gitlab.rb
+	# and run `sudo gitlab-ctl reconfigure`.
+
+	user &amp;lt;%= node[&#39;gitlab&#39;][&#39;web-server&#39;][&#39;username&#39;] %&amp;gt; &amp;lt;%= node[&#39;gitlab&#39;][&#39;web-server&#39;][&#39;group&#39;]%&amp;gt;;
+	worker_processes &amp;lt;%= @worker_processes %&amp;gt;;
+	error_log stderr;
+	pid nginx.pid;
+
+	daemon off;
+
+	events {
+	  worker_connections &amp;lt;%= @worker_connections %&amp;gt;;
+	}
+
+	http {
+	  sendfile &amp;lt;%= @sendfile %&amp;gt;;
+	  tcp_nopush &amp;lt;%= @tcp_nopush %&amp;gt;;
+	  tcp_nodelay &amp;lt;%= @tcp_nodelay %&amp;gt;;
+
+	  keepalive_timeout &amp;lt;%= @keepalive_timeout %&amp;gt;;
+
+	  gzip &amp;lt;%= @gzip %&amp;gt;;
+	  gzip_http_version &amp;lt;%= @gzip_http_version %&amp;gt;;
+	  gzip_comp_level &amp;lt;%= @gzip_comp_level %&amp;gt;;
+	  gzip_proxied &amp;lt;%= @gzip_proxied %&amp;gt;;
+	  gzip_types &amp;lt;%= @gzip_types.join(&#39; &#39;) %&amp;gt;;
+
+	  include /opt/gitlab/embedded/conf/mime.types;
+	  
+	  &amp;lt;%= @custom_nginx_config %&amp;gt;
+	  include &amp;lt;%= @gitlab_http_config %&amp;gt;;
+	  &amp;lt;% if @gitlab_ci_http_config %&amp;gt;
+	  include &amp;lt;%= @gitlab_ci_http_config %&amp;gt;;
+	  &amp;lt;% end %&amp;gt;
+
+	}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;添路径&lt;/h2&gt;
+&lt;p&gt;因为所有Gitlab的行为是由Ruby脚本定制的, 所以下一步要告知执行脚本客制网站的配置文件路径.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	sudo vi /etc/gitlab/gitlab.rb
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;找到 &lt;strong&gt;nginx[‘custom_nginx_config’]&lt;/strong&gt; 一行取消注释, 并填写其后的配置文件路径, 修改后的内容为&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	nginx[&#39;custom_nginx_config&#39;] = &quot;include /etc/nginx/conf.d/*.conf;&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;nginx&quot;&gt;正常配置nginx&lt;/h2&gt;
+&lt;p&gt;如果路径不存在,创建之&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	sudo mkdir -p /etc/nginx/conf.d
+	sudo vi /etc/nginx/conf.d/nginx.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里使用14344端口绑定到客制网站, 完整的配置文件如下&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	server {
+		listen   14344; ## listen for ipv4; this line is default and implied
+		#listen   [::]:80 default_server ipv6only=on; ## listen for ipv6
+
+		root /usr/share/nginx/www;
+		index index.html index.htm;
+
+		# Make site accessible from http://localhost/
+		server_name 192.168.107.201;
+
+		location ~* \.(eot|ttf|woff)$ {
+			add_header Access-Control-Allow-Origin *;
+		}
+
+		location / {				
+			
+			 if ($request_method = &#39;OPTIONS&#39;) {
+				add_header &#39;Access-Control-Allow-Origin&#39; &#39;*&#39;;
+				#
+				# Om nom nom cookies
+				#
+				add_header &#39;Access-Control-Allow-Credentials&#39; &#39;true&#39;;
+				add_header &#39;Access-Control-Allow-Methods&#39; &#39;GET, POST, OPTIONS&#39;;
+				#
+				# Custom headers and headers various browsers *should* be OK with but aren&#39;t
+				#
+				add_header &#39;Access-Control-Allow-Headers&#39; &#39;DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type&#39;;
+				#
+				# Tell client that this pre-flight info is valid for 20 days
+				#
+				add_header &#39;Access-Control-Max-Age&#39; 1728000;
+				add_header &#39;Content-Type&#39; &#39;text/plain charset=UTF-8&#39;;
+				add_header &#39;Content-Length&#39; 0;
+				return 204;
+			}
+			if ($request_method = &#39;POST&#39;) {
+				add_header &#39;Access-Control-Allow-Origin&#39; &#39;*&#39;;
+				add_header &#39;Access-Control-Allow-Credentials&#39; &#39;true&#39;;
+				add_header &#39;Access-Control-Allow-Methods&#39; &#39;GET, POST, OPTIONS&#39;;
+				add_header &#39;Access-Control-Allow-Headers&#39; &#39;DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type&#39;;
+			}
+			if ($request_method = &#39;GET&#39;) {
+				add_header &#39;Access-Control-Allow-Origin&#39; &#39;*&#39;;
+				add_header &#39;Access-Control-Allow-Credentials&#39; &#39;true&#39;;
+				add_header &#39;Access-Control-Allow-Methods&#39; &#39;GET, POST, OPTIONS&#39;;
+				add_header &#39;Access-Control-Allow-Headers&#39; &#39;DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type&#39;;
+			}
+		}
+		
+	}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后在指定路径上添加静态网页&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	sudo mkdir -p /usr/share/nginx/www
+	sudo chmod 0777 -R /usr/share/nginx/www
+	vi /usr/share/nginx/www/index.html
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最后重启Gitlab服务&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	gitlab-ctl reconfigure
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;收工.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Compile OpenCV under Debian</title>

@@ -167,6 +167,8 @@ Here's a sample "posts list".
 
 <ul class="posts">
   
+    <li><span>04 Aug 2015</span> &raquo; <a href="/lessons/2015/08/04/gitlabnginx">利用Gitlab内置nginx添加新网站</a></li>
+  
     <li><span>15 Jul 2015</span> &raquo; <a href="/2015/07/15/compile-opencv-under-debian">Compile OpenCV under Debian</a></li>
   
     <li><span>04 Jun 2015</span> &raquo; <a href="/private/2015/06/04/">交规备考</a></li>
@@ -212,105 +214,151 @@ layout: page
     <a href="/index.md.bk">Hello World!</a>
 
 
-    <a href="/2015/07/15/compile-opencv-under-debian">Compile OpenCV under Debian</a>
+    <a href="/lessons/2015/08/04/gitlabnginx">利用Gitlab内置nginx添加新网站</a>
 
 </h1>
 <div class="entry-content">
-<h1 id="section">依赖环境的安装</h1>
+<p>Gitlab整合了仿制Github所需要的几乎所有服务器端程序,例如内置了nginx. 作为静态网站服务的首选服务, nginx强大灵活的分流配置一直为广大程序员喜爱.</p>
 
-<h2 id="ffmpeg">FFMPEG相关模块</h2>
+<h2 id="section">目标</h2>
+<p>利用现成的Gitlab内置nginx服务器, 添加新的静态网站到指定端口</p>
 
-<p>首先添加deb-multimedia提供的库文件支持到本地库列表中</p>
+<h2 id="section-1">改菜谱</h2>
+<p>Gitlab利用一种叫做菜谱cookbook的方法管理不同模板template的配置文件,每次gitlab-ctl reconfigure都是重新生成配置文件的过程. 换言之, 原先直接对配置文件的修改在这里是行不通的, 因为只要重启服务就会被覆盖.</p>
 
-<pre><code>su -
-echo "deb http://www.deb-multimedia.org wheezy main non-free" &gt;&gt; /etc/apt/sources.list.d/deb-multimedia.list
-echo "deb-src http://www.deb-multimedia.org wheezy main non-free" &gt;&gt; /etc/apt/sources.list.d/deb-multimedia.list
-apt-get update
+<p>修改nginx的菜谱</p>
+
+<pre><code>	sudo vi /opt/gitlab/embedded/cookbooks/gitlab/templates/default/nginx.conf.erb 
 </code></pre>
 
-<p>之后安装公匙</p>
+<p>找到 <strong>include &lt;%= @gitlab_http_config %&gt;;</strong> 这一行, 在其上方添加客制配置文件路径 <strong>nginx[‘custom_nginx_config’] = “include /etc/nginx/conf.d/*.conf;”</strong></p>
 
-<pre><code>apt-get install deb-multimedia-keyring
-apt-get update
+<p>修改后完整的菜谱为</p>
+
+<pre><code>	# This file is managed by gitlab-ctl. Manual changes will be
+	# erased! To change the contents below, edit /etc/gitlab/gitlab.rb
+	# and run `sudo gitlab-ctl reconfigure`.
+
+	user &lt;%= node['gitlab']['web-server']['username'] %&gt; &lt;%= node['gitlab']['web-server']['group']%&gt;;
+	worker_processes &lt;%= @worker_processes %&gt;;
+	error_log stderr;
+	pid nginx.pid;
+
+	daemon off;
+
+	events {
+	  worker_connections &lt;%= @worker_connections %&gt;;
+	}
+
+	http {
+	  sendfile &lt;%= @sendfile %&gt;;
+	  tcp_nopush &lt;%= @tcp_nopush %&gt;;
+	  tcp_nodelay &lt;%= @tcp_nodelay %&gt;;
+
+	  keepalive_timeout &lt;%= @keepalive_timeout %&gt;;
+
+	  gzip &lt;%= @gzip %&gt;;
+	  gzip_http_version &lt;%= @gzip_http_version %&gt;;
+	  gzip_comp_level &lt;%= @gzip_comp_level %&gt;;
+	  gzip_proxied &lt;%= @gzip_proxied %&gt;;
+	  gzip_types &lt;%= @gzip_types.join(' ') %&gt;;
+
+	  include /opt/gitlab/embedded/conf/mime.types;
+	  
+	  &lt;%= @custom_nginx_config %&gt;
+	  include &lt;%= @gitlab_http_config %&gt;;
+	  &lt;% if @gitlab_ci_http_config %&gt;
+	  include &lt;%= @gitlab_ci_http_config %&gt;;
+	  &lt;% end %&gt;
+
+	}
 </code></pre>
 
-<p>最后安装依赖文件</p>
+<h2 id="section-2">添路径</h2>
+<p>因为所有Gitlab的行为是由Ruby脚本定制的, 所以下一步要告知执行脚本客制网站的配置文件路径.</p>
 
-<pre><code>sudo apt-get install build-essential checkinstall git cmake libfaac-dev libjack-jackd2-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libsdl1.2-dev libtheora-dev libva-dev libvdpau-dev libvorbis-dev libx11-dev libxfixes-dev libxvidcore-dev texi2html yasm zlib1g-dev libsdl1.2-dev libvpx-dev
+<pre><code>	sudo vi /etc/gitlab/gitlab.rb
 </code></pre>
 
-<p>此处曾经出现过libfaac-dev找不到的情况, 后来发现是因为没有apt-get update的原因</p>
+<p>找到 <strong>nginx[‘custom_nginx_config’]</strong> 一行取消注释, 并填写其后的配置文件路径, 修改后的内容为</p>
 
-<h2 id="section-1">安装其他库文件</h2>
-
-<p>Gstreamer:</p>
-
-<pre><code>sudo apt-get install libgstreamer0.10-0 libgstreamer0.10-dev gstreamer0.10-tools gstreamer0.10-plugins-base libgstreamer-plugins-base0.10-dev gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly gstreamer0.10-plugins-bad gstreamer0.10-ffmpeg
+<pre><code>	nginx['custom_nginx_config'] = "include /etc/nginx/conf.d/*.conf;"
 </code></pre>
 
-<p>libgtk2:</p>
+<h2 id="nginx">正常配置nginx</h2>
+<p>如果路径不存在,创建之</p>
 
-<pre><code>sudo apt-get install libgtk2.0-0 libgtk2.0-dev  
+<pre><code>	sudo mkdir -p /etc/nginx/conf.d
+	sudo vi /etc/nginx/conf.d/nginx.conf
 </code></pre>
 
-<p>libjepg:</p>
+<p>这里使用14344端口绑定到客制网站, 完整的配置文件如下</p>
 
-<pre><code>sudo apt-get install libjpeg8 libjpeg8-dev 
+<pre><code>	server {
+		listen   14344; ## listen for ipv4; this line is default and implied
+		#listen   [::]:80 default_server ipv6only=on; ## listen for ipv6
+
+		root /usr/share/nginx/www;
+		index index.html index.htm;
+
+		# Make site accessible from http://localhost/
+		server_name 192.168.107.201;
+
+		location ~* \.(eot|ttf|woff)$ {
+			add_header Access-Control-Allow-Origin *;
+		}
+
+		location / {				
+			
+			 if ($request_method = 'OPTIONS') {
+				add_header 'Access-Control-Allow-Origin' '*';
+				#
+				# Om nom nom cookies
+				#
+				add_header 'Access-Control-Allow-Credentials' 'true';
+				add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+				#
+				# Custom headers and headers various browsers *should* be OK with but aren't
+				#
+				add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+				#
+				# Tell client that this pre-flight info is valid for 20 days
+				#
+				add_header 'Access-Control-Max-Age' 1728000;
+				add_header 'Content-Type' 'text/plain charset=UTF-8';
+				add_header 'Content-Length' 0;
+				return 204;
+			}
+			if ($request_method = 'POST') {
+				add_header 'Access-Control-Allow-Origin' '*';
+				add_header 'Access-Control-Allow-Credentials' 'true';
+				add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+				add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+			}
+			if ($request_method = 'GET') {
+				add_header 'Access-Control-Allow-Origin' '*';
+				add_header 'Access-Control-Allow-Credentials' 'true';
+				add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+				add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+			}
+		}
+		
+	}
 </code></pre>
 
-<h2 id="section-2">编译库文件</h2>
+<p>然后在指定路径上添加静态网页</p>
 
-<pre><code>mkdir ~/source  
-mkdir ~/source/x264  
-mkdir ~/source/v4l  
-mkdir ~/source/opencv  
-mkdir ~/source/ffmpeg  
+<pre><code>	sudo mkdir -p /usr/share/nginx/www
+	sudo chmod 0777 -R /usr/share/nginx/www
+	vi /usr/share/nginx/www/index.html
 </code></pre>
 
-<h3 id="compile-x264">Compile X264</h3>
+<p>最后重启Gitlab服务</p>
 
-<pre><code>cd ~/source/x264  
-wget ftp://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120528-2245-stable.tar.bz2  
-tar xvf x264-snapshot-20120528-2245-stable.tar.bz2  
-cd x264-snapshot-20120528-2245-stable  
-./configure --enable-shared --enable-pic
-make  
-sudo make install  
+<pre><code>	gitlab-ctl reconfigure
 </code></pre>
 
-<h3 id="compile-ffmpeg">Compile ffmpeg</h3>
-<pre><code>cd ~/source/ffmpeg  
-wget http://ffmpeg.org/releases/ffmpeg-0.11.1.tar.bz2  
-tar xvf ffmpeg-0.11.1.tar.bz2  
-cd ffmpeg-0.11.1  
-./configure --enable-gpl --enable-libfaac --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libxvid --enable-nonfree --enable-postproc --enable-version3 --enable-x11grab --enable-shared --enable-libvpx --enable-pic
-make  
-sudo make install  
-</code></pre>
-
-<h3 id="compile-v4l">Compile v4l</h3>
-<pre><code>cd ~/source/v4l  
-wget http://www.linuxtv.org/downloads/v4l-utils/v4l-utils-0.8.8.tar.bz2  
-tar xvf v4l-utils-0.8.8.tar.bz2  
-cd v4l-utils-0.8.8  
-make  
-sudo make install  
-</code></pre>
-
-<h1 id="opencv">终于可以编译OpenCV本体了</h1>
-<p>此处一个小插曲, 下载了 OpenCV3.0.0正式版试图编译, 结果在24%进度报错, 原因是cap_ffmpeg.cpp文件在45行处使用了一个未声明enum类型变量AVCodecID. 尝试所有方案,未遂. 重新回到2.4.9版本,一次编译就过了.
-还有改进空间啊OpenCV Team.</p>
-
-<pre><code>cd ~/source/opencv
-wget http://kent.dl.sourceforge.net/project/opencvlibrary/opencv-unix/2.4.9/opencv-2.4.9.zip  
-unzip opencv-2.4.9.zip  
-cd opencv-2.4.9  
-mkdir release  
-cd release  
-cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D BUILD_NEW_PYTHON_SUPPORT=ON ..
-make
-sudo make install
-</code></pre>
+<p>收工.</p>
 </div>
 
 </div>
