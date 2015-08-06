@@ -5,10 +5,56 @@
         <description>灵犀一点 Sparkle - T.Z</description>
         <link>http://username.github.io</link>
         <link>http://username.github.io</link>
-        <lastBuildDate>2015-08-04T11:54:12+02:00</lastBuildDate>
-        <pubDate>2015-08-04T11:54:12+02:00</pubDate>
+        <lastBuildDate>2015-08-06T11:47:42+02:00</lastBuildDate>
+        <pubDate>2015-08-06T11:47:42+02:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>实车驾驶经验</title>
+                <description>
+&lt;h2 id=&quot;section&quot;&gt;缘由&lt;/h2&gt;
+
+&lt;p&gt;原以为交规通过之后就是肌肉记忆的积累, 没必要动笔了. 但今天Luc在车上给我上的理论课让我意识到理论指导实践的重要性, 各种经验, 还是值得记录下来&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;第6小时&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;进车后的调整顺序, 首先是座位高度, 标准为放下遮阳板后依然可见50m处路标牌为准.&lt;br /&gt;
+然后是座位远近, 标准为左脚离合踏板足尖顶到底, 左脚跟触地, 此时左髋不上挺.&lt;br /&gt;
+再后是座椅靠背, 要求臀部充分靠后,腰部有支撑但肩背不接触.&lt;br /&gt;
+下一步是方向盘, 以不触腿为标准尽量拉近放下, 目的是使手臂在驾驶时处于松弛状态.&lt;br /&gt;
+之后是后视镜和左右侧镜, 左右镜要注意自己车的部位尽量小.&lt;br /&gt;
+最后当然是安全带.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;正常情况要检查轮胎, 冷却液, 雨刷液 等等之后才放心上车, 考试时这一切简化为按下锁闭车门键( F. detresse右方的那个键) 如果有门没关严, 红灯会自己熄灭. 若稳定红灯则说明车门都已锁死.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;起步出库, 要退得尽量靠后, 减小出库过程车头转动角度&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;刚意识到, 目测右方路沿距离, 除了当初说的路沿线与右雨刷基部重合外, 右方后视镜里的情形其实是更为直观的佐证.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;转向前的确认步骤, 为方便考官察觉, 应当三次点头, 对应后视, 左/右后, 过肩死角. 注意左/右后为最重要关注点&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;转弯技巧: 确认, 亮转弯灯, 对应手置于12点位, 注意手肘下沉, 直行到刚过弯, 再次确认横向无来车, 一把转90度方向盘, 车身改变直行方向后再两手交替行进,至转弯过半(跟车速有关)放松让方向盘自行滑动复位, 注意手与方向盘始终接触 (滑动而不是松开), 以便随时终止复位过程.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;脚踏板的使用摒弃曾经以为的改变脚底与腿夹角的方法, 因太不可控；使用足跟触地后滑方法, 可精确制动.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;起步不熄火要求最低车速为10km/h, 方法是挂一档半松离合, 一旦车身开动, 默数三下, 这时车速超过10km/h怎么踩放离合都不会熄火, 可以彻底松离合&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+                <link>http://username.github.io/private/2015/08/06/</link>
+                <guid>http://username.github.io/private/2015/08/</guid>
+                <pubDate>2015-08-06T00:00:00+02:00</pubDate>
+        </item>
 
         <item>
                 <title>利用Gitlab内置nginx添加新网站</title>

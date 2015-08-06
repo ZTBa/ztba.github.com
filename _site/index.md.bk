@@ -167,6 +167,8 @@ Here's a sample "posts list".
 
 <ul class="posts">
   
+    <li><span>06 Aug 2015</span> &raquo; <a href="/private/2015/08/06/">实车驾驶经验</a></li>
+  
     <li><span>04 Aug 2015</span> &raquo; <a href="/lessons/2015/08/04/gitlabnginx">利用Gitlab内置nginx添加新网站</a></li>
   
     <li><span>15 Jul 2015</span> &raquo; <a href="/2015/07/15/compile-opencv-under-debian">Compile OpenCV under Debian</a></li>
@@ -214,151 +216,47 @@ layout: page
     <a href="/index.md.bk">Hello World!</a>
 
 
-    <a href="/lessons/2015/08/04/gitlabnginx">利用Gitlab内置nginx添加新网站</a>
+    <a href="/private/2015/08/06/">实车驾驶经验</a>
 
 </h1>
 <div class="entry-content">
-<p>Gitlab整合了仿制Github所需要的几乎所有服务器端程序,例如内置了nginx. 作为静态网站服务的首选服务, nginx强大灵活的分流配置一直为广大程序员喜爱.</p>
+<h2 id="section">缘由</h2>
 
-<h2 id="section">目标</h2>
-<p>利用现成的Gitlab内置nginx服务器, 添加新的静态网站到指定端口</p>
+<p>原以为交规通过之后就是肌肉记忆的积累, 没必要动笔了. 但今天Luc在车上给我上的理论课让我意识到理论指导实践的重要性, 各种经验, 还是值得记录下来</p>
 
-<h2 id="section-1">改菜谱</h2>
-<p>Gitlab利用一种叫做菜谱cookbook的方法管理不同模板template的配置文件,每次gitlab-ctl reconfigure都是重新生成配置文件的过程. 换言之, 原先直接对配置文件的修改在这里是行不通的, 因为只要重启服务就会被覆盖.</p>
+<h2 id="section-1">第6小时</h2>
 
-<p>修改nginx的菜谱</p>
-
-<pre><code>	sudo vi /opt/gitlab/embedded/cookbooks/gitlab/templates/default/nginx.conf.erb 
-</code></pre>
-
-<p>找到 <strong>include &lt;%= @gitlab_http_config %&gt;;</strong> 这一行, 在其上方添加客制配置文件路径 <strong>nginx[‘custom_nginx_config’] = “include /etc/nginx/conf.d/*.conf;”</strong></p>
-
-<p>修改后完整的菜谱为</p>
-
-<pre><code>	# This file is managed by gitlab-ctl. Manual changes will be
-	# erased! To change the contents below, edit /etc/gitlab/gitlab.rb
-	# and run `sudo gitlab-ctl reconfigure`.
-
-	user &lt;%= node['gitlab']['web-server']['username'] %&gt; &lt;%= node['gitlab']['web-server']['group']%&gt;;
-	worker_processes &lt;%= @worker_processes %&gt;;
-	error_log stderr;
-	pid nginx.pid;
-
-	daemon off;
-
-	events {
-	  worker_connections &lt;%= @worker_connections %&gt;;
-	}
-
-	http {
-	  sendfile &lt;%= @sendfile %&gt;;
-	  tcp_nopush &lt;%= @tcp_nopush %&gt;;
-	  tcp_nodelay &lt;%= @tcp_nodelay %&gt;;
-
-	  keepalive_timeout &lt;%= @keepalive_timeout %&gt;;
-
-	  gzip &lt;%= @gzip %&gt;;
-	  gzip_http_version &lt;%= @gzip_http_version %&gt;;
-	  gzip_comp_level &lt;%= @gzip_comp_level %&gt;;
-	  gzip_proxied &lt;%= @gzip_proxied %&gt;;
-	  gzip_types &lt;%= @gzip_types.join(' ') %&gt;;
-
-	  include /opt/gitlab/embedded/conf/mime.types;
-	  
-	  &lt;%= @custom_nginx_config %&gt;
-	  include &lt;%= @gitlab_http_config %&gt;;
-	  &lt;% if @gitlab_ci_http_config %&gt;
-	  include &lt;%= @gitlab_ci_http_config %&gt;;
-	  &lt;% end %&gt;
-
-	}
-</code></pre>
-
-<h2 id="section-2">添路径</h2>
-<p>因为所有Gitlab的行为是由Ruby脚本定制的, 所以下一步要告知执行脚本客制网站的配置文件路径.</p>
-
-<pre><code>	sudo vi /etc/gitlab/gitlab.rb
-</code></pre>
-
-<p>找到 <strong>nginx[‘custom_nginx_config’]</strong> 一行取消注释, 并填写其后的配置文件路径, 修改后的内容为</p>
-
-<pre><code>	nginx['custom_nginx_config'] = "include /etc/nginx/conf.d/*.conf;"
-</code></pre>
-
-<h2 id="nginx">正常配置nginx</h2>
-<p>如果路径不存在,创建之</p>
-
-<pre><code>	sudo mkdir -p /etc/nginx/conf.d
-	sudo vi /etc/nginx/conf.d/nginx.conf
-</code></pre>
-
-<p>这里使用14344端口绑定到客制网站, 完整的配置文件如下</p>
-
-<pre><code>	server {
-		listen   14344; ## listen for ipv4; this line is default and implied
-		#listen   [::]:80 default_server ipv6only=on; ## listen for ipv6
-
-		root /usr/share/nginx/www;
-		index index.html index.htm;
-
-		# Make site accessible from http://localhost/
-		server_name 192.168.107.201;
-
-		location ~* \.(eot|ttf|woff)$ {
-			add_header Access-Control-Allow-Origin *;
-		}
-
-		location / {				
-			
-			 if ($request_method = 'OPTIONS') {
-				add_header 'Access-Control-Allow-Origin' '*';
-				#
-				# Om nom nom cookies
-				#
-				add_header 'Access-Control-Allow-Credentials' 'true';
-				add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-				#
-				# Custom headers and headers various browsers *should* be OK with but aren't
-				#
-				add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
-				#
-				# Tell client that this pre-flight info is valid for 20 days
-				#
-				add_header 'Access-Control-Max-Age' 1728000;
-				add_header 'Content-Type' 'text/plain charset=UTF-8';
-				add_header 'Content-Length' 0;
-				return 204;
-			}
-			if ($request_method = 'POST') {
-				add_header 'Access-Control-Allow-Origin' '*';
-				add_header 'Access-Control-Allow-Credentials' 'true';
-				add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-				add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
-			}
-			if ($request_method = 'GET') {
-				add_header 'Access-Control-Allow-Origin' '*';
-				add_header 'Access-Control-Allow-Credentials' 'true';
-				add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-				add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
-			}
-		}
-		
-	}
-</code></pre>
-
-<p>然后在指定路径上添加静态网页</p>
-
-<pre><code>	sudo mkdir -p /usr/share/nginx/www
-	sudo chmod 0777 -R /usr/share/nginx/www
-	vi /usr/share/nginx/www/index.html
-</code></pre>
-
-<p>最后重启Gitlab服务</p>
-
-<pre><code>	gitlab-ctl reconfigure
-</code></pre>
-
-<p>收工.</p>
+<ul>
+  <li>
+    <p>进车后的调整顺序, 首先是座位高度, 标准为放下遮阳板后依然可见50m处路标牌为准.<br />
+然后是座位远近, 标准为左脚离合踏板足尖顶到底, 左脚跟触地, 此时左髋不上挺.<br />
+再后是座椅靠背, 要求臀部充分靠后,腰部有支撑但肩背不接触.<br />
+下一步是方向盘, 以不触腿为标准尽量拉近放下, 目的是使手臂在驾驶时处于松弛状态.<br />
+之后是后视镜和左右侧镜, 左右镜要注意自己车的部位尽量小.<br />
+最后当然是安全带.</p>
+  </li>
+  <li>
+    <p>正常情况要检查轮胎, 冷却液, 雨刷液 等等之后才放心上车, 考试时这一切简化为按下锁闭车门键( F. detresse右方的那个键) 如果有门没关严, 红灯会自己熄灭. 若稳定红灯则说明车门都已锁死.</p>
+  </li>
+  <li>
+    <p>起步出库, 要退得尽量靠后, 减小出库过程车头转动角度</p>
+  </li>
+  <li>
+    <p>刚意识到, 目测右方路沿距离, 除了当初说的路沿线与右雨刷基部重合外, 右方后视镜里的情形其实是更为直观的佐证.</p>
+  </li>
+  <li>
+    <p>转向前的确认步骤, 为方便考官察觉, 应当三次点头, 对应后视, 左/右后, 过肩死角. 注意左/右后为最重要关注点</p>
+  </li>
+  <li>
+    <p>转弯技巧: 确认, 亮转弯灯, 对应手置于12点位, 注意手肘下沉, 直行到刚过弯, 再次确认横向无来车, 一把转90度方向盘, 车身改变直行方向后再两手交替行进,至转弯过半(跟车速有关)放松让方向盘自行滑动复位, 注意手与方向盘始终接触 (滑动而不是松开), 以便随时终止复位过程.</p>
+  </li>
+  <li>
+    <p>脚踏板的使用摒弃曾经以为的改变脚底与腿夹角的方法, 因太不可控；使用足跟触地后滑方法, 可精确制动.</p>
+  </li>
+  <li>
+    <p>起步不熄火要求最低车速为10km/h, 方法是挂一档半松离合, 一旦车身开动, 默数三下, 这时车速超过10km/h怎么踩放离合都不会熄火, 可以彻底松离合</p>
+  </li>
+</ul>
 </div>
 
 </div>
