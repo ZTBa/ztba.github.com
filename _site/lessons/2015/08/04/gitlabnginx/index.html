@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>
+      
+        利用Gitlab内置nginx添加新网站 - 
+      
+      灵犀一点 Sparkle
+    </title>
+    <meta name="description" content="">
+    <meta name="author" content="T.Z">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link href="/assets/themes/hooligan/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/hooligan/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/assets/themes/hooligan/css-social-buttons/css/zocial.stripped.css">
+    <link href="/assets/themes/hooligan/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/hooligan/css/darkstrap.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/hooligan/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- fav and touch icons -->
+    <!-- Update these with your own images
+      <link rel="shortcut icon" href="images/favicon.ico">
+      <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+      <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+      <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    -->
+  </head>
+
+  <body>
+    <div id="page-wrap">
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="container">
+            <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" href="/">灵犀一点 Sparkle</a>
+
+            <div class="nav-collapse">
+              <ul class="nav">
+                
+                
+                
+
+
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+
+
+
+              </ul>
+              <ul class="nav pull-right social visible-desktop">
+                <li class="divider-vertical"></li>
+                
+                
+                
+                
+                
+                
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="content">
+          
+<div class="page-header">
+  <h1>
+    利用Gitlab内置nginx添加新网站 
+    
+  </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    
+<p>Gitlab整合了仿制Github所需要的几乎所有服务器端程序,例如内置了nginx. 作为静态网站服务的首选服务, nginx强大灵活的分流配置一直为广大程序员喜爱.</p>
+
+<h2 id="section">目标</h2>
+<p>利用现成的Gitlab内置nginx服务器, 添加新的静态网站到指定端口</p>
+
+<h2 id="section-1">改菜谱</h2>
+<p>Gitlab利用一种叫做菜谱cookbook的方法管理不同模板template的配置文件,每次gitlab-ctl reconfigure都是重新生成配置文件的过程. 换言之, 原先直接对配置文件的修改在这里是行不通的, 因为只要重启服务就会被覆盖.</p>
+
+<p>修改nginx的菜谱</p>
+
+<pre><code>	sudo vi /opt/gitlab/embedded/cookbooks/gitlab/templates/default/nginx.conf.erb 
+</code></pre>
+
+<p>找到 <strong>include &lt;%= @gitlab_http_config %&gt;;</strong> 这一行, 在其上方添加客制配置文件路径 <strong>nginx[‘custom_nginx_config’] = “include /etc/nginx/conf.d/*.conf;”</strong></p>
+
+<p>修改后完整的菜谱为</p>
+
+<pre><code>	# This file is managed by gitlab-ctl. Manual changes will be
+	# erased! To change the contents below, edit /etc/gitlab/gitlab.rb
+	# and run `sudo gitlab-ctl reconfigure`.
+
+	user &lt;%= node['gitlab']['web-server']['username'] %&gt; &lt;%= node['gitlab']['web-server']['group']%&gt;;
+	worker_processes &lt;%= @worker_processes %&gt;;
+	error_log stderr;
+	pid nginx.pid;
+
+	daemon off;
+
+	events {
+	  worker_connections &lt;%= @worker_connections %&gt;;
+	}
+
+	http {
+	  sendfile &lt;%= @sendfile %&gt;;
+	  tcp_nopush &lt;%= @tcp_nopush %&gt;;
+	  tcp_nodelay &lt;%= @tcp_nodelay %&gt;;
+
+	  keepalive_timeout &lt;%= @keepalive_timeout %&gt;;
+
+	  gzip &lt;%= @gzip %&gt;;
+	  gzip_http_version &lt;%= @gzip_http_version %&gt;;
+	  gzip_comp_level &lt;%= @gzip_comp_level %&gt;;
+	  gzip_proxied &lt;%= @gzip_proxied %&gt;;
+	  gzip_types &lt;%= @gzip_types.join(' ') %&gt;;
+
+	  include /opt/gitlab/embedded/conf/mime.types;
+	  
+	  &lt;%= @custom_nginx_config %&gt;
+	  include &lt;%= @gitlab_http_config %&gt;;
+	  &lt;% if @gitlab_ci_http_config %&gt;
+	  include &lt;%= @gitlab_ci_http_config %&gt;;
+	  &lt;% end %&gt;
+
+	}
+</code></pre>
+
+<h2 id="section-2">添路径</h2>
+<p>因为所有Gitlab的行为是由Ruby脚本定制的, 所以下一步要告知执行脚本客制网站的配置文件路径.</p>
+
+<pre><code>	sudo vi /etc/gitlab/gitlab.rb
+</code></pre>
+
+<p>找到 <strong>nginx[‘custom_nginx_config’]</strong> 一行取消注释, 并填写其后的配置文件路径, 修改后的内容为</p>
+
+<pre><code>	nginx['custom_nginx_config'] = "include /etc/nginx/conf.d/*.conf;"
+</code></pre>
+
+<h2 id="nginx">正常配置nginx</h2>
+<p>如果路径不存在,创建之</p>
+
+<pre><code>	sudo mkdir -p /etc/nginx/conf.d
+	sudo vi /etc/nginx/conf.d/nginx.conf
+</code></pre>
+
+<p>这里使用14344端口绑定到客制网站, 完整的配置文件如下</p>
+
+<pre><code>	server {
+		listen   14344; ## listen for ipv4; this line is default and implied
+		#listen   [::]:80 default_server ipv6only=on; ## listen for ipv6
+
+		root /usr/share/nginx/www;
+		index index.html index.htm;
+
+		# Make site accessible from http://localhost/
+		server_name 192.168.107.201;
+
+		location ~* \.(eot|ttf|woff)$ {
+			add_header Access-Control-Allow-Origin *;
+		}
+
+		location / {				
+			
+			 if ($request_method = 'OPTIONS') {
+				add_header 'Access-Control-Allow-Origin' '*';
+				#
+				# Om nom nom cookies
+				#
+				add_header 'Access-Control-Allow-Credentials' 'true';
+				add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+				#
+				# Custom headers and headers various browsers *should* be OK with but aren't
+				#
+				add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+				#
+				# Tell client that this pre-flight info is valid for 20 days
+				#
+				add_header 'Access-Control-Max-Age' 1728000;
+				add_header 'Content-Type' 'text/plain charset=UTF-8';
+				add_header 'Content-Length' 0;
+				return 204;
+			}
+			if ($request_method = 'POST') {
+				add_header 'Access-Control-Allow-Origin' '*';
+				add_header 'Access-Control-Allow-Credentials' 'true';
+				add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+				add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+			}
+			if ($request_method = 'GET') {
+				add_header 'Access-Control-Allow-Origin' '*';
+				add_header 'Access-Control-Allow-Credentials' 'true';
+				add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+				add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+			}
+		}
+		
+	}
+</code></pre>
+
+<p>然后在指定路径上添加静态网页</p>
+
+<pre><code>	sudo mkdir -p /usr/share/nginx/www
+	sudo chmod 0777 -R /usr/share/nginx/www
+	vi /usr/share/nginx/www/index.html
+</code></pre>
+
+<p>最后重启Gitlab服务</p>
+
+<pre><code>	gitlab-ctl reconfigure
+</code></pre>
+
+<p>收工.</p>
+
+    <hr>
+    <div class="pagination btn-group">
+      
+        <a class="btn prev" href="/2015/07/15/compile-opencv-under-debian" title="Compile OpenCV under Debian">&larr; Previous</a>
+      
+        <a class="btn" href="/archive.html">Archive</a>
+      
+        <a class="btn next" href="/private/2015/08/06/" title="实车驾驶经验">Next &rarr;</a>
+      
+    </div>
+    <hr>
+    
+  </div>
+  
+  <div class="span4">
+    <section>
+      <h4>Published</h4>
+      <div class="date"><span>04 August 2015</span></div>
+    </section>
+    
+      <section>
+        <h4>Category</h4>
+        <span class="category">
+          lessons
+        </span>
+      </section>
+         
+    
+      <section>
+        <h4>Tags</h4>
+        <ul class="tag_box">
+          
+          
+
+
+  
+     
+    	<li><a href="/tags.html#linux-ref">linux <span>6</span></a></li>
+     
+    	<li><a href="/tags.html#debian-ref">debian <span>5</span></a></li>
+     
+    	<li><a href="/tags.html#tutorial-ref">tutorial <span>5</span></a></li>
+    
+  
+
+
+
+        </ul>
+      </section>
+             
+  </div>
+</div>
+
+
+        </div>
+      </div> <!-- /container -->
+
+      <div class="footer-push"></div>
+    </div><!--/.page-wrap -->
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2015 T.Z
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://github.com/dhulihan/hooligan" target="_blank">The Hooligan Theme</a>
+        </p>
+      </div>
+    </footer>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/assets/themes/hooligan/js/jquery.min.js"><\/script>')</script>
+    <script src="/assets/themes/hooligan/bootstrap/js/bootstrap.min.js"></script>
+
+    
+  </body>
+</html>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57706060-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

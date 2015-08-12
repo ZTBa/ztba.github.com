@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>
+      
+        Compile OpenCV under Debian - 
+      
+      灵犀一点 Sparkle
+    </title>
+    <meta name="description" content="折腾3.0.0版本未遂的全过程">
+    <meta name="author" content="T.Z">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link href="/assets/themes/hooligan/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/hooligan/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/assets/themes/hooligan/css-social-buttons/css/zocial.stripped.css">
+    <link href="/assets/themes/hooligan/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/hooligan/css/darkstrap.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/hooligan/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- fav and touch icons -->
+    <!-- Update these with your own images
+      <link rel="shortcut icon" href="images/favicon.ico">
+      <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+      <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+      <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    -->
+  </head>
+
+  <body>
+    <div id="page-wrap">
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="container">
+            <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" href="/">灵犀一点 Sparkle</a>
+
+            <div class="nav-collapse">
+              <ul class="nav">
+                
+                
+                
+
+
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+
+
+
+              </ul>
+              <ul class="nav pull-right social visible-desktop">
+                <li class="divider-vertical"></li>
+                
+                
+                
+                
+                
+                
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="content">
+          
+<div class="page-header">
+  <h1>
+    Compile OpenCV under Debian 
+    
+      <small>Debian wheezy x64环境下编译OpenCV</small>
+    
+  </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    
+<h1 id="section">依赖环境的安装</h1>
+
+<h2 id="ffmpeg">FFMPEG相关模块</h2>
+
+<p>首先添加deb-multimedia提供的库文件支持到本地库列表中</p>
+
+<pre><code>su -
+echo "deb http://www.deb-multimedia.org wheezy main non-free" &gt;&gt; /etc/apt/sources.list.d/deb-multimedia.list
+echo "deb-src http://www.deb-multimedia.org wheezy main non-free" &gt;&gt; /etc/apt/sources.list.d/deb-multimedia.list
+apt-get update
+</code></pre>
+
+<p>之后安装公匙</p>
+
+<pre><code>apt-get install deb-multimedia-keyring
+apt-get update
+</code></pre>
+
+<p>最后安装依赖文件</p>
+
+<pre><code>sudo apt-get install build-essential checkinstall git cmake libfaac-dev libjack-jackd2-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libsdl1.2-dev libtheora-dev libva-dev libvdpau-dev libvorbis-dev libx11-dev libxfixes-dev libxvidcore-dev texi2html yasm zlib1g-dev libsdl1.2-dev libvpx-dev
+</code></pre>
+
+<p>此处曾经出现过libfaac-dev找不到的情况, 后来发现是因为没有apt-get update的原因</p>
+
+<h2 id="section-1">安装其他库文件</h2>
+
+<p>Gstreamer:</p>
+
+<pre><code>sudo apt-get install libgstreamer0.10-0 libgstreamer0.10-dev gstreamer0.10-tools gstreamer0.10-plugins-base libgstreamer-plugins-base0.10-dev gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly gstreamer0.10-plugins-bad gstreamer0.10-ffmpeg
+</code></pre>
+
+<p>libgtk2:</p>
+
+<pre><code>sudo apt-get install libgtk2.0-0 libgtk2.0-dev  
+</code></pre>
+
+<p>libjepg:</p>
+
+<pre><code>sudo apt-get install libjpeg8 libjpeg8-dev 
+</code></pre>
+
+<h2 id="section-2">编译库文件</h2>
+
+<pre><code>mkdir ~/source  
+mkdir ~/source/x264  
+mkdir ~/source/v4l  
+mkdir ~/source/opencv  
+mkdir ~/source/ffmpeg  
+</code></pre>
+
+<h3 id="compile-x264">Compile X264</h3>
+
+<pre><code>cd ~/source/x264  
+wget ftp://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120528-2245-stable.tar.bz2  
+tar xvf x264-snapshot-20120528-2245-stable.tar.bz2  
+cd x264-snapshot-20120528-2245-stable  
+./configure --enable-shared --enable-pic
+make  
+sudo make install  
+</code></pre>
+
+<h3 id="compile-ffmpeg">Compile ffmpeg</h3>
+<pre><code>cd ~/source/ffmpeg  
+wget http://ffmpeg.org/releases/ffmpeg-0.11.1.tar.bz2  
+tar xvf ffmpeg-0.11.1.tar.bz2  
+cd ffmpeg-0.11.1  
+./configure --enable-gpl --enable-libfaac --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libxvid --enable-nonfree --enable-postproc --enable-version3 --enable-x11grab --enable-shared --enable-libvpx --enable-pic
+make  
+sudo make install  
+</code></pre>
+
+<h3 id="compile-v4l">Compile v4l</h3>
+<pre><code>cd ~/source/v4l  
+wget http://www.linuxtv.org/downloads/v4l-utils/v4l-utils-0.8.8.tar.bz2  
+tar xvf v4l-utils-0.8.8.tar.bz2  
+cd v4l-utils-0.8.8  
+make  
+sudo make install  
+</code></pre>
+
+<h1 id="opencv">终于可以编译OpenCV本体了</h1>
+<p>此处一个小插曲, 下载了 OpenCV3.0.0正式版试图编译, 结果在24%进度报错, 原因是cap_ffmpeg.cpp文件在45行处使用了一个未声明enum类型变量AVCodecID. 尝试所有方案,未遂. 重新回到2.4.9版本,一次编译就过了.
+还有改进空间啊OpenCV Team.</p>
+
+<pre><code>cd ~/source/opencv
+wget http://kent.dl.sourceforge.net/project/opencvlibrary/opencv-unix/2.4.9/opencv-2.4.9.zip  
+unzip opencv-2.4.9.zip  
+cd opencv-2.4.9  
+mkdir release  
+cd release  
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D BUILD_NEW_PYTHON_SUPPORT=ON ..
+make
+sudo make install
+</code></pre>
+
+    <hr>
+    <div class="pagination btn-group">
+      
+        <a class="btn prev" href="/private/2015/06/04/" title="交规备考">&larr; Previous</a>
+      
+        <a class="btn" href="/archive.html">Archive</a>
+      
+        <a class="btn next" href="/lessons/2015/08/04/gitlabnginx" title="利用Gitlab内置nginx添加新网站">Next &rarr;</a>
+      
+    </div>
+    <hr>
+    
+  </div>
+  
+  <div class="span4">
+    <section>
+      <h4>Published</h4>
+      <div class="date"><span>15 July 2015</span></div>
+    </section>
+         
+             
+  </div>
+</div>
+
+
+        </div>
+      </div> <!-- /container -->
+
+      <div class="footer-push"></div>
+    </div><!--/.page-wrap -->
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2015 T.Z
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://github.com/dhulihan/hooligan" target="_blank">The Hooligan Theme</a>
+        </p>
+      </div>
+    </footer>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/assets/themes/hooligan/js/jquery.min.js"><\/script>')</script>
+    <script src="/assets/themes/hooligan/bootstrap/js/bootstrap.min.js"></script>
+
+    
+  </body>
+</html>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57706060-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
