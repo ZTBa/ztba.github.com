@@ -9,6 +9,7 @@ http://username.github.io/rss.xml
 http://username.github.io/sitemap.txt
 http://username.github.io/tags.html
 
+http://username.github.io/%E6%8A%80%E5%B7%A7/2015/11/18/open-excel-file-in-different-window
 http://username.github.io/private/2015/08/06/
 http://username.github.io/lessons/2015/08/04/gitlabnginx
 http://username.github.io/2015/07/15/compile-opencv-under-debian

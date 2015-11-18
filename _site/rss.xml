@@ -5,10 +5,33 @@
         <description>灵犀一点 Sparkle - T.Z</description>
         <link>http://username.github.io</link>
         <link>http://username.github.io</link>
-        <lastBuildDate>2015-08-28T12:49:59+02:00</lastBuildDate>
-        <pubDate>2015-08-28T12:49:59+02:00</pubDate>
+        <lastBuildDate>2015-11-18T12:26:59+01:00</lastBuildDate>
+        <pubDate>2015-11-18T12:26:59+01:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>同时显示两个Excel文件内容</title>
+                <description>
+&lt;h2 id=&quot;section&quot;&gt;奇怪的历史问题&lt;/h2&gt;
+&lt;p&gt;微软Office的其他组件,word, powerpoint等, 基本上都是每打开一个文件就创建一个实例, 占据一个窗口. 唯独excel是多个文件共享一个窗口. 也许能够节省资源, 但如果要双文件对比操作就挠头了&lt;/p&gt;
+
+&lt;p&gt;偏偏这个问题早就存在, 十几年过去了微软还是这个德性.&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;解决方法&lt;/h2&gt;
+&lt;p&gt;微软早就贴出了&lt;a href=&quot;https://support.microsoft.com/en-us/kb/2636670&quot;&gt;解决方案&lt;/a&gt;, 具体地说就是到注册表里把非常规的 &lt;strong&gt;/dde&lt;/strong&gt; 参数改成大伙喜闻乐见的 &lt;strong&gt;“%1”&lt;/strong&gt; , 注意引号不能省.&lt;/p&gt;
+
+&lt;p&gt;regedit=&amp;gt;Coputer\HKEY_CLASSES_ROOT\Excel.Sheet.12\shell\Open\command
+改 (Default) 和 command 命令末尾, 同时重命名 Coputer\HKEY_CLASSES_ROOT\Excel.Sheet.12\shell\Open\ddeexec键.&lt;/p&gt;
+
+&lt;p&gt;保险起见对Excel.Sheet.8做同样的修改, 虽然我只改了12就已经生效了.&lt;/p&gt;
+
+&lt;p&gt;此技巧适用于office 2003/2010.&lt;/p&gt;
+</description>
+                <link>http://username.github.io/%E6%8A%80%E5%B7%A7/2015/11/18/open-excel-file-in-different-window</link>
+                <guid>http://username.github.io/%E6%8A%80%E5%B7%A7/2015/11/18/open-excel-file-in-different-window</guid>
+                <pubDate>2015-11-18T00:00:00+01:00</pubDate>
+        </item>
 
         <item>
                 <title>实车驾驶经验</title>
@@ -164,6 +187,70 @@
     &lt;p&gt;绕转盘直行的出错点: 应当津贴右侧转半圆出去, 而不是直插左道在切右道这种野蛮行径.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;h2 id=&quot;section-7&quot;&gt;第18小时&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;主要问题有: 换档太不利索, 或者减速过早, 离红灯20m就踩刹车, 结果3档换2档的步骤被跳过, 直接停车了； 或者起步很久才换上2档, 被后面超车.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;转弯时踩油门实为大忌, 慢慢转, 不着急&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;减速技巧, 其实用离合就可以简单控制速度, 目前还不习惯&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;油门离合一起踩的老毛病&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;放松, 专注, 好运&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-8&quot;&gt;第20小时&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;终于过关第一阶段,比预订整整迟了10小时,  主要是眼手配合方面的问题&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;关于降速离合的操作, 今天Syrile讲到一个很重要的问题: 速度表不可取, 应当直接看马达转速表. 想想也是, 离合器作用于马达和车轮之间, 用于尽量小损耗的传递能量, 至于能量有多少转换成车速, 实在有太多的牵扯因素: 车速, 坡度, 风阻, 车况, etc. 原先所谓40升3档, 30降2档的情况仅限于平地. 看马达转速表就没有这些干扰, 到1则降, 逢2就升, 匀速行驶, 保持1.5.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;降档减速, 马达转速为1, 换档, 之后pointinage, 类似起步的锁死离合刻度, 直到平稳后再松开&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;灯的用法: 停靠路边先打右转灯再减速&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;灯的用法: 掉头时踩住离合挂1档, 方向盘往左打到头, 前后无车, 最后亮左传灯, 缓慢转弯&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;升三档防止误操作到一档的方法: 先空档point mort在向右使力前退到三, 分两步走.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;倒车时, 前后看, 频率3秒一次&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-9&quot;&gt;第21小时&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;降速减档的问题, 可以和缓慢刹车同时进行, 减短操作时间&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fannie提出的一个好方法, 在纸上列出一个情景下需要进行的操作和步骤, 然后脑海重现&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;过弯减速的正确操作: 离路口10m左右缓刹车, 不要太早,  5m左右踩离合继续减速, 理想状态是过弯瞬间速度小于10kmh, 观察同时切换一档, 起步, 迅速加到2档&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;时速20kmh完全静止的刹车距离小于2m, 可视为安全速度. 想停就停&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
 </description>
                 <link>http://username.github.io/private/2015/08/06/</link>
                 <guid>http://username.github.io/private/2015/08/</guid>
