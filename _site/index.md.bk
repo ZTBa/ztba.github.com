@@ -167,6 +167,8 @@ Here's a sample "posts list".
 
 <ul class="posts">
   
+    <li><span>25 Dec 2015</span> &raquo; <a href="/%E6%84%9F%E6%85%A8/2015/12/25/xbox-one">上手Xbox One</a></li>
+  
     <li><span>18 Nov 2015</span> &raquo; <a href="/%E6%8A%80%E5%B7%A7/2015/11/18/open-excel-file-in-different-window">同时显示两个Excel文件内容</a></li>
   
     <li><span>06 Aug 2015</span> &raquo; <a href="/private/2015/08/06/">实车驾驶经验</a></li>
@@ -218,24 +220,59 @@ layout: page
     <a href="/index.md.bk">Hello World!</a>
 
 
-    <a href="/%E6%8A%80%E5%B7%A7/2015/11/18/open-excel-file-in-different-window">同时显示两个Excel文件内容</a>
+    <a href="/%E6%84%9F%E6%85%A8/2015/12/25/xbox-one">上手Xbox One</a>
 
 </h1>
 <div class="entry-content">
-<h2 id="section">奇怪的历史问题</h2>
-<p>微软Office的其他组件,word, powerpoint等, 基本上都是每打开一个文件就创建一个实例, 占据一个窗口. 唯独excel是多个文件共享一个窗口. 也许能够节省资源, 但如果要双文件对比操作就挠头了</p>
+<p>游戏背景： 一直停留在单机游戏的阶段，算是个超轻度游戏者。</p>
 
-<p>偏偏这个问题早就存在, 十几年过去了微软还是这个德性.</p>
+<p>联网对战，网游，手游，一概停留在概念阶段。倒是体验过几次主机游戏。
+  对自wii以来的体感游戏一直印象颇佳，于是在黑五入手了Xbox One+Kinect。</p>
 
-<h2 id="section-1">解决方法</h2>
-<p>微软早就贴出了<a href="https://support.microsoft.com/en-us/kb/2636670">解决方案</a>, 具体地说就是到注册表里把非常规的 <strong>/dde</strong> 参数改成大伙喜闻乐见的 <strong>“%1”</strong> , 注意引号不能省.</p>
+<h2 id="xbox-one">Xbox One答疑</h2>
 
-<p>regedit=&gt;Coputer\HKEY_CLASSES_ROOT\Excel.Sheet.12\shell\Open\command
-改 (Default) 和 command 命令末尾, 同时重命名 Coputer\HKEY_CLASSES_ROOT\Excel.Sheet.12\shell\Open\ddeexec键.</p>
+<ul>
+  <li>
+    <p>网络接口</p>
 
-<p>保险起见对Excel.Sheet.8做同样的修改, 虽然我只改了12就已经生效了.</p>
+    <p>从照片上看只有Rj45口，一直在犹豫如何布网。因为家里是wifi环境，当时有几个疑问：能不能断网游戏？如果用wifi，一定要用微软专卖的那个无线适配器么？如果不是，怎么装驱动，或者有哪些compatible的无线网卡？</p>
 
-<p>此技巧适用于office 2003/2010.</p>
+    <p>现在自己有了答案。</p>
+
+    <p>第一个问题答案是可以，但要到初始化之后。一开始直接插到电视上，以为像录像机一样可以静等开机画面，没想到竟然黑屏。不得已拿回书房，插上网线，才进入初始化界面。</p>
+
+    <p>第二个问题答案是Xbox自带无线网卡，而且支持5G频段，所以wifi环境可用，第三个问题不再成立。</p>
+
+    <p>事实上网上买的那个Xbox One配套的wifi适配器不是用来给Xbox自己上网用的，而是安装之后可以在运行于Windows10的PC端读取Xbox主机的流媒体，实现电脑上玩Xbox游戏的功能。</p>
+
+    <p>需要强调的是设置无线是在有线连接的基础之上的，在设置选项里操作。</p>
+  </li>
+  <li>
+    <p>外接设备</p>
+
+    <p>Xbox共有三个usb口，介于手柄挑字输入实在太慢，顺手插上家里闲置的Microsoft Wireless Keyboard 2000无线键盘，竟然免驱动运行，包括左上方主界面快捷键都完美运行，等效于手柄上的圈叉键。</p>
+  </li>
+  <li>
+    <p>软件环境</p>
+
+    <p>目前为止没有发现文件浏览器，所以对NAS读取基本绝望。倒是内置了微软自家的Edge，普通网页图文浏览没有问题，遗憾的是不可以装flash plugin， 造成了相当一批在线视频无法观看。</p>
+
+    <p>目前还在摸索如何装Chrome或Firefox，毕竟是windows10的操作系统。这个部分随后补充。</p>
+
+    <p>装了Skype，配合Kinect使用感觉很惊艳：摄像头竟然会自动调焦变焦，跟踪主体行动。图像质量也属于顶级。Kinect这个摄像头无愧行业领先地位。</p>
+  </li>
+</ul>
+
+<h2 id="xbox-one-1">Xbox One游戏体验</h2>
+
+<p>黑五入的这个bundle附送了辐射3和4，但考虑到18禁的游戏分级，没有给小朋友装。买了Just Dance，然后一家子开启乱舞模式。</p>
+
+<p>Just Dance最多可以识别出6个人，每场舞蹈后打分。精度如何不知道，反正我没有儿子跳得好–这小子几乎每次都是第一。
+  跳两场就一身汗，锻炼身体的功能还是极好的。</p>
+
+<h2 id="xbox-one-2">Xbox One存疑</h2>
+
+<p>目前看来没法进行完全游戏安装，运行游戏时总会需要光驱里的游戏盘。怎样转换成电子版本脱盘运行正在摸索中。</p>
 </div>
 
 </div>
