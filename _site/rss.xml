@@ -5,8 +5,8 @@
         <description>灵犀一点 Sparkle - T.Z</description>
         <link>http://username.github.io</link>
         <link>http://username.github.io</link>
-        <lastBuildDate>2016-01-07T11:02:37+01:00</lastBuildDate>
-        <pubDate>2016-01-07T11:02:37+01:00</pubDate>
+        <lastBuildDate>2016-01-11T15:39:04+01:00</lastBuildDate>
+        <pubDate>2016-01-11T15:39:04+01:00</pubDate>
         <ttl>1800</ttl>
 
 
@@ -86,6 +86,24 @@
     &lt;p&gt;补充2：&lt;/p&gt;
 
     &lt;p&gt;关于读取局域网资源，倒是发现了一个折衷方案。到商城应用里下载media player，启动后选择相应的网段，可以自动搜索网上的无密码保护共享资源，包括音频，视频和图像。可惜视频方面解码是个问题，而且无法加载字幕。&lt;/p&gt;
+
+    &lt;p&gt;补充3：&lt;/p&gt;
+
+    &lt;p&gt;偶然发现Xbox One的手柄竟然还能用在PC上，只要连一根micro USB的线。话说现在micro USB已经成了手机充电标准接口， 区区一根信号线简直零成本–家里面闲置了一堆。&lt;/p&gt;
+
+    &lt;p&gt;在Windows 7 x64系统上安装驱动，要到 &lt;a href=&quot;http://support.xbox.com/en-CY/xbox-on-windows/accessories/connect-xbox-one-controller-to-pc&quot;&gt;微软官网&lt;/a&gt; 下载。 一路点下一步，很快装完了。 然后手柄依然无法被识别。圈叉键始终闪烁，设备管理器上也是一个惊叹号。&lt;/p&gt;
+
+    &lt;p&gt;开始上网做功课，最后发现有两个依赖升级包必须装：&lt;/p&gt;
+
+    &lt;p&gt;Update for User-Mode Driver Framework version 1.11 for Windows 7 for x64-based Systems &lt;a href=&quot;https://www.microsoft.com/en-us/download/confirmation.aspx?id=38421&quot;&gt;KB2685813&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;以及&lt;/p&gt;
+
+    &lt;p&gt;Update for Kernel-Mode Driver Framework version 1.11 for Windows 7 for x64-based Systems &lt;a href=&quot;https://www.microsoft.com/en-us/download/confirmation.aspx?id=38423&quot;&gt;KB2685811&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;安装完毕后重启，手柄在进入Windows瞬间会震动，表明完全安装成功。&lt;/p&gt;
+
+    &lt;p&gt;不过如果要回过头再用到Xbox One上，还需要再进行一次无线匹配。&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
