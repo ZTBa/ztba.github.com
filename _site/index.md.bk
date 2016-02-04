@@ -58,7 +58,7 @@
     
       
       	
-      	<li><a href="/archive.html">Archive</a></li>
+      	<li><a href="/archive">Archive</a></li>
       	
       
     
@@ -70,23 +70,7 @@
     
       
       	
-      	<li><a href="/categories.html">Categories</a></li>
-      	
-      
-    
-  
-    
-      
-    
-  
-    
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/pages.html">Pages</a></li>
+      	<li><a href="/categories">Categories</a></li>
       	
       
     
@@ -102,7 +86,23 @@
     
       
       	
-      	<li><a href="/tags.html">Tags</a></li>
+      	<li><a href="/pages">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags">Tags</a></li>
       	
       
     
@@ -189,7 +189,7 @@ Here's a sample "posts list".
   
     <li><span>19 Dec 2014</span> &raquo; <a href="/skills/2014/12/19/une-simple-tache-de-sauvegarde">une tache simple de sauvegarde</a></li>
   
-    <li><span>19 Dec 2014</span> &raquo; <a href="/%E6%84%9F%E6%85%A8/2014/12/19/--">出乎 意料 之外</a></li>
+    <li><span>19 Dec 2014</span> &raquo; <a href="/%E6%84%9F%E6%85%A8/2014/12/19/">出乎 意料 之外</a></li>
   
     <li><span>16 Dec 2014</span> &raquo; <a href="/skills/2014/12/16/debiangoogle-chrome">debian环境下手动安装google chrome浏览器</a></li>
   
