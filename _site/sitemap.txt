@@ -9,6 +9,7 @@ http://username.github.io/rss.xml
 http://username.github.io/sitemap.txt
 http://username.github.io/tags
 
+http://username.github.io/skills/2016/02/28/debian
 http://username.github.io/%E6%84%9F%E6%85%A8/2016/01/07/ps3
 http://username.github.io/%E6%84%9F%E6%85%A8/2015/12/25/xbox-one
 http://username.github.io/%E6%8A%80%E5%B7%A7/2015/11/18/open-excel-file-in-different-window

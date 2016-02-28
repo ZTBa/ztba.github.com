@@ -5,20 +5,170 @@
         <description>灵犀一点 Sparkle - T.Z</description>
         <link>http://username.github.io</link>
         <link>http://username.github.io</link>
-        <lastBuildDate>2016-02-09T21:41:07+01:00</lastBuildDate>
-        <pubDate>2016-02-09T21:41:07+01:00</pubDate>
+        <lastBuildDate>2016-02-28T20:21:02+01:00</lastBuildDate>
+        <pubDate>2016-02-28T20:21:02+01:00</pubDate>
         <ttl>1800</ttl>
 
 
         <item>
+                <title>老树新芽装Debian</title>
+                <description>
+&lt;h2 id=&quot;section&quot;&gt;缘起&lt;/h2&gt;
+
+&lt;p&gt;家里一台Sony VAIO VGN-B1VP 始终闲置，说起来还是我第一台工作电脑，因为良好的使用习惯，至今没什么硬件故障。第一代centrino，1.6GHz CPU, 1.5GB 内存，80G 5400rpm的硬盘。大约是先入为主，始终觉得这个薄膜键盘手感要好过另一台IBM R51。当然原机配套的XP早就过期了，这么老的配置跑win10实在勉强，但linux还是绰绰有余的，于是决定重装系统。&lt;/p&gt;
+
+&lt;p&gt;开始选择的是ubuntu。为了快速安装，把硬盘卸下来接IDE=&amp;gt;usb转接器插到台式机上，
+  用vmware灌装了14.04 LTS x86（无意中绕过了一个先天限制，这是后话）。然后装回笔记本，欢天喜地的启动了。&lt;/p&gt;
+
+&lt;p&gt;之后了两天一直正常使用，直到一次例行的升级之后，赫然报错：内核硬件不支持！
+  Kernel requires features not present on the CPU: PAE&lt;/p&gt;
+
+&lt;p&gt;这才意识到大内存时代已经来了很久了。&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;具体的解释如下：&lt;/h3&gt;
+
+&lt;p&gt;从Ubuntu 12.04开始，尽管是32位的操作系统，依然以cpu支持PAE（支持内存大于4Go的特性）为前提，否则是不可能安装的。偏偏我的安装过程绕过了这个验证（台式机装置的是i7 CPU），所以一直运行了这么几天。但升级内核的时候又要面对PAE检验，这次绕不过去了。&lt;/p&gt;
+
+&lt;p&gt;虽然顶个红叉不耽误使用，但不能升级，不能安装新软件实在无法接受。
+  于是开始做功课：老机器上可以跑什么系统。
+  发现了这么一个&lt;a href=&quot;http://linuxpasapas.blog.free.fr/index.php?post/2015/08/14/linux_requirements_non-pae&quot;&gt;列表&lt;/a&gt;。可以看出，只有Debian还在维持最新版本的non-pae支持。&lt;/p&gt;
+
+&lt;p&gt;业界良心。&lt;/p&gt;
+
+&lt;p&gt;下载net安装镜像，最小安装(具体过程可以参考另外一篇&lt;a href=&quot;http://ztba.github.io/lessons/2014/12/15/debian&quot;&gt;最小安装上网用Debian&lt;/a&gt; )
+  之后添加xfce4桌面，以及顺手的软件：tilda, scite, fcitx, sunpinyin, chrome，nautilus
+  然后进入图形窗口，遇到一连串的问题。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;声音&lt;/h2&gt;
+
+&lt;p&gt;明明已经安装了xfce4-mixer gstreamer0.10-alsa， 在命令行进入 alsamixer 调节了PCM音量，偏偏音量图片下打着红叉。使用&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lspci | grep Audio
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;命令查看音频硬件情况， 依然没什么进展。 貌似还使用了&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo alsactl init
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;命令，也没什么用处。
+  后来在某论坛里发现一个奇葩方案：在Audio mixer=&amp;gt;Control里勾选External Amplifier, 表示要让声音外放。 然后就出声了。&lt;/p&gt;
+
+&lt;h2 id=&quot;flash&quot;&gt;flash&lt;/h2&gt;
+
+&lt;p&gt;要使用pepperflashplugin-nonfree插件，需要添加apt源&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;deb http://ftp.fr.debian.org/debian/ jessie main contrib non-free  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;之后&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get update &amp;amp;&amp;amp; sudo apt-get install pepperflashplugin-nonfree
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;就没问题了&lt;/p&gt;
+
+&lt;h2 id=&quot;wifi&quot;&gt;wifi&lt;/h2&gt;
+
+&lt;p&gt;一开始都没有发现无线网卡的存在，祭出lspci大法：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lspci | grep -i wireless
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;发现是intel 2200BG卡，使用如下命令安装驱动
+（前提是已经添加了contrib 作为apt源）&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install firmware-ipw2x00 wireless-tools iwconfig
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;依然找不到无线网络
+使用&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo cat /etc/udev/rules.d/70-persistent-net.rules 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;查看, 发现无线网卡被命名为eth1，改成wlan&lt;/p&gt;
+
+&lt;p&gt;使用sudo ifconfig wlan up挂载网卡，出现
+rf-kill block 报错。
+键入命令sudo rfkill list检查，发现无线网卡被软封锁。
+键入命令sudo rfkill unblock all解锁。&lt;/p&gt;
+
+&lt;p&gt;但这个时候依然无法进行wifi连接，
+安装自动化网络设置软件 network-manager
+注意，因为彼此的排它性，此前要卸载wicd wifi-radar connman。&lt;/p&gt;
+
+&lt;p&gt;同时安装xfce4显示插件和gui&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install network-manager xfce4-indicator-plugin network-manager-gnome
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;然后可以愉快的上网了&lt;/p&gt;
+
+&lt;h2 id=&quot;floppy&quot;&gt;floppy&lt;/h2&gt;
+
+&lt;p&gt;因为是在vmware下安装，默认的配置里竟然还有软驱。启动桌面后就堂而皇之的摆在桌面，尽管这个东西根本就不存在。删除的方法是：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo scite /etc/modprobe.d/fbdev-blacklist.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;最后一行添加 blacklist floppy&lt;/p&gt;
+
+&lt;p&gt;或者更优雅的使用管道&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;echo &quot;blacklist floppy&quot; | sudo tee /etc/modprobe.d/fbdev-blacklist.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;之后执行&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo rmmod floppy &amp;amp;&amp;amp; sudo update-initramfs -u
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;软驱图标就这样消失了&lt;/p&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;文字处理环境&lt;/h2&gt;
+
+&lt;p&gt;这个老笔记本主要的用途就是上网和码字，所以前面那些都是预备，真正生产环境现在开始配置。&lt;/p&gt;
+
+&lt;p&gt;首先需要git，以便管理版本；之后是jekyll系统，用以运行博客；最后要latex系统，可以出品格式文章。&lt;/p&gt;
+
+&lt;p&gt;结果，git安装顺利，jekyll安装耗时巨大，但也都顺利（首先安装rvm, 然后从rvm安装openssl，再重装一次rvm，然后使用rvm提供的gem安装jekyll）&lt;/p&gt;
+
+&lt;p&gt;运行jekyll server的结果是有些网页没有套上css, debug后发现是jekyll升级， 需要修改_config.xml中对于ASSET_PATH的定义。&lt;/p&gt;
+
+&lt;p&gt;安装latex旷日持久，但绝对必备。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get texlive-full
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;至此，笔记本满血复活。&lt;/p&gt;
+</description>
+                <link>http://username.github.io/skills/2016/02/28/debian</link>
+                <guid>http://username.github.io/skills/2016/02/28/debian</guid>
+                <pubDate>2016-02-28T00:00:00+01:00</pubDate>
+        </item>
+
+        <item>
                 <title>PS3蓝牙键盘上手</title>
                 <description>
-&lt;h2 id=&quot;section&quot;&gt;背景&lt;/h2&gt;
+&lt;p&gt;##背景&lt;/p&gt;
 
 &lt;p&gt;早就发现google的docs系统是个好东西，基本上可以取代微软office系列。更牛的是这样的应用可以在android上展开，于是给tablet装备一个工作环境就变得有意义起来。于是就对蓝牙键盘开始上心。
   于是在打折季发现了这个仅售8欧的sony PS3蓝牙键盘，性价比无敌了。&lt;/p&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;要点记录&lt;/h2&gt;
+&lt;p&gt;##要点记录&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -29,7 +179,7 @@
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-2&quot;&gt;手感&lt;/h2&gt;
+&lt;p&gt;##手感&lt;/p&gt;
 
 &lt;p&gt;键帽是全尺寸的，所以适应过程还算理想。此外大写键附带LED指示，有没有开大写不用猜了。这一点比相当一批脑残的蓝牙键盘高明。&lt;/p&gt;
 
@@ -51,7 +201,7 @@
 &lt;p&gt;联网对战，网游，手游，一概停留在概念阶段。倒是体验过几次主机游戏。
   对自wii以来的体感游戏一直印象颇佳，于是在黑五入手了Xbox One+Kinect。&lt;/p&gt;
 
-&lt;h2 id=&quot;xbox-one&quot;&gt;Xbox One答疑&lt;/h2&gt;
+&lt;p&gt;##Xbox One答疑&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -107,7 +257,7 @@
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;xbox-one-1&quot;&gt;Xbox One游戏体验&lt;/h2&gt;
+&lt;p&gt;##Xbox One游戏体验&lt;/p&gt;
 
 &lt;p&gt;黑五入的这个bundle附送了辐射3和4，但考虑到18禁的游戏分级，没有给小朋友装。买了Just Dance，然后一家子开启乱舞模式。&lt;/p&gt;
 
@@ -125,7 +275,7 @@
 
 &lt;p&gt;然后我们疯狂地砍了一个下午的空气。&lt;/p&gt;
 
-&lt;h2 id=&quot;xbox-one-2&quot;&gt;Xbox One存疑&lt;/h2&gt;
+&lt;p&gt;##Xbox One存疑&lt;/p&gt;
 
 &lt;p&gt;目前看来没法进行完全游戏安装，运行游戏时总会需要光驱里的游戏盘。怎样转换成电子版本脱盘运行正在摸索中。&lt;/p&gt;
 </description>
@@ -137,13 +287,13 @@
         <item>
                 <title>同时显示两个Excel文件内容</title>
                 <description>
-&lt;h2 id=&quot;section&quot;&gt;奇怪的历史问题&lt;/h2&gt;
-&lt;p&gt;微软Office的其他组件,word, powerpoint等, 基本上都是每打开一个文件就创建一个实例, 占据一个窗口. 唯独excel是多个文件共享一个窗口. 也许能够节省资源, 但如果要双文件对比操作就挠头了&lt;/p&gt;
+&lt;p&gt;##奇怪的历史问题
+  微软Office的其他组件,word, powerpoint等, 基本上都是每打开一个文件就创建一个实例, 占据一个窗口. 唯独excel是多个文件共享一个窗口. 也许能够节省资源, 但如果要双文件对比操作就挠头了&lt;/p&gt;
 
 &lt;p&gt;偏偏这个问题早就存在, 十几年过去了微软还是这个德性.&lt;/p&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;解决方法&lt;/h2&gt;
-&lt;p&gt;微软早就贴出了&lt;a href=&quot;https://support.microsoft.com/en-us/kb/2636670&quot;&gt;解决方案&lt;/a&gt;, 具体地说就是到注册表里把非常规的 &lt;strong&gt;/dde&lt;/strong&gt; 参数改成大伙喜闻乐见的 &lt;strong&gt;“%1”&lt;/strong&gt; , 注意引号不能省.&lt;/p&gt;
+&lt;p&gt;##解决方法
+  微软早就贴出了&lt;a href=&quot;https://support.microsoft.com/en-us/kb/2636670&quot;&gt;解决方案&lt;/a&gt;, 具体地说就是到注册表里把非常规的 &lt;strong&gt;/dde&lt;/strong&gt; 参数改成大伙喜闻乐见的 &lt;strong&gt;“%1”&lt;/strong&gt; , 注意引号不能省.&lt;/p&gt;
 
 &lt;p&gt;regedit=&amp;gt;Coputer\HKEY_CLASSES_ROOT\Excel.Sheet.12\shell\Open\command
 改 (Default) 和 command 命令末尾, 同时重命名 Coputer\HKEY_CLASSES_ROOT\Excel.Sheet.12\shell\Open\ddeexec键.&lt;/p&gt;
@@ -160,11 +310,11 @@
         <item>
                 <title>实车驾驶经验</title>
                 <description>
-&lt;h2 id=&quot;section&quot;&gt;缘由&lt;/h2&gt;
+&lt;p&gt;##缘由&lt;/p&gt;
 
 &lt;p&gt;原以为交规通过之后就是肌肉记忆的积累, 没必要动笔了. 但今天Luc在车上给我上的理论课让我意识到理论指导实践的重要性, 各种经验, 还是值得记录下来&lt;/p&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;第6小时&lt;/h2&gt;
+&lt;p&gt;##第6小时&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -198,7 +348,7 @@
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-2&quot;&gt;第8小时&lt;/h2&gt;
+&lt;p&gt;##第8小时&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -232,7 +382,7 @@
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-3&quot;&gt;第9小时&lt;/h2&gt;
+&lt;p&gt;##第9小时&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -258,7 +408,7 @@
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-4&quot;&gt;第12小时&lt;/h2&gt;
+&lt;p&gt;##第12小时&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -272,7 +422,7 @@
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-5&quot;&gt;第13小时&lt;/h2&gt;
+&lt;p&gt;##第13小时&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -292,7 +442,7 @@
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-6&quot;&gt;第14小时&lt;/h2&gt;
+&lt;p&gt;##第14小时&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -312,7 +462,7 @@
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-7&quot;&gt;第18小时&lt;/h2&gt;
+&lt;p&gt;##第18小时&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -332,7 +482,7 @@
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-8&quot;&gt;第20小时&lt;/h2&gt;
+&lt;p&gt;##第20小时&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -358,7 +508,7 @@
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-9&quot;&gt;第21小时&lt;/h2&gt;
+&lt;p&gt;##第21小时&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -386,11 +536,11 @@
                 <description>
 &lt;p&gt;Gitlab整合了仿制Github所需要的几乎所有服务器端程序,例如内置了nginx. 作为静态网站服务的首选服务, nginx强大灵活的分流配置一直为广大程序员喜爱.&lt;/p&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;目标&lt;/h2&gt;
-&lt;p&gt;利用现成的Gitlab内置nginx服务器, 添加新的静态网站到指定端口&lt;/p&gt;
+&lt;p&gt;##目标
+利用现成的Gitlab内置nginx服务器, 添加新的静态网站到指定端口&lt;/p&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;改菜谱&lt;/h2&gt;
-&lt;p&gt;Gitlab利用一种叫做菜谱cookbook的方法管理不同模板template的配置文件,每次gitlab-ctl reconfigure都是重新生成配置文件的过程. 换言之, 原先直接对配置文件的修改在这里是行不通的, 因为只要重启服务就会被覆盖.&lt;/p&gt;
+&lt;p&gt;##改菜谱
+Gitlab利用一种叫做菜谱cookbook的方法管理不同模板template的配置文件,每次gitlab-ctl reconfigure都是重新生成配置文件的过程. 换言之, 原先直接对配置文件的修改在这里是行不通的, 因为只要重启服务就会被覆盖.&lt;/p&gt;
 
 &lt;p&gt;修改nginx的菜谱&lt;/p&gt;
 
@@ -442,8 +592,8 @@
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;section-2&quot;&gt;添路径&lt;/h2&gt;
-&lt;p&gt;因为所有Gitlab的行为是由Ruby脚本定制的, 所以下一步要告知执行脚本客制网站的配置文件路径.&lt;/p&gt;
+&lt;p&gt;##添路径
+因为所有Gitlab的行为是由Ruby脚本定制的, 所以下一步要告知执行脚本客制网站的配置文件路径.&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	sudo vi /etc/gitlab/gitlab.rb
 &lt;/code&gt;&lt;/pre&gt;
@@ -455,8 +605,8 @@
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;nginx&quot;&gt;正常配置nginx&lt;/h2&gt;
-&lt;p&gt;如果路径不存在,创建之&lt;/p&gt;
+&lt;p&gt;##正常配置nginx
+如果路径不存在,创建之&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	sudo mkdir -p /etc/nginx/conf.d
 	sudo vi /etc/nginx/conf.d/nginx.conf
@@ -542,9 +692,9 @@
         <item>
                 <title>Compile OpenCV under Debian</title>
                 <description>
-&lt;h1 id=&quot;section&quot;&gt;依赖环境的安装&lt;/h1&gt;
+&lt;p&gt;#依赖环境的安装&lt;/p&gt;
 
-&lt;h2 id=&quot;ffmpeg&quot;&gt;FFMPEG相关模块&lt;/h2&gt;
+&lt;p&gt;##FFMPEG相关模块&lt;/p&gt;
 
 &lt;p&gt;首先添加deb-multimedia提供的库文件支持到本地库列表中&lt;/p&gt;
 
@@ -570,7 +720,7 @@ apt-get update
 
 &lt;p&gt;此处曾经出现过libfaac-dev找不到的情况, 后来发现是因为没有apt-get update的原因&lt;/p&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;安装其他库文件&lt;/h2&gt;
+&lt;p&gt;##安装其他库文件&lt;/p&gt;
 
 &lt;p&gt;Gstreamer:&lt;/p&gt;
 
@@ -590,7 +740,7 @@ apt-get update
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;section-2&quot;&gt;编译库文件&lt;/h2&gt;
+&lt;p&gt;##编译库文件&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir ~/source  
 mkdir ~/source/x264  
@@ -600,7 +750,7 @@ mkdir ~/source/ffmpeg
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;compile-x264&quot;&gt;Compile X264&lt;/h3&gt;
+&lt;p&gt;###Compile X264&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/source/x264  
 wget ftp://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120528-2245-stable.tar.bz2  
@@ -612,29 +762,25 @@ sudo make install
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;compile-ffmpeg&quot;&gt;Compile ffmpeg&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/source/ffmpeg  
-wget http://ffmpeg.org/releases/ffmpeg-0.11.1.tar.bz2  
-tar xvf ffmpeg-0.11.1.tar.bz2  
-cd ffmpeg-0.11.1  
-./configure --enable-gpl --enable-libfaac --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libxvid --enable-nonfree --enable-postproc --enable-version3 --enable-x11grab --enable-shared --enable-libvpx --enable-pic
-make  
-sudo make install  
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;p&gt;###Compile ffmpeg
+    cd ~/source/ffmpeg&lt;br /&gt;
+    wget http://ffmpeg.org/releases/ffmpeg-0.11.1.tar.bz2&lt;br /&gt;
+    tar xvf ffmpeg-0.11.1.tar.bz2&lt;br /&gt;
+    cd ffmpeg-0.11.1&lt;br /&gt;
+    ./configure –enable-gpl –enable-libfaac –enable-libmp3lame –enable-libopencore-amrnb –enable-libopencore-amrwb –enable-libtheora –enable-libvorbis –enable-libx264 –enable-libxvid –enable-nonfree –enable-postproc –enable-version3 –enable-x11grab –enable-shared –enable-libvpx –enable-pic
+    make&lt;br /&gt;
+    sudo make install&lt;/p&gt;
 
-&lt;h3 id=&quot;compile-v4l&quot;&gt;Compile v4l&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/source/v4l  
-wget http://www.linuxtv.org/downloads/v4l-utils/v4l-utils-0.8.8.tar.bz2  
-tar xvf v4l-utils-0.8.8.tar.bz2  
-cd v4l-utils-0.8.8  
-make  
-sudo make install  
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;p&gt;###Compile v4l
+    cd ~/source/v4l&lt;br /&gt;
+    wget http://www.linuxtv.org/downloads/v4l-utils/v4l-utils-0.8.8.tar.bz2&lt;br /&gt;
+    tar xvf v4l-utils-0.8.8.tar.bz2&lt;br /&gt;
+    cd v4l-utils-0.8.8&lt;br /&gt;
+    make&lt;br /&gt;
+    sudo make install&lt;/p&gt;
 
-&lt;h1 id=&quot;opencv&quot;&gt;终于可以编译OpenCV本体了&lt;/h1&gt;
-&lt;p&gt;此处一个小插曲, 下载了 OpenCV3.0.0正式版试图编译, 结果在24%进度报错, 原因是cap_ffmpeg.cpp文件在45行处使用了一个未声明enum类型变量AVCodecID. 尝试所有方案,未遂. 重新回到2.4.9版本,一次编译就过了.
+&lt;p&gt;#终于可以编译OpenCV本体了
+此处一个小插曲, 下载了 OpenCV3.0.0正式版试图编译, 结果在24%进度报错, 原因是cap_ffmpeg.cpp文件在45行处使用了一个未声明enum类型变量AVCodecID. 尝试所有方案,未遂. 重新回到2.4.9版本,一次编译就过了.
 还有改进空间啊OpenCV Team.&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/source/opencv
@@ -657,11 +803,11 @@ sudo make install
         <item>
                 <title>交规备考</title>
                 <description>
-&lt;h2 id=&quot;section&quot;&gt;缘由&lt;/h2&gt;
+&lt;p&gt;##缘由&lt;/p&gt;
 
 &lt;p&gt;就当日记了&lt;/p&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;倒数12天&lt;/h2&gt;
+&lt;p&gt;##倒数12天&lt;/p&gt;
 
 &lt;p&gt;出错点:&lt;/p&gt;
 
@@ -689,7 +835,7 @@ sudo make install
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-2&quot;&gt;倒数11天&lt;/h2&gt;
+&lt;p&gt;##倒数11天&lt;/p&gt;
 
 &lt;p&gt;出错点:&lt;/p&gt;
 
@@ -711,7 +857,7 @@ sudo make install
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-3&quot;&gt;倒数10天&lt;/h2&gt;
+&lt;p&gt;##倒数10天&lt;/p&gt;
 
 &lt;p&gt;出错点:&lt;/p&gt;
 
@@ -760,7 +906,7 @@ sudo make install
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-4&quot;&gt;倒数9天&lt;/h2&gt;
+&lt;p&gt;##倒数9天&lt;/p&gt;
 
 &lt;p&gt;出错点:&lt;/p&gt;
 
@@ -797,7 +943,7 @@ sudo make install
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-5&quot;&gt;倒数8天&lt;/h2&gt;
+&lt;p&gt;##倒数8天&lt;/p&gt;
 
 &lt;p&gt;出错点:&lt;/p&gt;
 
@@ -843,7 +989,7 @@ sudo make install
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-6&quot;&gt;倒数3天&lt;/h2&gt;
+&lt;p&gt;##倒数3天&lt;/p&gt;
 
 &lt;p&gt;出错点:&lt;/p&gt;
 
@@ -862,7 +1008,7 @@ sudo make install
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-7&quot;&gt;倒数2天&lt;/h2&gt;
+&lt;p&gt;##倒数2天&lt;/p&gt;
 
 &lt;p&gt;出错点:&lt;/p&gt;
 
@@ -893,7 +1039,7 @@ sudo make install
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-8&quot;&gt;倒数1天&lt;/h2&gt;
+&lt;p&gt;##倒数1天&lt;/p&gt;
 
 &lt;p&gt;出错点:&lt;/p&gt;
 
@@ -927,7 +1073,7 @@ sudo make install
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-9&quot;&gt;考试体验&lt;/h2&gt;
+&lt;p&gt;##考试体验&lt;/p&gt;
 
 &lt;p&gt;convocation上标注的时间是14h30, 保险起见13h10就到考场了. 没曾想真正开始验明身份一直拖到了15h00. 按照注册学校分批进入, 出示证件后会分发一个遥控器, 显示姓名的头三个字母. 所有人落座后, 主考老师重申考场纪律和操作方法, 然后键入红AB红CD绿, 激活考试模式 (强烈的魂斗罗即视感).&lt;/p&gt;
 
@@ -945,11 +1091,11 @@ sudo make install
         <item>
                 <title>升级ESXi5.5到6.0</title>
                 <description>
-&lt;h2 id=&quot;section&quot;&gt;主机配置&lt;/h2&gt;
-&lt;p&gt;ASUS P7H55-M的主板，cpu是i7 860，8个Go的内存。  跑ESXi5.5很久了，突然听说6.0推出，大喜，手忙脚乱的升级去也&lt;/p&gt;
+&lt;p&gt;##主机配置
+ASUS P7H55-M的主板，cpu是i7 860，8个Go的内存。  跑ESXi5.5很久了，突然听说6.0推出，大喜，手忙脚乱的升级去也&lt;/p&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;升级&lt;/h2&gt;
-&lt;p&gt;在&lt;a href=&quot;http://isite.tw/2015/03/13/13049&quot;&gt;这个&lt;/a&gt;网站上下载Offline Bundle，然后使用&lt;/p&gt;
+&lt;p&gt;##升级
+在&lt;a href=&quot;http://isite.tw/2015/03/13/13049&quot;&gt;这个&lt;/a&gt;网站上下载Offline Bundle，然后使用&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh root@ip_esxi
 &lt;/code&gt;&lt;/pre&gt;
@@ -963,8 +1109,8 @@ sudo make install
 
 &lt;p&gt;之后重启，新版本就被部署了&lt;/p&gt;
 
-&lt;h2 id=&quot;section-2&quot;&gt;网卡驱动&lt;/h2&gt;
-&lt;p&gt;重启后vSphere Client怎么都连不上，无奈插显示器直接操作，结果发现竟然无法找到网络适配器。经官网确认，网卡型号为realtek 8111e千兆卡。网上找了好几个vib驱动，最后大都指向两个vib文件
+&lt;p&gt;##网卡驱动
+重启后vSphere Client怎么都连不上，无奈插显示器直接操作，结果发现竟然无法找到网络适配器。经官网确认，网卡型号为realtek 8111e千兆卡。网上找了好几个vib驱动，最后大都指向两个vib文件
 &lt;em&gt;VMware_bootbank_net-r8168_8.013.00-3vmw.510.0.0.799733&lt;/em&gt; 和 &lt;em&gt;VMware_bootbank_net-r8169_6.011.00-2vmw.510.0.0.799733&lt;/em&gt; 。 
 尝试安装，都有依赖文件缺失的问题，没法用。后来在&lt;a href=&quot;http://www.vdicloud.nl/2015/02/07/realtek-nic-on-vsphere-6&quot;&gt;这个&lt;/a&gt;帖子里发现了封装过的&lt;a href=&quot;http://vibsdepot.v-front.de/depot/vft/net51-drivers-1.0/net51-drivers-1.0.0-1vft.510.0.0.799733.x86_64.vib&quot;&gt;驱动&lt;/a&gt;，下载后使用如下命令安装&lt;/p&gt;
 
@@ -1032,8 +1178,8 @@ gl-setup /tmp/git-admin.pub
 
 &lt;p&gt;至此，几乎所有关于gitolite的配置都可以在本地进行，之后只需像所有git项目一样提交，服务器端会自动根据配置文件进行更新。之所以说几乎，因为无法完全删除一个已经创建的repository。&lt;/p&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;添加项目&lt;/h2&gt;
-&lt;p&gt;修改git-admin/conf/gitolite.conf文件，例如希望添加一个名为WebSrv的repository给所有人，添加如下内容到文件中：&lt;/p&gt;
+&lt;p&gt;##添加项目
+修改git-admin/conf/gitolite.conf文件，例如希望添加一个名为WebSrv的repository给所有人，添加如下内容到文件中：&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;repo WebSrv
 	RW+	=	@all
@@ -1042,15 +1188,15 @@ gl-setup /tmp/git-admin.pub
 
 &lt;p&gt;提交后WebSrv项目会自动生成&lt;/p&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;添加用户&lt;/h2&gt;
-&lt;p&gt;将用户的~/.ssh/id_rca.pub基于其用户名（例如devy）复制到git-admin/keydir/devy.pub，提交后用户就可以下载刚才生成的repository&lt;/p&gt;
+&lt;p&gt;##添加用户
+将用户的~/.ssh/id_rca.pub基于其用户名（例如devy）复制到git-admin/keydir/devy.pub，提交后用户就可以下载刚才生成的repository&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone git@git-server-IP-address:WebSrv
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;section-2&quot;&gt;补充：非管理员客户端自定义&lt;/h2&gt;
-&lt;p&gt;例如上面的devy用户，在项目文件夹中要自行配置用户名和电子邮件，可以使用如下命令&lt;/p&gt;
+&lt;p&gt;##补充：非管理员客户端自定义
+例如上面的devy用户，在项目文件夹中要自行配置用户名和电子邮件，可以使用如下命令&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config --global user.name &quot;devy&quot;
 git config --global user.email &quot;devy@email.com&quot;
@@ -1071,12 +1217,12 @@ git config --global user.email &quot;devy@email.com&quot;
         <item>
                 <title>How to config http proxy in Debian xfce4</title>
                 <description>
-&lt;h2 id=&quot;why-http-proxy&quot;&gt;Why http proxy&lt;/h2&gt;
-&lt;p&gt;Many entreprises do not allow their employee visit web site for private reason. A config http proxy is obligate. 
+&lt;p&gt;##Why http proxy
+Many entreprises do not allow their employee visit web site for private reason. A config http proxy is obligate. 
 Unlike Unity on Ubuntu, xfce4 on Debian have no option &lt;code class=&quot;highlighter-rouge&quot;&gt;Network Proxy Setting&lt;/code&gt;, so we have to set it in different way.&lt;/p&gt;
 
-&lt;h2 id=&quot;how-to&quot;&gt;How To&lt;/h2&gt;
-&lt;p&gt;There are two utilisation : &lt;code class=&quot;highlighter-rouge&quot;&gt;apt-get&lt;/code&gt; type and general web browser.&lt;/p&gt;
+&lt;p&gt;##How To
+There are two utilisation : &lt;code class=&quot;highlighter-rouge&quot;&gt;apt-get&lt;/code&gt; type and general web browser.&lt;/p&gt;
 
 &lt;h3 id=&quot;apt-get&quot;&gt;apt-get&lt;/h3&gt;
 
@@ -1141,15 +1287,15 @@ tout suite la limite de Fat32.&lt;/p&gt;
         <item>
                 <title>出乎 意料 之外</title>
                 <description>
-&lt;h2 id=&quot;section&quot;&gt;缘由&lt;/h2&gt;
+&lt;p&gt;##缘由&lt;/p&gt;
 
 &lt;p&gt;网络小说作者素质普遍低下大约没有人敢否认。毕竟门槛太低，在目前这种没有遴选机制，
 全靠读者用脚投票的大环境下，“出乎意料之外”这样的病句比比皆是可以看作一种现实的无奈。
 而使用病句的动机，我曾经以为是那些无良写手多骗字数的伎俩，直到最近一位我很欣赏的作者
 也使用了这样的搭配，才让我意识到也许他们真的没有发觉这是病句。&lt;/p&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;辨析&lt;/h2&gt;
-&lt;p&gt;物质客观存在，其发展规律可被观测，自然也可被预测。预测符合事实，可以称作&lt;code class=&quot;highlighter-rouge&quot;&gt;意料到&lt;/code&gt;，预测
+&lt;p&gt;##辨析
+物质客观存在，其发展规律可被观测，自然也可被预测。预测符合事实，可以称作&lt;code class=&quot;highlighter-rouge&quot;&gt;意料到&lt;/code&gt;，预测
 不符合事实，可以称作&lt;code class=&quot;highlighter-rouge&quot;&gt;未意料到&lt;/code&gt;；这里涵盖了不作预测的情况，因为就结果而言，不预测与预测
 错误同样不能得到正确的预测结果。&lt;/p&gt;
 
@@ -1169,8 +1315,8 @@ tout suite la limite de Fat32.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;section-2&quot;&gt;规范&lt;/h2&gt;
-&lt;p&gt;列举一下符合逻辑的说法：&lt;/p&gt;
+&lt;p&gt;##规范
+列举一下符合逻辑的说法：&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- 出乎我意料的是
 - 在我意料之外的是
@@ -1179,8 +1325,8 @@ tout suite la limite de Fat32.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;section-3&quot;&gt;结论&lt;/h2&gt;
-&lt;p&gt;不知道这是病句的，属于素质问题；知道病句还这样用的，属于品质问题，欢迎对号入座。&lt;/p&gt;
+&lt;p&gt;##结论
+不知道这是病句的，属于素质问题；知道病句还这样用的，属于品质问题，欢迎对号入座。&lt;/p&gt;
 
 &lt;p&gt;ps：希望掌握真实数据的读者不妨用如下关键字在google中搜一下&lt;/p&gt;
 
