@@ -10,10 +10,10 @@ tags: [linux,debian,tutorial]
 Gitlab整合了仿制Github所需要的几乎所有服务器端程序,例如内置了nginx. 作为静态网站服务的首选服务, nginx强大灵活的分流配置一直为广大程序员喜爱.
 
 
-##目标
+## 目标
 利用现成的Gitlab内置nginx服务器, 添加新的静态网站到指定端口
 
-##改菜谱
+## 改菜谱
 Gitlab利用一种叫做菜谱cookbook的方法管理不同模板template的配置文件,每次gitlab-ctl reconfigure都是重新生成配置文件的过程. 换言之, 原先直接对配置文件的修改在这里是行不通的, 因为只要重启服务就会被覆盖.
 
 修改nginx的菜谱
@@ -62,7 +62,7 @@ Gitlab利用一种叫做菜谱cookbook的方法管理不同模板template的配�
 
 		}
 
-##添路径
+## 添路径
 因为所有Gitlab的行为是由Ruby脚本定制的, 所以下一步要告知执行脚本客制网站的配置文件路径.
 
 		sudo vi /etc/gitlab/gitlab.rb
@@ -71,7 +71,7 @@ Gitlab利用一种叫做菜谱cookbook的方法管理不同模板template的配�
 
 		nginx['custom_nginx_config'] = "include /etc/nginx/conf.d/*.conf;"
 
-##正常配置nginx
+## 正常配置nginx
 如果路径不存在,创建之
 
 		sudo mkdir -p /etc/nginx/conf.d

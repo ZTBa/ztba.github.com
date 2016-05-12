@@ -7,11 +7,11 @@ tags: [linux,debian,skill]
 ---
 {% include JB/setup %}
 
-##Why http proxy
+## Why http proxy
 Many entreprises do not allow their employee visit web site for private reason. A config http proxy is obligate. 
 Unlike Unity on Ubuntu, xfce4 on Debian have no option `Network Proxy Setting`, so we have to set it in different way.
 
-##How To
+## How To
 There are two utilisation : `apt-get` type and general web browser.
 
 ### apt-get

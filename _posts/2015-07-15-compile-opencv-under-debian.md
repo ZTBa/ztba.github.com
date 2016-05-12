@@ -8,9 +8,9 @@ tags: []
 ---
 {% include JB/setup %}
 
-#依赖环境的安装
+# 依赖环境的安装
 
-##FFMPEG相关模块
+## FFMPEG相关模块
 
 首先添加deb-multimedia提供的库文件支持到本地库列表中
 
@@ -31,7 +31,7 @@ tags: []
 此处曾经出现过libfaac-dev找不到的情况, 后来发现是因为没有apt-get update的原因
 
 
-##安装其他库文件
+## 安装其他库文件
 
 Gstreamer:
 
@@ -45,7 +45,7 @@ libjepg:
 
     sudo apt-get install libjpeg8 libjpeg8-dev 
 
-##编译库文件
+## 编译库文件
 
     mkdir ~/source  
     mkdir ~/source/x264  
@@ -53,7 +53,7 @@ libjepg:
     mkdir ~/source/opencv  
     mkdir ~/source/ffmpeg  
 
-###Compile X264
+### Compile X264
 
     cd ~/source/x264  
     wget ftp://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120528-2245-stable.tar.bz2  
@@ -63,7 +63,7 @@ libjepg:
     make  
     sudo make install  
 
-###Compile ffmpeg
+### Compile ffmpeg
     cd ~/source/ffmpeg  
     wget http://ffmpeg.org/releases/ffmpeg-0.11.1.tar.bz2  
     tar xvf ffmpeg-0.11.1.tar.bz2  
@@ -72,7 +72,7 @@ libjepg:
     make  
     sudo make install  
 
-###Compile v4l
+### Compile v4l
     cd ~/source/v4l  
     wget http://www.linuxtv.org/downloads/v4l-utils/v4l-utils-0.8.8.tar.bz2  
     tar xvf v4l-utils-0.8.8.tar.bz2  
@@ -80,7 +80,7 @@ libjepg:
     make  
     sudo make install  
 
-#终于可以编译OpenCV本体了
+# 终于可以编译OpenCV本体了
 此处一个小插曲, 下载了 OpenCV3.0.0正式版试图编译, 结果在24%进度报错, 原因是cap_ffmpeg.cpp文件在45行处使用了一个未声明enum类型变量AVCodecID. 尝试所有方案,未遂. 重新回到2.4.9版本,一次编译就过了.
 还有改进空间啊OpenCV Team.
 
