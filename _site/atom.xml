@@ -4,13 +4,94 @@
  <title>灵犀一点 Sparkle</title>
  <link href="http://username.github.io/" rel="self"/>
  <link href="http://username.github.io"/>
- <updated>2016-06-04T18:17:17+02:00</updated>
+ <updated>2016-07-05T18:40:23+02:00</updated>
  <id>http://username.github.io</id>
  <author>
    <name>T.Z</name>
    <email>blah@email.test</email>
  </author>
 
+ 
+ <entry>
+   <title>黑爵AJAZZ机械键盘AK33S上手体验</title>
+   <link href="http://username.github.io/%E6%84%9F%E6%85%A8/2016/07/05/ajazz-ak33s-review"/>
+   <updated>2016-07-05T00:00:00+02:00</updated>
+   <id>http://username.github.io/%E6%84%9F%E6%85%A8/2016/07/05/ajazz-ak33s-review</id>
+   <content type="html">
+&lt;h2 id=&quot;section&quot;&gt;背景&lt;/h2&gt;
+
+&lt;p&gt;现役两把机械键盘都是国外品牌， 一把cherry原厂清轴clear switch， 一把corsair红轴red switch。手感各有千秋。 后来看到国产机械键盘几乎是前者折半以下的价格销售，不由得开始长草。&lt;br /&gt;
+鉴于现有两个键盘一个是full sized （104 keys)， 一个是compact size ( 88 keys )，为避免重复投资，目标转向mini size （82 keys) 。&lt;br /&gt;
+这样一来Vortex Poker布局的键盘成为了首选。&lt;br /&gt;
+然后发现了国产品牌黑爵AJazz推出的AK33S。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;卖点&lt;/h2&gt;
+
+&lt;p&gt;对背光其实完全零需求，那个东西太幼稚。 真正吸引我的还是布局–这个尺寸和键盘布局实在太好了，几乎不可以再小了，而基本功能又都照顾到了：尤其值得点赞的是右侧的一竖列Home, PgUp,PgDn,End，比poker还贴心－用拼音输入法的人应当了解其重要性。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;体验&lt;/h2&gt;
+
+&lt;p&gt;上手打字后有几个体验：&lt;br /&gt;
+一是国产轴blue switch声音好尖锐啊，相比之下clear switch 和 red switch音量也许差不多，但音调更低沉，因而扰邻现象缓和得多（red switch基本与薄膜键盘持平），这种哒哒哒的声音大概只有当初敲机械打字机Typewriter时听到过。&lt;br /&gt;
+二是黑爵这款产品的品控和大厂还有差距，例如Fn键和字母键录入声音都有差别，例如脚撑太松在包里就脱落了，例如塑料基座与顶层铝板接缝处的切削面明显有豁口。&lt;br /&gt;
+三是软件系统有待提升，从官网上下载的驱动在win8.1 x64系统下安装后竟然识别不出已经连接的键盘，所以这个驱动有什么功能不得而知。&lt;/p&gt;
+
+&lt;h2 id=&quot;azerty&quot;&gt;Azerty改造&lt;/h2&gt;
+
+&lt;p&gt;买回来后一直没有当作生产力设备，最大的原因在于悲催的缺键！这是当初购买时完全没有料到的问题。&lt;br /&gt;
+因为面对中国市场，键盘采用英美Qwerty排列。以前一直没有发觉，在这样的排列下，左手shift键是长长一条；而在法文键盘Azerty或德文键盘Qwerty DE排列中，左手shift键是短键帽，其右侧是&amp;lt;键。作为一个程序员，这个符号实在不能少。&lt;br /&gt;
+解决方法一是沿用Qwerty排列，但手速立刻跌得离谱–没办法，这么多年已经习惯Azerty了。&lt;br /&gt;
+解决方法二是修改系统KeyMap。具体的说就是在Qwerty键盘上找一个替换按键，将之重新定义为&amp;lt;键。&lt;/p&gt;
+
+&lt;p&gt;这里介绍一下方法二的实现.  &lt;br /&gt;
+我选择了数字行最左侧的œ键。&lt;/p&gt;
+
+&lt;h3 id=&quot;linux&quot;&gt;linux系统&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;找到keycode，在Terminal下启用xev程序监听键盘输入，查知&amp;lt;键的keycode是94，而œ键的keycode是49。&lt;/li&gt;
+  &lt;li&gt;使用
+&lt;code&gt;
+  xmodmap -pke
+&lt;/code&gt; 
+ 命令，查阅机器当前key maping&lt;/li&gt;
+  &lt;li&gt;创建一个对掉表文件，内容是&lt;br /&gt;
+  keycode 49 = less greater less greater bar brokenbar bar  &lt;br /&gt;
+  keycode 94 = oe OE oe OE leftdoublequotemark rightdoublequotemark leftdoublequotemark&lt;/li&gt;
+  &lt;li&gt;加载这个映射表
+&lt;code&gt;
+  xmodmap ~/.Xmodmap
+&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;windows&quot;&gt;windows系统&lt;/h3&gt;
+
+&lt;p&gt;windows下， 同样以œ键为目标。奇葩的是在法语键盘布局下这个键被识别为²，我感觉整个儿人都方了&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;下载微软自家的Microsoft Keyboard Layout Creator， 安装，启动&lt;/li&gt;
+  &lt;li&gt;加载法语布局File=&amp;gt; Load Existing Keyboard =&amp;gt;Français&lt;/li&gt;
+  &lt;li&gt;创建自定义布局：单击左上角那个键，在弹出窗口点All按钮，之后&amp;lt;Key&amp;gt; 输入
+&lt;code&gt;
+U+003c
+&lt;/code&gt;
+,shift+&amp;lt;Key&amp;gt;输入 
+&lt;code&gt;
+U+003e
+&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;编译，生成一个适应32/64位系统的安装包，懒人可以一直接从
+&lt;a href=&quot;http://ztba.github.io/img/fr_nv.7z&quot;&gt;这里&lt;/a&gt;
+下载&lt;/li&gt;
+  &lt;li&gt;安装新布局，在输入法中选定刚才编译出来的Français - Switch布局，之后重启（必需的）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;然后就可以愉快的输入&amp;lt;符号了（防呆提示，欲输入&amp;gt;符号需按shift键）。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;结论&lt;/h2&gt;
+
+&lt;p&gt;黑爵这款键盘手感上强于普通薄膜键盘，但和原厂轴比较依然有差距（做工，噪音），压力数介于清轴与红轴之间（我只用过这两个），造型很酷，布局贴心，性价比无敌。&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>老树新芽装Debian</title>
@@ -48,15 +129,13 @@
 
 &lt;p&gt;明明已经安装了xfce4-mixer gstreamer0.10-alsa， 在命令行进入 alsamixer 调节了PCM音量，偏偏音量图片下打着红叉。使用&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lspci | grep Audio
+&lt;pre&gt;&lt;code&gt;lspci | grep Audio
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;命令查看音频硬件情况， 依然没什么进展。 貌似还使用了&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo alsactl init
+&lt;pre&gt;&lt;code&gt;sudo alsactl init
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;命令，也没什么用处。
   后来在某论坛里发现一个奇葩方案：在Audio mixer=&amp;gt;Control里勾选External Amplifier, 表示要让声音外放。 然后就出声了。&lt;/p&gt;
@@ -65,15 +144,13 @@
 
 &lt;p&gt;要使用pepperflashplugin-nonfree插件，需要添加apt源&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;deb http://ftp.fr.debian.org/debian/ jessie main contrib non-free  
+&lt;pre&gt;&lt;code&gt;deb http://ftp.fr.debian.org/debian/ jessie main contrib non-free  
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;之后&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get update &amp;amp;&amp;amp; sudo apt-get install pepperflashplugin-nonfree
+&lt;pre&gt;&lt;code&gt;sudo apt-get update &amp;amp;&amp;amp; sudo apt-get install pepperflashplugin-nonfree
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;就没问题了&lt;/p&gt;
 
@@ -81,23 +158,20 @@
 
 &lt;p&gt;一开始都没有发现无线网卡的存在，祭出lspci大法：&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lspci | grep -i wireless
+&lt;pre&gt;&lt;code&gt;lspci | grep -i wireless
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;发现是intel 2200BG卡，使用如下命令安装驱动
 （前提是已经添加了contrib 作为apt源）&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install firmware-ipw2x00 wireless-tools iwconfig
+&lt;pre&gt;&lt;code&gt;sudo apt-get install firmware-ipw2x00 wireless-tools iwconfig
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;依然找不到无线网络
 使用&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo cat /etc/udev/rules.d/70-persistent-net.rules 
+&lt;pre&gt;&lt;code&gt;sudo cat /etc/udev/rules.d/70-persistent-net.rules 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;查看, 发现无线网卡被命名为eth1，改成wlan&lt;/p&gt;
 
@@ -112,9 +186,8 @@ rf-kill block 报错。
 
 &lt;p&gt;同时安装xfce4显示插件和gui&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install network-manager xfce4-indicator-plugin network-manager-gnome
+&lt;pre&gt;&lt;code&gt;sudo apt-get install network-manager xfce4-indicator-plugin network-manager-gnome
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;然后可以愉快的上网了&lt;/p&gt;
 
@@ -122,23 +195,20 @@ rf-kill block 报错。
 
 &lt;p&gt;因为是在vmware下安装，默认的配置里竟然还有软驱。启动桌面后就堂而皇之的摆在桌面，尽管这个东西根本就不存在。删除的方法是：&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo scite /etc/modprobe.d/fbdev-blacklist.conf
+&lt;pre&gt;&lt;code&gt;sudo scite /etc/modprobe.d/fbdev-blacklist.conf
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;最后一行添加 blacklist floppy&lt;/p&gt;
 
 &lt;p&gt;或者更优雅的使用管道&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;echo &quot;blacklist floppy&quot; | sudo tee /etc/modprobe.d/fbdev-blacklist.conf
+&lt;pre&gt;&lt;code&gt;echo &quot;blacklist floppy&quot; | sudo tee /etc/modprobe.d/fbdev-blacklist.conf
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;之后执行&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo rmmod floppy &amp;amp;&amp;amp; sudo update-initramfs -u
+&lt;pre&gt;&lt;code&gt;sudo rmmod floppy &amp;amp;&amp;amp; sudo update-initramfs -u
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;软驱图标就这样消失了&lt;/p&gt;
 
@@ -154,9 +224,8 @@ rf-kill block 报错。
 
 &lt;p&gt;安装latex旷日持久，但绝对必备。&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get texlive-full
+&lt;pre&gt;&lt;code&gt;sudo apt-get texlive-full
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;至此，笔记本满血复活。&lt;/p&gt;
 </content>
@@ -556,15 +625,14 @@ rf-kill block 报错。
 
 &lt;p&gt;修改nginx的菜谱&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	sudo vi /opt/gitlab/embedded/cookbooks/gitlab/templates/default/nginx.conf.erb 
+&lt;pre&gt;&lt;code&gt;	sudo vi /opt/gitlab/embedded/cookbooks/gitlab/templates/default/nginx.conf.erb 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;找到 &lt;strong&gt;include &amp;lt;%= @gitlab_http_config %&amp;gt;;&lt;/strong&gt; 这一行, 在其上方添加客制配置文件路径 &lt;strong&gt;nginx[‘custom_nginx_config’] = “include /etc/nginx/conf.d/*.conf;”&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;修改后完整的菜谱为&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	# This file is managed by gitlab-ctl. Manual changes will be
+&lt;pre&gt;&lt;code&gt;	# This file is managed by gitlab-ctl. Manual changes will be
 	# erased! To change the contents below, edit /etc/gitlab/gitlab.rb
 	# and run `sudo gitlab-ctl reconfigure`.
 
@@ -602,32 +670,28 @@ rf-kill block 报错。
 
 	}
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;h2 id=&quot;section-2&quot;&gt;添路径&lt;/h2&gt;
 &lt;p&gt;因为所有Gitlab的行为是由Ruby脚本定制的, 所以下一步要告知执行脚本客制网站的配置文件路径.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	sudo vi /etc/gitlab/gitlab.rb
+&lt;pre&gt;&lt;code&gt;	sudo vi /etc/gitlab/gitlab.rb
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;找到 &lt;strong&gt;nginx[‘custom_nginx_config’]&lt;/strong&gt; 一行取消注释, 并填写其后的配置文件路径, 修改后的内容为&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	nginx[&#39;custom_nginx_config&#39;] = &quot;include /etc/nginx/conf.d/*.conf;&quot;
+&lt;pre&gt;&lt;code&gt;	nginx[&#39;custom_nginx_config&#39;] = &quot;include /etc/nginx/conf.d/*.conf;&quot;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;h2 id=&quot;nginx&quot;&gt;正常配置nginx&lt;/h2&gt;
 &lt;p&gt;如果路径不存在,创建之&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	sudo mkdir -p /etc/nginx/conf.d
+&lt;pre&gt;&lt;code&gt;	sudo mkdir -p /etc/nginx/conf.d
 	sudo vi /etc/nginx/conf.d/nginx.conf
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;这里使用14344端口绑定到客制网站, 完整的配置文件如下&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	server {
+&lt;pre&gt;&lt;code&gt;	server {
 		listen   14344; ## listen for ipv4; this line is default and implied
 		#listen   [::]:80 default_server ipv6only=on; ## listen for ipv6
 
@@ -678,21 +742,18 @@ rf-kill block 报错。
 		
 	}
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;然后在指定路径上添加静态网页&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	sudo mkdir -p /usr/share/nginx/www
+&lt;pre&gt;&lt;code&gt;	sudo mkdir -p /usr/share/nginx/www
 	sudo chmod 0777 -R /usr/share/nginx/www
 	vi /usr/share/nginx/www/index.html
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;最后重启Gitlab服务&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	gitlab-ctl reconfigure
+&lt;pre&gt;&lt;code&gt;	gitlab-ctl reconfigure
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;收工.&lt;/p&gt;
 </content>
@@ -710,25 +771,22 @@ rf-kill block 报错。
 
 &lt;p&gt;首先添加deb-multimedia提供的库文件支持到本地库列表中&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;su -
+&lt;pre&gt;&lt;code&gt;su -
 echo &quot;deb http://www.deb-multimedia.org wheezy main non-free&quot; &amp;gt;&amp;gt; /etc/apt/sources.list.d/deb-multimedia.list
 echo &quot;deb-src http://www.deb-multimedia.org wheezy main non-free&quot; &amp;gt;&amp;gt; /etc/apt/sources.list.d/deb-multimedia.list
 apt-get update
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;之后安装公匙&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-get install deb-multimedia-keyring
+&lt;pre&gt;&lt;code&gt;apt-get install deb-multimedia-keyring
 apt-get update
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;最后安装依赖文件&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install build-essential checkinstall git cmake libfaac-dev libjack-jackd2-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libsdl1.2-dev libtheora-dev libva-dev libvdpau-dev libvorbis-dev libx11-dev libxfixes-dev libxvidcore-dev texi2html yasm zlib1g-dev libsdl1.2-dev libvpx-dev
+&lt;pre&gt;&lt;code&gt;sudo apt-get install build-essential checkinstall git cmake libfaac-dev libjack-jackd2-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libsdl1.2-dev libtheora-dev libva-dev libvdpau-dev libvorbis-dev libx11-dev libxfixes-dev libxvidcore-dev texi2html yasm zlib1g-dev libsdl1.2-dev libvpx-dev
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;此处曾经出现过libfaac-dev找不到的情况, 后来发现是因为没有apt-get update的原因&lt;/p&gt;
 
@@ -736,35 +794,31 @@ apt-get update
 
 &lt;p&gt;Gstreamer:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install libgstreamer0.10-0 libgstreamer0.10-dev gstreamer0.10-tools gstreamer0.10-plugins-base libgstreamer-plugins-base0.10-dev gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly gstreamer0.10-plugins-bad gstreamer0.10-ffmpeg
+&lt;pre&gt;&lt;code&gt;sudo apt-get install libgstreamer0.10-0 libgstreamer0.10-dev gstreamer0.10-tools gstreamer0.10-plugins-base libgstreamer-plugins-base0.10-dev gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly gstreamer0.10-plugins-bad gstreamer0.10-ffmpeg
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;libgtk2:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install libgtk2.0-0 libgtk2.0-dev  
+&lt;pre&gt;&lt;code&gt;sudo apt-get install libgtk2.0-0 libgtk2.0-dev  
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;libjepg:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install libjpeg8 libjpeg8-dev 
+&lt;pre&gt;&lt;code&gt;sudo apt-get install libjpeg8 libjpeg8-dev 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;h2 id=&quot;section-2&quot;&gt;编译库文件&lt;/h2&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir ~/source  
+&lt;pre&gt;&lt;code&gt;mkdir ~/source  
 mkdir ~/source/x264  
 mkdir ~/source/v4l  
 mkdir ~/source/opencv  
 mkdir ~/source/ffmpeg  
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;h3 id=&quot;compile-x264&quot;&gt;Compile X264&lt;/h3&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/source/x264  
+&lt;pre&gt;&lt;code&gt;cd ~/source/x264  
 wget ftp://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120528-2245-stable.tar.bz2  
 tar xvf x264-snapshot-20120528-2245-stable.tar.bz2  
 cd x264-snapshot-20120528-2245-stable  
@@ -772,10 +826,9 @@ cd x264-snapshot-20120528-2245-stable
 make  
 sudo make install  
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;h3 id=&quot;compile-ffmpeg&quot;&gt;Compile ffmpeg&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/source/ffmpeg  
+&lt;pre&gt;&lt;code&gt;cd ~/source/ffmpeg  
 wget http://ffmpeg.org/releases/ffmpeg-0.11.1.tar.bz2  
 tar xvf ffmpeg-0.11.1.tar.bz2  
 cd ffmpeg-0.11.1  
@@ -783,23 +836,21 @@ cd ffmpeg-0.11.1
 make  
 sudo make install  
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;h3 id=&quot;compile-v4l&quot;&gt;Compile v4l&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/source/v4l  
+&lt;pre&gt;&lt;code&gt;cd ~/source/v4l  
 wget http://www.linuxtv.org/downloads/v4l-utils/v4l-utils-0.8.8.tar.bz2  
 tar xvf v4l-utils-0.8.8.tar.bz2  
 cd v4l-utils-0.8.8  
 make  
 sudo make install  
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;h1 id=&quot;opencv&quot;&gt;终于可以编译OpenCV本体了&lt;/h1&gt;
 &lt;p&gt;此处一个小插曲, 下载了 OpenCV3.0.0正式版试图编译, 结果在24%进度报错, 原因是cap_ffmpeg.cpp文件在45行处使用了一个未声明enum类型变量AVCodecID. 尝试所有方案,未遂. 重新回到2.4.9版本,一次编译就过了.
 还有改进空间啊OpenCV Team.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/source/opencv
+&lt;pre&gt;&lt;code&gt;cd ~/source/opencv
 wget http://kent.dl.sourceforge.net/project/opencvlibrary/opencv-unix/2.4.9/opencv-2.4.9.zip  
 unzip opencv-2.4.9.zip  
 cd opencv-2.4.9  
@@ -809,7 +860,6 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D BUILD_NE
 make
 sudo make install
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 </content>
  </entry>
  
@@ -1113,15 +1163,13 @@ sudo make install
 &lt;h2 id=&quot;section-1&quot;&gt;升级&lt;/h2&gt;
 &lt;p&gt;在&lt;a href=&quot;http://isite.tw/2015/03/13/13049&quot;&gt;这个&lt;/a&gt;网站上下载Offline Bundle，然后使用&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh root@ip_esxi
+&lt;pre&gt;&lt;code&gt;ssh root@ip_esxi
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;命令登录到ESXi的控制台，键入升级命令如下&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;esxcli software vib install -d path/VMware-ESXi-6.0.0-2494585-depot.zip
+&lt;pre&gt;&lt;code&gt;esxcli software vib install -d path/VMware-ESXi-6.0.0-2494585-depot.zip
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;之后重启，新版本就被部署了&lt;/p&gt;
 
@@ -1130,10 +1178,9 @@ sudo make install
 &lt;em&gt;VMware_bootbank_net-r8168_8.013.00-3vmw.510.0.0.799733&lt;/em&gt; 和 &lt;em&gt;VMware_bootbank_net-r8169_6.011.00-2vmw.510.0.0.799733&lt;/em&gt; 。 
 尝试安装，都有依赖文件缺失的问题，没法用。后来在&lt;a href=&quot;http://www.vdicloud.nl/2015/02/07/realtek-nic-on-vsphere-6&quot;&gt;这个&lt;/a&gt;帖子里发现了封装过的&lt;a href=&quot;http://vibsdepot.v-front.de/depot/vft/net51-drivers-1.0/net51-drivers-1.0.0-1vft.510.0.0.799733.x86_64.vib&quot;&gt;驱动&lt;/a&gt;，下载后使用如下命令安装&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;esxcli software acceptance set --level=CommunitySupported
+&lt;pre&gt;&lt;code&gt;esxcli software acceptance set --level=CommunitySupported
 esxcli software vib install -d path/net51-drivers-1.0.0-1vft.510.0.0.799733.x86_64.vib 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;重启后网卡顺利被识别。&lt;/p&gt;
 
@@ -1151,15 +1198,13 @@ esxcli software vib install -d path/net51-drivers-1.0.0-1vft.510.0.0.799733.x86_
 
 &lt;p&gt;服务器环境使用ubuntu 14.04，安装git和gitolite&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install git gitolite
+&lt;pre&gt;&lt;code&gt;sudo apt-get install git gitolite
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;然后生成一个专门用来跑git服务的账户：git&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo adduser --system --group --shell /bin/bash --disabled-password git
+&lt;pre&gt;&lt;code&gt;sudo adduser --system --group --shell /bin/bash --disabled-password git
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;这里使用–disabled-password 禁止了git账户远程登陆shell以及由此引发的安全隐患，个人感觉比其他教程上看到的随后再禁止shell要优雅。&lt;/p&gt;
 
@@ -1167,57 +1212,50 @@ esxcli software vib install -d path/net51-drivers-1.0.0-1vft.510.0.0.799733.x86_
 
 &lt;p&gt;在客户端，需要存在rsa的公开秘匙，存在于~/.ssh/id_rsa.pub文件中。如果没有，需要自行生成&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh-keygen -t rsa -C &quot;user@postname&quot;
+&lt;pre&gt;&lt;code&gt;ssh-keygen -t rsa -C &quot;user@postname&quot;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;注意因为密匙对机器名的敏感性,第二个参数 &lt;strong&gt;-C&lt;/strong&gt; 一定不可以少,否则会出现Permission denied(publickey)报错&lt;/p&gt;
 
 &lt;p&gt;假设这个服务器端的用户名为david，复制客户端公开秘匙到服务器端作为gitolite管理员秘匙&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scp ~/.ssh/id_rsa.pub david@git_server_IP_address:/tmp/git-admin.pub
+&lt;pre&gt;&lt;code&gt;scp ~/.ssh/id_rsa.pub david@git_server_IP_address:/tmp/git-admin.pub
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;回到服务器端，执行如下命令：&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo su - git
+&lt;pre&gt;&lt;code&gt;sudo su - git
 gl-setup /tmp/git-admin.pub
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;该客户端克隆管理包&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone git@git_server_IP_address:gitolite-admin
+&lt;pre&gt;&lt;code&gt;git clone git@git_server_IP_address:gitolite-admin
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;至此，几乎所有关于gitolite的配置都可以在本地进行，之后只需像所有git项目一样提交，服务器端会自动根据配置文件进行更新。之所以说几乎，因为无法完全删除一个已经创建的repository。&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;添加项目&lt;/h2&gt;
 &lt;p&gt;修改git-admin/conf/gitolite.conf文件，例如希望添加一个名为WebSrv的repository给所有人，添加如下内容到文件中：&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;repo WebSrv
+&lt;pre&gt;&lt;code&gt;repo WebSrv
 	RW+	=	@all
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;提交后WebSrv项目会自动生成&lt;/p&gt;
 
 &lt;h2 id=&quot;section-1&quot;&gt;添加用户&lt;/h2&gt;
 &lt;p&gt;将用户的~/.ssh/id_rca.pub基于其用户名（例如devy）复制到git-admin/keydir/devy.pub，提交后用户就可以下载刚才生成的repository&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone git@git-server-IP-address:WebSrv
+&lt;pre&gt;&lt;code&gt;git clone git@git-server-IP-address:WebSrv
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;h2 id=&quot;section-2&quot;&gt;补充：非管理员客户端自定义&lt;/h2&gt;
 &lt;p&gt;例如上面的devy用户，在项目文件夹中要自行配置用户名和电子邮件，可以使用如下命令&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config --global user.name &quot;devy&quot;
+&lt;pre&gt;&lt;code&gt;git config --global user.name &quot;devy&quot;
 git config --global user.email &quot;devy@email.com&quot;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;这两个命令是通用git命令，非gitolite环境下也可以使用&lt;/p&gt;
 
@@ -1235,28 +1273,26 @@ git config --global user.email &quot;devy@email.com&quot;
    <content type="html">
 &lt;h2 id=&quot;why-http-proxy&quot;&gt;Why http proxy&lt;/h2&gt;
 &lt;p&gt;Many entreprises do not allow their employee visit web site for private reason. A config http proxy is obligate. 
-Unlike Unity on Ubuntu, xfce4 on Debian have no option &lt;code class=&quot;highlighter-rouge&quot;&gt;Network Proxy Setting&lt;/code&gt;, so we have to set it in different way.&lt;/p&gt;
+Unlike Unity on Ubuntu, xfce4 on Debian have no option &lt;code&gt;Network Proxy Setting&lt;/code&gt;, so we have to set it in different way.&lt;/p&gt;
 
 &lt;h2 id=&quot;how-to&quot;&gt;How To&lt;/h2&gt;
-&lt;p&gt;There are two utilisation : &lt;code class=&quot;highlighter-rouge&quot;&gt;apt-get&lt;/code&gt; type and general web browser.&lt;/p&gt;
+&lt;p&gt;There are two utilisation : &lt;code&gt;apt-get&lt;/code&gt; type and general web browser.&lt;/p&gt;
 
 &lt;h3 id=&quot;apt-get&quot;&gt;apt-get&lt;/h3&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo sh -c &#39;echo &quot;Acquire::http::proxy \&quot;http://XXX.XXX.XXX.XXX:YYYY/\&quot;;&quot; &amp;gt;&amp;gt; /etc/apt/apt.conf&#39;
+&lt;pre&gt;&lt;code&gt;sudo sh -c &#39;echo &quot;Acquire::http::proxy \&quot;http://XXX.XXX.XXX.XXX:YYYY/\&quot;;&quot; &amp;gt;&amp;gt; /etc/apt/apt.conf&#39;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;In here XXX.XXX.XXX.XXX is proxy server IP and YYYY is proxy server port.&lt;/p&gt;
 
 &lt;h3 id=&quot;general-web-browser&quot;&gt;general web browser&lt;/h3&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo sh -c &#39;echo &quot;export http_proxy=\&quot;http://XXX.XXX.XXX.XXX:YYYY\&quot;\nexport proxy=\&quot;http://XXX.XXX.XXX.XXX:YYYY\&quot;&quot; &amp;gt;&amp;gt; /etc/profile.d/proxy.sh&#39;
+&lt;pre&gt;&lt;code&gt;sudo sh -c &#39;echo &quot;export http_proxy=\&quot;http://XXX.XXX.XXX.XXX:YYYY\&quot;\nexport proxy=\&quot;http://XXX.XXX.XXX.XXX:YYYY\&quot;&quot; &amp;gt;&amp;gt; /etc/profile.d/proxy.sh&#39;
 source /etc/profile.d/proxy.sh
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;h3 id=&quot;about-ssl&quot;&gt;about SSL&lt;/h3&gt;
-&lt;p&gt;on little surprise with &lt;code class=&quot;highlighter-rouge&quot;&gt;https&lt;/code&gt; connexion, navigator refuse de show the content of web page. A trick is add correct dns IP at &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/network/interfaces&lt;/code&gt; then restart networking service.&lt;/p&gt;
+&lt;p&gt;on little surprise with &lt;code&gt;https&lt;/code&gt; connexion, navigator refuse de show the content of web page. A trick is add correct dns IP at &lt;code&gt;/etc/network/interfaces&lt;/code&gt; then restart networking service.&lt;/p&gt;
 
 &lt;p&gt;Done.&lt;/p&gt;
 </content>
@@ -1272,12 +1308,12 @@ source /etc/profile.d/proxy.sh
 
 &lt;p&gt;Je le cosidere comme une tache très simple, mais je me suis trompe.&lt;/p&gt;
 
-&lt;p&gt;J’utilise d’abord &lt;code class=&quot;highlighter-rouge&quot;&gt;KillCopy&lt;/code&gt; pour transferer les données, c’est un outil légé et rapide.  Il peut afficher le vitesse
+&lt;p&gt;J’utilise d’abord &lt;code&gt;KillCopy&lt;/code&gt; pour transferer les données, c’est un outil légé et rapide.  Il peut afficher le vitesse
 en temps réel, je l’aime bien.
 10 miniutes plus tard, le transfert n’avance plus, une erreur de “nom de fichier trops long” s’apparait.
 Eventuellement c’est la limite de 255 charactaire pour les noms de fichier (chemin inclue) depuis windows 98.
 Apres quelque recherche sur Google, je décide de changer l’outil de copier pour dépasse cette limite,
-Le sauvaur: &lt;code class=&quot;highlighter-rouge&quot;&gt;FastCopy&lt;/code&gt;.&lt;/p&gt;
+Le sauvaur: &lt;code&gt;FastCopy&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Mais ce n’est pas fini. La tache s’arrete 4 heures plus tard, avec une erreur de ‘‘espace disque insufisant”.
 je sais que ce n’est pas vrais: la disque dur est tout neuf et sa capacité est bouble que la taille de repertoire.
@@ -1290,7 +1326,7 @@ tout suite la limite de Fat32.&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;lancer ‘Invite de Commandes’ en tant que d’administrateur&lt;br /&gt;
- taper &lt;code class=&quot;highlighter-rouge&quot;&gt;convert f: /fs:ntfs&lt;/code&gt;&lt;/p&gt;
+ taper &lt;code&gt;convert f: /fs:ntfs&lt;/code&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;La durée de conversation est 5 minutes environ, je peut finalement démarrer ma tache de sauvegarde.&lt;/p&gt;
@@ -1299,9 +1335,9 @@ tout suite la limite de Fat32.&lt;/p&gt;
  
  <entry>
    <title>出乎 意料 之外</title>
-   <link href="http://username.github.io/%E6%84%9F%E6%85%A8/2014/12/19/"/>
+   <link href="http://username.github.io/%E6%84%9F%E6%85%A8/2014/12/19/--"/>
    <updated>2014-12-19T00:00:00+01:00</updated>
-   <id>http://username.github.io/%E6%84%9F%E6%85%A8/2014/12/--</id>
+   <id>http://username.github.io/%E6%84%9F%E6%85%A8/2014/12/19/--</id>
    <content type="html">
 &lt;h2 id=&quot;section&quot;&gt;缘由&lt;/h2&gt;
 
@@ -1311,35 +1347,33 @@ tout suite la limite de Fat32.&lt;/p&gt;
 也使用了这样的搭配，才让我意识到也许他们真的没有发觉这是病句。&lt;/p&gt;
 
 &lt;h2 id=&quot;section-1&quot;&gt;辨析&lt;/h2&gt;
-&lt;p&gt;物质客观存在，其发展规律可被观测，自然也可被预测。预测符合事实，可以称作&lt;code class=&quot;highlighter-rouge&quot;&gt;意料到&lt;/code&gt;，预测
-不符合事实，可以称作&lt;code class=&quot;highlighter-rouge&quot;&gt;未意料到&lt;/code&gt;；这里涵盖了不作预测的情况，因为就结果而言，不预测与预测
+&lt;p&gt;物质客观存在，其发展规律可被观测，自然也可被预测。预测符合事实，可以称作&lt;code&gt;意料到&lt;/code&gt;，预测
+不符合事实，可以称作&lt;code&gt;未意料到&lt;/code&gt;；这里涵盖了不作预测的情况，因为就结果而言，不预测与预测
 错误同样不能得到正确的预测结果。&lt;/p&gt;
 
-&lt;p&gt;简言之，&lt;code class=&quot;highlighter-rouge&quot;&gt;客观世界&lt;/code&gt;为全集，可分割为&lt;code class=&quot;highlighter-rouge&quot;&gt;意料到&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;未意料到&lt;/code&gt;两个互补的子集。&lt;/p&gt;
+&lt;p&gt;简言之，&lt;code&gt;客观世界&lt;/code&gt;为全集，可分割为&lt;code&gt;意料到&lt;/code&gt;和&lt;code&gt;未意料到&lt;/code&gt;两个互补的子集。&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;意料到&lt;/code&gt;子集，可被描述为：意料到，意料中，意料之内，等等；
-&lt;code class=&quot;highlighter-rouge&quot;&gt;未意料到&lt;/code&gt;子集，是&lt;code class=&quot;highlighter-rouge&quot;&gt;意料到&lt;/code&gt;子集的补集，可被描述为：意料之外，出乎意料。“之外”与“出乎”都
+&lt;p&gt;&lt;code&gt;意料到&lt;/code&gt;子集，可被描述为：意料到，意料中，意料之内，等等；
+&lt;code&gt;未意料到&lt;/code&gt;子集，是&lt;code&gt;意料到&lt;/code&gt;子集的补集，可被描述为：意料之外，出乎意料。“之外”与“出乎”都
 是在全集范围内选取非所在集合的意思，即取反。图示如下：&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://ztba.github.io/img/unexpected.svg&quot; alt=&quot;集合示意图 svg&quot; title=&quot;意料与非意料集合示意图&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;再看“出乎意料之外”这句话，错误就很明显了。“出乎意料”本身已经表明事实与预测不符合，是&lt;code class=&quot;highlighter-rouge&quot;&gt;意料到&lt;/code&gt;
-子集的补集，即&lt;code class=&quot;highlighter-rouge&quot;&gt;未意料到&lt;/code&gt;子集；再“之外”一下，变成了补集的补集，即原集“意料之中”。 这和多年以前
+&lt;p&gt;再看“出乎意料之外”这句话，错误就很明显了。“出乎意料”本身已经表明事实与预测不符合，是&lt;code&gt;意料到&lt;/code&gt;
+子集的补集，即&lt;code&gt;未意料到&lt;/code&gt;子集；再“之外”一下，变成了补集的补集，即原集“意料之中”。 这和多年以前
 我曾见到过的一句话颇有异曲同工之感。&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;经过老师的谆谆教导，我的思想有了一个360度的转弯。
+&lt;pre&gt;&lt;code&gt;经过老师的谆谆教导，我的思想有了一个360度的转弯。
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;h2 id=&quot;section-2&quot;&gt;规范&lt;/h2&gt;
 &lt;p&gt;列举一下符合逻辑的说法：&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- 出乎我意料的是
+&lt;pre&gt;&lt;code&gt;- 出乎我意料的是
 - 在我意料之外的是
 - 不曾意料的是
 - etc
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;h2 id=&quot;section-3&quot;&gt;结论&lt;/h2&gt;
 &lt;p&gt;不知道这是病句的，属于素质问题；知道病句还这样用的，属于品质问题，欢迎对号入座。&lt;/p&gt;
@@ -1363,12 +1397,11 @@ tout suite la limite de Fat32.&lt;/p&gt;
 
 &lt;p&gt;这就要手动安装了，步骤如下：&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;su
+&lt;pre&gt;&lt;code&gt;su
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 sh -c &#39;echo &quot;deb http://dl.google.com/linux/chrome/deb/ stable main&quot; &amp;gt;&amp;gt; /etc/apt/sources.list.d/googlechrome.list&#39;
 apt-get update &amp;amp;&amp;amp; apt-get install google-chrome-stable
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;这样就可以享受google亲儿子了&lt;/p&gt;
 </content>
@@ -1395,10 +1428,9 @@ desktop和打印服务和其他组件三个选项也反选，这样下来安装�
 &lt;p&gt;比较了很多lightweight的桌面，在功能和身量之间权衡的结果，
 我选择xfce4。&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;su
+&lt;pre&gt;&lt;code&gt;su
 apt-get install xfce4 gcc build-essential linux-headers-$(uname -r)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;这里解释一下，后面三个库文件是为了建立起一个完整的编译环境。
 例如在vmware虚拟机里安装vmtools，就一定要有这几个软件。&lt;br /&gt;
@@ -1407,9 +1439,8 @@ apt-get install xfce4 gcc build-essential linux-headers-$(uname -r)
 非常实用；tilda是内嵌桌面的terminal，cifs-utils则用于与windows共享
 文件夹交互&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-get install chromium-browser xfce4-weather-plugin tilda cifs-utils
+&lt;pre&gt;&lt;code&gt;apt-get install chromium-browser xfce4-weather-plugin tilda cifs-utils
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;至此一个基本上网功能完备的系统装好了，大约1.5个G。&lt;/p&gt;
 
@@ -1420,12 +1451,11 @@ apt-get install xfce4 gcc build-essential linux-headers-$(uname -r)
 debian如果是纯净安装的话，这个时候应当还没有python，而这又是
 安装flash插件所必须的，所以得绕一下&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-get install python-software-properties
+&lt;pre&gt;&lt;code&gt;apt-get install python-software-properties
 echo &quot;deb http://ftp.dk.debian.org/debian wheezy-backports main contrib&quot; &amp;gt;&amp;gt; /etc/apt/sources.list.d/pepperflashplugin.list &amp;amp;&amp;amp; aptitude update
 aptitude -t wheezy-backports install pepperflashplugin-nonfree
 update-pepperflashplugin-nonfree --install
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;h2 id=&quot;section-2&quot;&gt;中文化&lt;/h2&gt;
 &lt;p&gt;之所以开这一章主要是针对默认系统语言没有选中文的安装。例如身在国外的兄弟
@@ -1436,9 +1466,8 @@ update-pepperflashplugin-nonfree --install
 输入法我用fcitx + sunpinyin， 没有选googlepinyin因为我没找到怎么开启
 词频调整功能，而sunpinyin是默认自动开启词频调整的。&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-get install ttf-wqy-zenhei im-switch fcitx fcitx-config-gtk fcitx-sunpinyin
+&lt;pre&gt;&lt;code&gt;apt-get install ttf-wqy-zenhei im-switch fcitx fcitx-config-gtk fcitx-sunpinyin
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;装完之后浏览中文网页已经没有方框了，但还需要设置一下中文输入。
 首先启动im-switch，选定fcitx作为默认输入框架。确认，退出xwindow，
@@ -1462,10 +1491,10 @@ fcitx-sunpinyin的配置文件虽然原始设定system keymap，但很奇怪的�
 
 &lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;#&lt;/code&gt;号表示标题，一个为一级，二个为次级，一次类推&lt;/p&gt;
+    &lt;p&gt;使用&lt;code&gt;#&lt;/code&gt;号表示标题，一个为一级，二个为次级，一次类推&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;块引用是什么概念还不是很清楚，但是要用&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt;&lt;/code&gt;前界定，尝试一下&lt;br /&gt;
+    &lt;p&gt;块引用是什么概念还不是很清楚，但是要用&lt;code&gt;&amp;gt;&lt;/code&gt;前界定，尝试一下&lt;br /&gt;
 &amp;gt; 这是一个块引用&lt;br /&gt;
 貌似这也是&lt;br /&gt;
 现在尝试一下新方法&lt;br /&gt;
@@ -1476,11 +1505,10 @@ fcitx-sunpinyin的配置文件虽然原始设定system keymap，但很奇怪的�
 &lt;p&gt;现在到了引用之外了&lt;br /&gt;
 * 这里是一下实例文件使用的一种方法：连续四个行首空格表示代码块&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;尝试尝试
+&lt;pre&gt;&lt;code&gt;尝试尝试
 再次尝试
 结束
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;效果如何，事实证明，使用atom editor和真实jeykll bootstrap 的显示效果还是有差距的，为了方便网络发布，应当使用连续四个行首空格的方式表示代码块&lt;/p&gt;
 </content>
@@ -1509,11 +1537,11 @@ dynamic components such as templates, partials, liquid code, markdown, etc. Jeky
 &lt;h3 id=&quot;what-does-jekyll-do&quot;&gt;What does Jekyll Do?&lt;/h3&gt;
 
 &lt;p&gt;Jekyll is a ruby gem you install on your local system.
-Once there you can call &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll --server&lt;/code&gt; on a directory and provided that directory
+Once there you can call &lt;code&gt;jekyll --server&lt;/code&gt; on a directory and provided that directory
 is setup in a way jekyll expects, it will do magic stuff like parse markdown/textile files,
 compute categories, tags, permalinks, and construct your pages from layout templates and partials.&lt;/p&gt;
 
-&lt;p&gt;Once parsed, Jekyll stores the result in a self-contained static &lt;code class=&quot;highlighter-rouge&quot;&gt;_site&lt;/code&gt; folder.
+&lt;p&gt;Once parsed, Jekyll stores the result in a self-contained static &lt;code&gt;_site&lt;/code&gt; folder.
 The intention here is that you can serve all contents in this folder statically from a plain static web-server.&lt;/p&gt;
 
 &lt;p&gt;You can think of Jekyll as a normalish dynamic blog but rather than parsing content, templates, and tags
@@ -1568,7 +1596,7 @@ Jekyll-bootstrap conveniently provides the base directory format.&lt;/p&gt;
 
 &lt;p&gt;Jekyll expects your website directory to be laid out like so:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.
+&lt;pre&gt;&lt;code&gt;.
 |-- _config.yml
 |-- _includes
 |-- _layouts
@@ -1584,7 +1612,6 @@ Jekyll-bootstrap conveniently provides the base directory format.&lt;/p&gt;
         |-- style.css
     |-- javascripts
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -1603,7 +1630,7 @@ Jekyll-bootstrap conveniently provides the base directory format.&lt;/p&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;_posts&lt;/strong&gt;
   This folder contains your dynamic content/posts.
-  the naming format is required to be &lt;code class=&quot;highlighter-rouge&quot;&gt;@YEAR-MONTH-DATE-title.MARKUP@&lt;/code&gt;.&lt;/p&gt;
+  the naming format is required to be &lt;code&gt;@YEAR-MONTH-DATE-title.MARKUP@&lt;/code&gt;.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;_site&lt;/strong&gt;
@@ -1637,10 +1664,10 @@ Both posts and pages can have meta-data assigned on a per-page basis such as tit
 &lt;h3 id=&quot;working-with-posts&quot;&gt;Working With Posts&lt;/h3&gt;
 
 &lt;p&gt;&lt;strong&gt;Creating a Post&lt;/strong&gt;
-Posts are created by properly formatting a file and placing it the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; folder.&lt;/p&gt;
+Posts are created by properly formatting a file and placing it the &lt;code&gt;_posts&lt;/code&gt; folder.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Formatting&lt;/strong&gt;
-A post must have a valid filename in the form &lt;code class=&quot;highlighter-rouge&quot;&gt;YEAR-MONTH-DATE-title.MARKUP&lt;/code&gt; and be placed in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory.
+A post must have a valid filename in the form &lt;code&gt;YEAR-MONTH-DATE-title.MARKUP&lt;/code&gt; and be placed in the &lt;code&gt;_posts&lt;/code&gt; directory.
 If the data format is invalid Jekyll will not recognize the file as a post. The date and title are automatically parsed from the filename of the post file.
 Additionally, each file must have &lt;a href=&quot;https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter&quot;&gt;YAML Front-Matter&lt;/a&gt; prepended to its content.
 YAML Front-Matter is a valid YAML syntax specifying meta-data for the given file.&lt;/p&gt;
@@ -1663,12 +1690,11 @@ Note categories in Jekyll work in a specific way.
 If you define more than one category you are defining a category hierarchy “set”.
 Example:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
+&lt;pre&gt;&lt;code&gt;---
 title :  Hello World
 categories : [lessons, beginner]
 ---
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;This defines the category hierarchy “lessons/beginner”. Note this is &lt;em&gt;one category&lt;/em&gt; node in Jekyll.
 You won’t find “lessons” and “beginner” as two separate categories unless you define them elsewhere as singular categories.&lt;/p&gt;
@@ -1680,7 +1706,7 @@ Pages are created by properly formatting a file and placing it anywhere in the r
 
 &lt;p&gt;&lt;strong&gt;Formatting&lt;/strong&gt;
 In order to register as a Jekyll page the file must contain &lt;a href=&quot;https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter&quot;&gt;YAML Front-Matter&lt;/a&gt;.
-Registering a page means 1) that Jekyll will process the page and 2) that the page object will be available in the &lt;code class=&quot;highlighter-rouge&quot;&gt;site.pages&lt;/code&gt; array for inclusion into your templates.&lt;/p&gt;
+Registering a page means 1) that Jekyll will process the page and 2) that the page object will be available in the &lt;code&gt;site.pages&lt;/code&gt; array for inclusion into your templates.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Categories and Tags&lt;/strong&gt;
 Pages do not compute categories nor tags so defining them will have no effect.&lt;/p&gt;
@@ -1689,14 +1715,13 @@ Pages do not compute categories nor tags so defining them will have no effect.&l
 If pages are defined in sub-directories, the path to the page will be reflected in the url.
 Example:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.
+&lt;pre&gt;&lt;code&gt;.
 |-- people
     |-- bob
         |-- essay.html
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
-&lt;p&gt;This page will be available at &lt;code class=&quot;highlighter-rouge&quot;&gt;http://yourdomain.com/people/bob/essay.html&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;This page will be available at &lt;code&gt;http://yourdomain.com/people/bob/essay.html&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Recommended Pages&lt;/strong&gt;&lt;/p&gt;
 
@@ -1714,20 +1739,20 @@ A nice about page is easy to do and gives the human perspective to your website.
 &lt;h2 id=&quot;templates-in-jekyll&quot;&gt;Templates in Jekyll&lt;/h2&gt;
 
 &lt;p&gt;Templates are used to contain a page’s or post’s content.
-All templates have access to a global site object variable: &lt;code class=&quot;highlighter-rouge&quot;&gt;site&lt;/code&gt; as well as a page object variable: &lt;code class=&quot;highlighter-rouge&quot;&gt;page&lt;/code&gt;.
+All templates have access to a global site object variable: &lt;code&gt;site&lt;/code&gt; as well as a page object variable: &lt;code&gt;page&lt;/code&gt;.
 The site variable holds all accessible content and metadata relative to the site.
 The page variable holds accessible data for the given page or post being rendered at that point.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Create a Template&lt;/strong&gt;
-Templates are created by properly formatting a file and placing it in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_layouts&lt;/code&gt; directory.&lt;/p&gt;
+Templates are created by properly formatting a file and placing it in the &lt;code&gt;_layouts&lt;/code&gt; directory.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Formatting&lt;/strong&gt;
 Templates should be coded in HTML and contain YAML Front Matter.
 All templates can contain Liquid code to work with your site’s data.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Rending Page/Post Content in a Template&lt;/strong&gt;
-There is a special variable in all templates named : &lt;code class=&quot;highlighter-rouge&quot;&gt;content&lt;/code&gt;.
-The &lt;code class=&quot;highlighter-rouge&quot;&gt;content&lt;/code&gt; variable holds the page/post content including any sub-template content previously defined.
+There is a special variable in all templates named : &lt;code&gt;content&lt;/code&gt;.
+The &lt;code&gt;content&lt;/code&gt; variable holds the page/post content including any sub-template content previously defined.
 Render the content variable wherever you want your main content to be injected into your template:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;...
@@ -1746,7 +1771,7 @@ define another “root” layout/template within their YAML Front Matter.
 This essentially means a template will render inside of another template.&lt;/p&gt;
 
 &lt;h3 id=&quot;includes&quot;&gt;Includes&lt;/h3&gt;
-&lt;p&gt;In Jekyll you can define include files by placing them in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_includes&lt;/code&gt; folder.
+&lt;p&gt;In Jekyll you can define include files by placing them in the &lt;code&gt;_includes&lt;/code&gt; folder.
 Includes are NOT templates, rather they are just code snippets that get included into templates.
 In this way, you can treat the code inside includes as if it was native to the parent template.&lt;/p&gt;
 
@@ -1814,7 +1839,7 @@ This is done with the liquid templating language.&lt;/li&gt;
   &lt;li&gt;&lt;strong&gt;Post and Page files.&lt;/strong&gt;
 All content in Jekyll is either a post or a page so valid posts and pages are parsed with markdown or textile.&lt;/li&gt;
   &lt;li&gt;&lt;strong&gt;Template files.&lt;/strong&gt;
-  These files go in &lt;code class=&quot;highlighter-rouge&quot;&gt;_layouts&lt;/code&gt; folder and contain your blogs &lt;strong&gt;templates&lt;/strong&gt;. They should be made in HTML with the help of Liquid syntax.
+  These files go in &lt;code&gt;_layouts&lt;/code&gt; folder and contain your blogs &lt;strong&gt;templates&lt;/strong&gt;. They should be made in HTML with the help of Liquid syntax.
   Since include files are simply injected into templates they are essentially parsed as if they were native to the template.&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -1830,7 +1855,7 @@ This is the only way Jekyll knows you want the file processed.&lt;/p&gt;
 
 &lt;p&gt;YAML Front Matter must be prepended to the top of template/post/page files:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
+&lt;pre&gt;&lt;code&gt;---
 layout: post
 category : pages
 tags : [how-to, jekyll]
@@ -1838,7 +1863,6 @@ tags : [how-to, jekyll]
 
 ... contents ...
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;Three hyphens on a new line start the Front-Matter block and three hyphens on a new line end the block.
 The data inside the block must be valid YAML.&lt;/p&gt;
@@ -1848,8 +1872,8 @@ The data inside the block must be valid YAML.&lt;/p&gt;
 
 &lt;h4 id=&quot;defining-layouts-for-posts-and-templates-parsing&quot;&gt;Defining Layouts for Posts and Templates Parsing.&lt;/h4&gt;
 
-&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;layout&lt;/code&gt; parameter in the YAML Front Matter defines the template file for which the given post or template should be injected into.
-If a template file specifies its own layout, it is effectively being used as a &lt;code class=&quot;highlighter-rouge&quot;&gt;sub-template.&lt;/code&gt;
+&lt;p&gt;The &lt;code&gt;layout&lt;/code&gt; parameter in the YAML Front Matter defines the template file for which the given post or template should be injected into.
+If a template file specifies its own layout, it is effectively being used as a &lt;code&gt;sub-template.&lt;/code&gt;
 That is to say loading a post file into a template file that refers to another template file with work in the way you’d expect; as a nested sub-template.&lt;/p&gt;
 
 &lt;h2 id=&quot;how-jekyll-generates-the-final-static-files&quot;&gt;How Jekyll Generates the Final Static Files.&lt;/h2&gt;
@@ -1865,7 +1889,7 @@ The following is an outline of how that’s done:&lt;/p&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;Jekyll computes data.&lt;/strong&gt;
   Jekyll takes these objects, computes metadata (permalinks, tags, categories, titles, dates) from them and constructs one
-  big &lt;code class=&quot;highlighter-rouge&quot;&gt;site&lt;/code&gt; object that holds all the posts, pages, layouts, and respective metadata.
+  big &lt;code&gt;site&lt;/code&gt; object that holds all the posts, pages, layouts, and respective metadata.
   At this stage your site is one big computed ruby object.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
@@ -1884,7 +1908,7 @@ The following is an outline of how that’s done:&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Notes.&lt;/strong&gt;
 Because Jekyll computes the entire site in one fell swoop, each template is given access to
-a global &lt;code class=&quot;highlighter-rouge&quot;&gt;site&lt;/code&gt; hash that contains useful data. It is this data that you’ll iterate through and format
+a global &lt;code&gt;site&lt;/code&gt; hash that contains useful data. It is this data that you’ll iterate through and format
 using the Liquid tags and filters in order to render it onto a given page.&lt;/p&gt;
 
 &lt;p&gt;Remember, in Jekyll you are an end-user. Your API has only two components:&lt;/p&gt;

@@ -1,14 +1,15 @@
 
-http://username.github.io/archive
+http://username.github.io/archive.html
 http://username.github.io/atom.xml
-http://username.github.io/categories
-http://username.github.io/
+http://username.github.io/categories.html
+http://username.github.io/index.html
 http://username.github.io/index.md.bk
-http://username.github.io/pages
+http://username.github.io/pages.html
 http://username.github.io/rss.xml
 http://username.github.io/sitemap.txt
-http://username.github.io/tags
+http://username.github.io/tags.html
 
+http://username.github.io/%E6%84%9F%E6%85%A8/2016/07/05/ajazz-ak33s-review
 http://username.github.io/skills/2016/02/28/debian
 http://username.github.io/%E6%84%9F%E6%85%A8/2016/01/07/ps3
 http://username.github.io/%E6%84%9F%E6%85%A8/2015/12/25/xbox-one
@@ -21,7 +22,7 @@ http://username.github.io/skills/2015/04/06/esxi5560
 http://username.github.io/lessons/2015/01/13/git
 http://username.github.io/skills/2015/01/09/how-to-config-http-proxy-in-debian-xfce4
 http://username.github.io/skills/2014/12/19/une-simple-tache-de-sauvegarde
-http://username.github.io/%E6%84%9F%E6%85%A8/2014/12/19/
+http://username.github.io/%E6%84%9F%E6%85%A8/2014/12/19/--
 http://username.github.io/skills/2014/12/16/debiangoogle-chrome
 http://username.github.io/lessons/2014/12/15/debian
 http://username.github.io/demo/2014/12/12/
