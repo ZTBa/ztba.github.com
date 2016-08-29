@@ -5,8 +5,8 @@
         <description>灵犀一点 Sparkle - T.Z</description>
         <link>http://username.github.io</link>
         <link>http://username.github.io</link>
-        <lastBuildDate>2016-07-05T18:40:23+02:00</lastBuildDate>
-        <pubDate>2016-07-05T18:40:23+02:00</pubDate>
+        <lastBuildDate>2016-08-29T11:04:25+02:00</lastBuildDate>
+        <pubDate>2016-08-29T11:04:25+02:00</pubDate>
         <ttl>1800</ttl>
 
 
@@ -38,7 +38,7 @@
 解决方法一是沿用Qwerty排列，但手速立刻跌得离谱–没办法，这么多年已经习惯Azerty了。&lt;br /&gt;
 解决方法二是修改系统KeyMap。具体的说就是在Qwerty键盘上找一个替换按键，将之重新定义为&amp;lt;键。&lt;/p&gt;
 
-&lt;p&gt;这里介绍一下方法二的实现.  &lt;br /&gt;
+&lt;p&gt;这里介绍一下方法二的实现。  &lt;br /&gt;
 我选择了数字行最左侧的œ键。&lt;/p&gt;
 
 &lt;h3 id=&quot;linux&quot;&gt;linux系统&lt;/h3&gt;
@@ -74,7 +74,7 @@ U+003c
 &lt;code&gt;
 U+003e
 &lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;编译，生成一个适应32/64位系统的安装包，懒人可以一直接从
+  &lt;li&gt;编译，生成一个适应32/64位系统的安装包，懒人可以直接从
 &lt;a href=&quot;http://ztba.github.io/img/fr_nv.7z&quot;&gt;这里&lt;/a&gt;
 下载&lt;/li&gt;
   &lt;li&gt;安装新布局，在输入法中选定刚才编译出来的Français - Switch布局，之后重启（必需的）&lt;/li&gt;
@@ -601,6 +601,46 @@ rf-kill block 报错。
   &lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;h2 id=&quot;section-10&quot;&gt;第33小时&lt;/h2&gt;
+&lt;p&gt;今天Luc只让我傲完成小路上行驶这一件事，包含内容包括&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;起步前的观察，左转指示灯，死角确认&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;确保正确的行车线，不太左以免挡超车或来向车道，也不太右以免掛静止车后视镜&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;及时升降档位，包括行驶挂二档，过弯（窄，挤，不清）一档，大路行驶三档及以上&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;过弯时的正确步骤：&lt;br /&gt;
+左转：观察三点（左右镜，后视镜，死角），打转向灯；若双向车道靠右，有左转道上道，若单向道靠左，靠近路口处同时降档减速，先左后右，&lt;strong&gt;左死角观察&lt;/strong&gt;，然后走到实在不能再进一步的地方，打左方向，溜右侧前行&lt;br /&gt;
+右转：观察三点，打转向灯，靠右降档减速，先左后右，&lt;strong&gt;右死角观察&lt;/strong&gt;，然后贴人行道右转&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;过路口判断我是否有优先权&lt;br /&gt;
+什么标志都没有，右车优先&lt;br /&gt;
+倒三角，右车优先&lt;br /&gt;
+红停，左右车都优先&lt;br /&gt;
+不可混淆行人斑马线和左右必停车的直角框&lt;br /&gt;
+红绿灯，我绿则我优先&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;窄路迎面来车，即使我优先仍应当减速慢行&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;窄路口，拥挤路口，不详路口转弯，降到一档，但要在到路口时再做此动作&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;过路口，先左后右观察，但不必停车，慢速滑过&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;早就应当想到但终于第一次实践的技巧， 挂一档时，即使没踩油门也不应当熄火，因为发动机系统会最低给油。此时速度大约是10kmh。如果希望以更小的速度行驶，可以&lt;strong&gt;半踩离合&lt;/strong&gt;，使得发动机传动到轮胎上的有效功率进一步降低。&lt;br /&gt;
+低速过弯，泊车，倒车等可用此技巧。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 </description>
                 <link>http://username.github.io/private/2015/08/06/</link>
                 <guid>http://username.github.io/private/2015/08/</guid>
