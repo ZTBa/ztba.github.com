@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <title>
       
-        debian环境下手动安装google chrome浏览器 - 
+        OVH托管ESXi服务器环境下如何安装guest machine - 
       
       灵犀一点 Sparkle
     </title>
-    <meta name="description" content="Debian: install google chrome">
+    <meta name="description" content="">
     <meta name="author" content="T.Z">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- HTML5 shim, for IE6-8 support of HTML elements -->
@@ -130,7 +130,7 @@
           
 <div class="page-header">
   <h1>
-    debian环境下手动安装google chrome浏览器 
+    OVH托管ESXi服务器环境下如何安装guest machine 
     
   </h1>
 </div>
@@ -138,27 +138,72 @@
 <div class="row">
   <div class="span8">
     
-<p>虽然chromium与chrome同宗同源，但毕竟还有少许差别：例如google的版本更新的快，还内置flash播放器，
-等等。总之有那么一种需求，希望能够在debian环境下安装使用chrome浏览器。</p>
+<h2 id="section">先决条件</h2>
+<p><strong>MAC + IP failover</strong><br />
+ 托管环境下是没有dhcp服务的，所以必须首先确定guest系统的ip，否则没有网络连接。
+ 系统镜像上传到datastore。这里选择Ubuntu v16 LTS x64。</p>
 
-<p>这就要手动安装了，步骤如下：</p>
+<h2 id="section-1">安装步骤</h2>
+<p>启动vShere Client， 配置guest， 修改参数，找到网络适配器，手动修改MAC地址。<br />
+ 之后启动guest，一路安装，会告知无法侦测dhcp，手动配置ip<br />
+ 填写IP failover作为地址和gatewey，mask为24，dns选取OVH统一地址：<br />
+  <strong>213.186.33.99</strong><br />
+  安装结束后重启，发现依然无法上网，需要继续修改/etc/network/interface文件</p>
 
-<pre><code>su
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" &gt;&gt; /etc/apt/sources.list.d/googlechrome.list'
-apt-get update &amp;&amp; apt-get install google-chrome-stable
+<pre><code>	#The loopback network interface  
+	auto lo  
+	iface lo inet loopback  
+	#The primary network interface  
+	auto eth0  
+	iface eth0 inet static  
+		address XX  
+		netmask 255.255.255.255  
+		broadcast XX  
+		post-up route add YY dev eth0  
+		post-up route add default gw YY  
+		pre-down route del YY  
+		pre-down route del default gw YY  
+		dns-nameservers 213.186.33.99  
+		dns-search ovh.net  
 </code></pre>
 
-<p>这样就可以享受google亲儿子了</p>
+<p>注释：<br />
+  *XX	:guest获取的IP failover<br />
+  *YY		:ESXi的gatewey</p>
+
+<p>关于后者的获取，需要到vSphere Client，Host的设置标签页，DNS与路由选项，对应VMKernel 的地址</p>
+
+<p>期间一个小插曲，在interface文件中我发现历来是eth0的网卡名被设定成ens160，让人感觉很不爽， 于是查询真实属性</p>
+
+<pre><code>dmesg | grep -i eth
+</code></pre>
+
+<p>发现被重命名了，
+于是进入到grub文件</p>
+
+<pre><code>sudo vi /etc/default/grub
+</code></pre>
+
+<p>修改GRUB_CMDLINE_LINUX行</p>
+
+<pre><code>GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"
+</code></pre>
+
+<p>然后重新生成引导文件</p>
+
+<pre><code>sudo grub-mkconfig -o /boot/grub/grub.cfg
+</code></pre>
+
+<p>重启，世界美好了。</p>
 
     <hr>
     <div class="pagination btn-group">
       
-        <a class="btn prev" href="/lessons/2014/12/15/debian" title="最小安装上网用Debian">&larr; Previous</a>
+        <a class="btn prev" href="/%E6%84%9F%E6%85%A8/2016/07/05/ajazz-ak33s-review" title="黑爵AJAZZ机械键盘AK33S上手体验">&larr; Previous</a>
       
         <a class="btn" href="/archive.html">Archive</a>
       
-        <a class="btn next" href="/%E6%84%9F%E6%85%A8/2014/12/19/--" title="出乎 意料 之外">Next &rarr;</a>
+        <a class="btn next" href="/2017/08/30/android-lineage-os" title="红米RedMI1S刷机：强大的Lineage OS">Next &rarr;</a>
       
     </div>
     <hr>
@@ -168,15 +213,8 @@ apt-get update &amp;&amp; apt-get install google-chrome-stable
   <div class="span4">
     <section>
       <h4>Published</h4>
-      <div class="date"><span>16 December 2014</span></div>
+      <div class="date"><span>27 November 2016</span></div>
     </section>
-    
-      <section>
-        <h4>Category</h4>
-        <span class="category">
-          skills
-        </span>
-      </section>
          
     
       <section>
@@ -192,7 +230,7 @@ apt-get update &amp;&amp; apt-get install google-chrome-stable
      
     	<li><a href="/tags.html#debian-ref">debian <span>7</span></a></li>
      
-    	<li><a href="/tags.html#skill-ref">skill <span>5</span></a></li>
+    	<li><a href="/tags.html#tutorial-ref">tutorial <span>6</span></a></li>
     
   
 

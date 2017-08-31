@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>
+      
+        老树新芽装Debian - 
+      
+      灵犀一点 Sparkle
+    </title>
+    <meta name="description" content="安装笔记">
+    <meta name="author" content="T.Z">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link href="/assets/themes/hooligan/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/hooligan/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/assets/themes/hooligan/css-social-buttons/css/zocial.stripped.css">
+    <link href="/assets/themes/hooligan/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/hooligan/css/darkstrap.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/hooligan/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- fav and touch icons -->
+    <!-- Update these with your own images
+      <link rel="shortcut icon" href="images/favicon.ico">
+      <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+      <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+      <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    -->
+  </head>
+
+  <body>
+    <div id="page-wrap">
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="container">
+            <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" href="/">灵犀一点 Sparkle</a>
+
+            <div class="nav-collapse">
+              <ul class="nav">
+                
+                
+                
+
+
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+
+
+
+              </ul>
+              <ul class="nav pull-right social visible-desktop">
+                <li class="divider-vertical"></li>
+                
+                
+                
+                
+                
+                
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="content">
+          
+<div class="page-header">
+  <h1>
+    老树新芽装Debian 
+    
+      <small>NON-PAE上安装Debian x86记录</small>
+    
+  </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    
+<h2 id="section">缘起</h2>
+
+<p>家里一台Sony VAIO VGN-B1VP 始终闲置，说起来还是我第一台工作电脑，因为良好的使用习惯，至今没什么硬件故障。第一代centrino，1.6GHz CPU, 1.5GB 内存，80G 5400rpm的硬盘。大约是先入为主，始终觉得这个薄膜键盘手感要好过另一台IBM R51。当然原机配套的XP早就过期了，这么老的配置跑win10实在勉强，但linux还是绰绰有余的，于是决定重装系统。</p>
+
+<p>开始选择的是ubuntu。为了快速安装，把硬盘卸下来接IDE=&gt;usb转接器插到台式机上，
+  用vmware灌装了14.04 LTS x86（无意中绕过了一个先天限制，这是后话）。然后装回笔记本，欢天喜地的启动了。</p>
+
+<p>之后了两天一直正常使用，直到一次例行的升级之后，赫然报错：内核硬件不支持！
+  Kernel requires features not present on the CPU: PAE</p>
+
+<p>这才意识到大内存时代已经来了很久了。</p>
+
+<h3 id="section-1">具体的解释如下：</h3>
+
+<p>从Ubuntu 12.04开始，尽管是32位的操作系统，依然以cpu支持PAE（支持内存大于4Go的特性）为前提，否则是不可能安装的。偏偏我的安装过程绕过了这个验证（台式机装置的是i7 CPU），所以一直运行了这么几天。但升级内核的时候又要面对PAE检验，这次绕不过去了。</p>
+
+<p>虽然顶个红叉不耽误使用，但不能升级，不能安装新软件实在无法接受。
+  于是开始做功课：老机器上可以跑什么系统。
+  发现了这么一个<a href="http://linuxpasapas.blog.free.fr/index.php?post/2015/08/14/linux_requirements_non-pae">列表</a>。可以看出，只有Debian还在维持最新版本的non-pae支持。</p>
+
+<p>业界良心。</p>
+
+<p>下载net安装镜像，最小安装(具体过程可以参考另外一篇<a href="http://ztba.github.io/lessons/2014/12/15/debian">最小安装上网用Debian</a> )
+  之后添加xfce4桌面，以及顺手的软件：tilda, scite, fcitx, sunpinyin, chrome，nautilus
+  然后进入图形窗口，遇到一连串的问题。</p>
+
+<h2 id="section-2">声音</h2>
+
+<p>明明已经安装了xfce4-mixer gstreamer0.10-alsa， 在命令行进入 alsamixer 调节了PCM音量，偏偏音量图片下打着红叉。使用</p>
+
+<pre><code>lspci | grep Audio
+</code></pre>
+
+<p>命令查看音频硬件情况， 依然没什么进展。 貌似还使用了</p>
+
+<pre><code>sudo alsactl init
+</code></pre>
+
+<p>命令，也没什么用处。
+  后来在某论坛里发现一个奇葩方案：在Audio mixer=&gt;Control里勾选External Amplifier, 表示要让声音外放。 然后就出声了。</p>
+
+<h2 id="flash">flash</h2>
+
+<p>要使用pepperflashplugin-nonfree插件，需要添加apt源</p>
+
+<pre><code>deb http://ftp.fr.debian.org/debian/ jessie main contrib non-free  
+</code></pre>
+
+<p>之后</p>
+
+<pre><code>sudo apt-get update &amp;&amp; sudo apt-get install pepperflashplugin-nonfree
+</code></pre>
+
+<p>就没问题了</p>
+
+<h2 id="wifi">wifi</h2>
+
+<p>一开始都没有发现无线网卡的存在，祭出lspci大法：</p>
+
+<pre><code>lspci | grep -i wireless
+</code></pre>
+
+<p>发现是intel 2200BG卡，使用如下命令安装驱动
+（前提是已经添加了contrib 作为apt源）</p>
+
+<pre><code>sudo apt-get install firmware-ipw2x00 wireless-tools iwconfig
+</code></pre>
+
+<p>依然找不到无线网络
+使用</p>
+
+<pre><code>sudo cat /etc/udev/rules.d/70-persistent-net.rules 
+</code></pre>
+
+<p>查看, 发现无线网卡被命名为eth1，改成wlan</p>
+
+<p>使用sudo ifconfig wlan up挂载网卡，出现
+rf-kill block 报错。
+键入命令sudo rfkill list检查，发现无线网卡被软封锁。
+键入命令sudo rfkill unblock all解锁。</p>
+
+<p>但这个时候依然无法进行wifi连接，
+安装自动化网络设置软件 network-manager
+注意，因为彼此的排它性，此前要卸载wicd wifi-radar connman。</p>
+
+<p>同时安装xfce4显示插件和gui</p>
+
+<pre><code>sudo apt-get install network-manager xfce4-indicator-plugin network-manager-gnome
+</code></pre>
+
+<p>然后可以愉快的上网了</p>
+
+<h2 id="floppy">floppy</h2>
+
+<p>因为是在vmware下安装，默认的配置里竟然还有软驱。启动桌面后就堂而皇之的摆在桌面，尽管这个东西根本就不存在。删除的方法是：</p>
+
+<pre><code>sudo scite /etc/modprobe.d/fbdev-blacklist.conf
+</code></pre>
+
+<p>最后一行添加 blacklist floppy</p>
+
+<p>或者更优雅的使用管道</p>
+
+<pre><code>echo "blacklist floppy" | sudo tee /etc/modprobe.d/fbdev-blacklist.conf
+</code></pre>
+
+<p>之后执行</p>
+
+<pre><code>sudo rmmod floppy &amp;&amp; sudo update-initramfs -u
+</code></pre>
+
+<p>软驱图标就这样消失了</p>
+
+<h2 id="section-3">文字处理环境</h2>
+
+<p>这个老笔记本主要的用途就是上网和码字，所以前面那些都是预备，真正生产环境现在开始配置。</p>
+
+<p>首先需要git，以便管理版本；之后是jekyll系统，用以运行博客；最后要latex系统，可以出品格式文章。</p>
+
+<p>结果，git安装顺利，jekyll安装耗时巨大，但也都顺利（首先安装rvm, 然后从rvm安装openssl，再重装一次rvm，然后使用rvm提供的gem安装jekyll）</p>
+
+<p>运行jekyll server的结果是有些网页没有套上css, debug后发现是jekyll升级， 需要修改_config.xml中对于ASSET_PATH的定义。</p>
+
+<p>安装latex旷日持久，但绝对必备。</p>
+
+<pre><code>sudo apt-get install texlive-full
+</code></pre>
+
+<p>至此，笔记本满血复活。</p>
+
+    <hr>
+    <div class="pagination btn-group">
+      
+        <a class="btn prev" href="/%E6%84%9F%E6%85%A8/2016/01/07/ps3" title="PS3蓝牙键盘上手">&larr; Previous</a>
+      
+        <a class="btn" href="/archive.html">Archive</a>
+      
+        <a class="btn next" href="/%E6%84%9F%E6%85%A8/2016/07/05/ajazz-ak33s-review" title="黑爵AJAZZ机械键盘AK33S上手体验">Next &rarr;</a>
+      
+    </div>
+    <hr>
+    
+  </div>
+  
+  <div class="span4">
+    <section>
+      <h4>Published</h4>
+      <div class="date"><span>28 February 2016</span></div>
+    </section>
+    
+      <section>
+        <h4>Category</h4>
+        <span class="category">
+          skills
+        </span>
+      </section>
+         
+    
+      <section>
+        <h4>Tags</h4>
+        <ul class="tag_box">
+          
+          
+
+
+  
+     
+    	<li><a href="/tags.html#linux-ref">linux <span>8</span></a></li>
+     
+    	<li><a href="/tags.html#debian-ref">debian <span>7</span></a></li>
+     
+    	<li><a href="/tags.html#skill-ref">skill <span>5</span></a></li>
+    
+  
+
+
+
+        </ul>
+      </section>
+             
+  </div>
+</div>
+
+
+        </div>
+      </div> <!-- /container -->
+
+      <div class="footer-push"></div>
+    </div><!--/.page-wrap -->
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2017 T.Z
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://github.com/dhulihan/hooligan" target="_blank">The Hooligan Theme</a>
+        </p>
+      </div>
+    </footer>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/assets/themes/hooligan/js/jquery.min.js"><\/script>')</script>
+    <script src="/assets/themes/hooligan/bootstrap/js/bootstrap.min.js"></script>
+
+    
+  </body>
+</html>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57706060-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

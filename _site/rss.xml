@@ -5,10 +5,80 @@
         <description>灵犀一点 Sparkle - T.Z</description>
         <link>http://username.github.io</link>
         <link>http://username.github.io</link>
-        <lastBuildDate>2016-11-27T22:33:24+01:00</lastBuildDate>
-        <pubDate>2016-11-27T22:33:24+01:00</pubDate>
+        <lastBuildDate>2017-08-31T18:29:41+02:00</lastBuildDate>
+        <pubDate>2017-08-31T18:29:41+02:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>红米RedMI1S刷机：强大的Lineage OS</title>
+                <description>
+&lt;h2 id=&quot;section&quot;&gt;缘起&lt;/h2&gt;
+
+&lt;p&gt;当初赫然发现小米品牌可以用一部iPhone手机的钱买一堆手机便义无反顾的扎到了小米阵营。那时红米刚刚推出，一气订了四部给家里的老人。年初的时候岳父岳母换话费套餐，顺便买了两部华为，于是红米便被闲置了。&lt;/p&gt;
+
+&lt;p&gt;自已的Mi3虽然已经进化到MIUI8，但Android版本依然停留在6，对棉花糖垂涎已久，于是决定刷一部红米，代替目前还是功能机的工作手机。&lt;/p&gt;
+
+&lt;p&gt;然后知道了Lineage OS（很多时候简写LOS），竟然对红米RedMi1S这种古董机型都提供系统维护，没二话，就它了。&lt;/p&gt;
+
+&lt;p&gt;说一句题外话，红米RedMi1S这部手机的配置其实相当不错，性价比颇高，在欧洲这边很受追捧。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;准备工作&lt;/h2&gt;
+
+&lt;p&gt;在LOS官网下载了最新版本（14.1 nightly）的系统镜像，大致滤一遍教程：手头现成就有Android的SDK，软件环境的构建没有难度。倒是硬件方面有几个步骤不能省。&lt;/p&gt;
+
+&lt;p&gt;首先到设置-&amp;gt;关于-&amp;gt;MIUI版本上连击7下，开启开发者模式；然后进入该模式，开启ADB调试模式以及许可调试信息窗口弹出，再连接电脑时会在手机端显示是否许可MAC地址为特定的确认窗空。选择允许。这样涉及刷内核的命令才有可能被执行。这中间还必须登陆一下小米账户，告诉小米官方这台机器将进入ADB调试许可模式。估计是为了在数据库取消售后联保，毕竟刷机风险是应当由用户自己承担的。&lt;/p&gt;
+
+&lt;p&gt;这里表扬一下Ubuntu，插上红米adb直连，驱动已经内置！对比windows上四处找驱动，甚至要借助豌豆荚之类第三方，简直弱爆了。&lt;/p&gt;
+
+&lt;p&gt;为了刷内核，还要有一个预启动系统，类似与PC端的bios，LOS给出了TWRP的连接，找到匹配机器的最新版本，下载。&lt;/p&gt;
+
+&lt;p&gt;另外为了root，还要有su预制包，一并下载到本地。至此，四个软件包准备完毕。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;安装&lt;/h2&gt;
+
+&lt;p&gt;命令行执行 
+	adb reboot bootloader&lt;/p&gt;
+
+&lt;p&gt;因为第一次刷，还要解锁
+	fastboot oem unlock&lt;/p&gt;
+
+&lt;p&gt;开关键选择&lt;/p&gt;
+
+&lt;p&gt;然后刷入TWRP
+  fastboot flash recovery twrp-XX.img&lt;/p&gt;
+
+&lt;p&gt;fastboot reboot-bootloader
+  这一步有争议，成熟的做法是在fastboot本身选择recovery模式启动，从而切换到TWRP引导系统。&lt;/p&gt;
+
+&lt;p&gt;从而实现安装su.zip
+  注意在进入TWRP后再传递压缩文件
+  add push SuperSu.zip /sdcard&lt;/p&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;体验&lt;/h2&gt;
+
+&lt;p&gt;因为是副机，加之了解配置在四年前都不算主流，所以根本没有想跑吃资源的东西。安装软件如下：google全家桶之Pico版（目测仅包含google服务框架和Play Store），谷歌键盘，Skype Entreprise， ES Explorer, Yahoo天气服务，以及迅飞输入法&lt;/p&gt;
+
+&lt;p&gt;其他的应用全部使用系统内置的版本，然后发现这是一个完成度非常高的版本&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;FM Radio可用，且自动显示相关信息（电台名称，当期节目名称，起始时间等）&lt;/li&gt;
+  &lt;li&gt;相机可用，前后镜头都可以&lt;/li&gt;
+  &lt;li&gt;呼吸灯可用，支持自定义色彩&lt;/li&gt;
+  &lt;li&gt;通话质量优秀，与MIUI相比没有显著差异&lt;/li&gt;
+  &lt;li&gt;信号强，貌似胜过MIUI&lt;/li&gt;
+  &lt;li&gt;出奇的省电，第一次充电后坚持了4天！！！（有截图为证）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-4&quot;&gt;结论&lt;/h2&gt;
+
+&lt;p&gt;作为副机，足够我再用四年&lt;/p&gt;
+
+</description>
+                <link>http://username.github.io/2017/08/30/android-lineage-os</link>
+                <guid>http://username.github.io/2017/08/30/android-lineage-os</guid>
+                <pubDate>2017-08-30T00:00:00+02:00</pubDate>
+        </item>
 
         <item>
                 <title>OVH托管ESXi服务器环境下如何安装guest machine</title>
@@ -285,7 +355,7 @@ rf-kill block 报错。
 
 &lt;p&gt;安装latex旷日持久，但绝对必备。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo apt-get texlive-full
+&lt;pre&gt;&lt;code&gt;sudo apt-get install texlive-full
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;至此，笔记本满血复活。&lt;/p&gt;
