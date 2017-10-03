@@ -9,7 +9,8 @@ http://username.github.io/rss.xml
 http://username.github.io/sitemap.txt
 http://username.github.io/tags.html
 
-http://username.github.io/2017/08/30/android-lineage-os
+http://username.github.io/lessons/2017/10/03/powershellwindows
+http://username.github.io/lessons/2017/08/30/android-lineage-os
 http://username.github.io/2016/11/27/ovh-hosting-esxi-server-add-guest-machine
 http://username.github.io/%E6%84%9F%E6%85%A8/2016/07/05/ajazz-ak33s-review
 http://username.github.io/skills/2016/02/28/debian

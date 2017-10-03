@@ -150,7 +150,7 @@
 
 <p>然后知道了Lineage OS（很多时候简写LOS），竟然对红米RedMi1S这种古董机型都提供系统维护，没二话，就它了。</p>
 
-<p>说一句题外话，红米RedMi1S这部手机的配置其实相当不错，性价比颇高，在欧洲这边很受追捧。</p>
+<p>说一句题外话，红米RedMi1S这部手机的配置其实相当靠谱，性价比颇高，在欧洲这边很受追捧。</p>
 
 <h2 id="section-1">准备工作</h2>
 
@@ -176,7 +176,7 @@
 <pre><code>fastboot oem unlock
 </code></pre>
 
-<p>开关键选择</p>
+<p>音量键选择，开关键确认。</p>
 
 <p>然后刷入TWRP</p>
 
@@ -185,10 +185,9 @@
 
 <p>fastboot reboot-bootloader</p>
 
-<p>这一步有争议，成熟的做法是在fastboot本身选择recovery模式启动，从而切换到TWRP引导系统。</p>
+<p>这一步有争议，可选项是通过命令行切换启动，成熟的做法则是在fastboot本身选择recovery模式启动，从而切换到TWRP引导系统。进而实现安装su.zip。</p>
 
-<p>从而实现安装su.zip
-  注意在进入TWRP后再传递压缩文件</p>
+<p>注意在进入TWRP后再传递压缩文件</p>
 
 <pre><code>add push SuperSu.zip /sdcard
 </code></pre>
@@ -221,7 +220,7 @@
       
         <a class="btn" href="/archive.html">Archive</a>
       
-        <a class="btn next disabled">Next &rarr;</a>
+        <a class="btn next" href="/lessons/2017/10/03/powershellwindows" title="使用powershell远程控制windows服务器">Next &rarr;</a>
       
     </div>
     <hr>
@@ -233,7 +232,32 @@
       <h4>Published</h4>
       <div class="date"><span>30 August 2017</span></div>
     </section>
+    
+      <section>
+        <h4>Category</h4>
+        <span class="category">
+          lessons
+        </span>
+      </section>
          
+    
+      <section>
+        <h4>Tags</h4>
+        <ul class="tag_box">
+          
+          
+
+
+  
+     
+    	<li><a href="/tags.html#tutorial-ref">tutorial <span>8</span></a></li>
+    
+  
+
+
+
+        </ul>
+      </section>
              
   </div>
 </div>

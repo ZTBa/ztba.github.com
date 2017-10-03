@@ -3,8 +3,8 @@ layout: post
 title: "红米RedMI1S刷机：强大的Lineage OS"
 tagline: "回答知乎'用小米手机不用MIUI系统是怎样的体验'词条"
 description: "安装笔记"
-category: 
-tags: []
+category: lessons
+tags: [tutorial]
 ---
 {% include JB/setup %}
 
@@ -49,9 +49,8 @@ tags: []
 
   fastboot reboot-bootloader 
   
-  这一步有争议，成熟的做法是在fastboot本身选择recovery模式启动，从而切换到TWRP引导系统。
-
-  从而实现安装su.zip
+  这一步有争议，可选项是通过命令行切换启动，成熟的做法则是在fastboot本身选择recovery模式启动，从而切换到TWRP引导系统。进而实现安装su.zip。 
+  
   注意在进入TWRP后再传递压缩文件
   
 	add push SuperSu.zip /sdcard

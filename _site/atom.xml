@@ -4,7 +4,7 @@
  <title>灵犀一点 Sparkle</title>
  <link href="http://username.github.io/" rel="self"/>
  <link href="http://username.github.io"/>
- <updated>2017-10-03T09:08:11+02:00</updated>
+ <updated>2017-10-03T15:39:50+02:00</updated>
  <id>http://username.github.io</id>
  <author>
    <name>T.Z</name>
@@ -13,10 +13,110 @@
 
  
  <entry>
+   <title>使用powershell远程控制windows服务器</title>
+   <link href="http://username.github.io/lessons/2017/10/03/powershellwindows"/>
+   <updated>2017-10-03T00:00:00+02:00</updated>
+   <id>http://username.github.io/lessons/2017/10/03/powershellwindows</id>
+   <content type="html">
+&lt;h2 id=&quot;section&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;在UAC还没有出现的年代，windows环境下远程命令调用大约只有PSTools一条路可走，但无可否认的是这条路顺畅无比，长久以来我们使用的自动化脚步都是以此为基石的。&lt;br /&gt;
+  然后美好时光结束了。&lt;/p&gt;
+
+&lt;p&gt;最近要在一个非AD环境下实现远程命令调用，操作系统是Server 2008 R2和Windows 7。尽管下载了号称匹配Srv2008的PSTools （v2.45），我依然悲伤的发现童话都是骗人的。&lt;br /&gt;
+  于是Powershell成了唯一的选择。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;准备工作&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;网络类型&lt;/h3&gt;
+
+&lt;p&gt;在非AD环境下，各机器处于WorkGroup环境。为了实现winrm的远程调用，需要将网络类型设定为&lt;code&gt;私有&lt;/code&gt;。修改方法多样，可以直接点击修改，也可以不怕麻烦的到注册表下&lt;code&gt;HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetwarkList\Profiles\XX&lt;/code&gt;项目中，设定DWORD类型变量 Category =&amp;gt;1， CategoryType=&amp;gt;0。其中XX对应当前网络连接名称。&lt;/p&gt;
+
+&lt;h3 id=&quot;powershell&quot;&gt;Powershell的脚本执行许可&lt;/h3&gt;
+
+&lt;p&gt;默认的powershell脚本是不可执行的，需要以管理员权限打开powershell端口（这个设定适用于以后所有的powershell命令），键入命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set-executionpolicy remotesigned  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;防火墙开口子&lt;/h3&gt;
+
+&lt;p&gt;有时会发现远程测试命令&lt;code&gt;test-rsman  A的IP&lt;/code&gt;  怎么都过不去，多数情况是被墙了。解决方案是执行如下命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;winrm quickconfig
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;会添加一个例外规则到防火情上。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-4&quot;&gt;配置各机器&lt;/h2&gt;
+
+&lt;p&gt;服务器设为A，操作端设为B。&lt;/p&gt;
+
+&lt;h3 id=&quot;a&quot;&gt;A方配置&lt;/h3&gt;
+
+&lt;p&gt;输入命令检测&lt;code&gt;winrm&lt;/code&gt;服务的运行状态&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;get-service winrm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果是running，继续键入&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;enable-psremoting -force
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以许可远程控制本地程序。&lt;/p&gt;
+
+&lt;h3 id=&quot;b&quot;&gt;B方配置&lt;/h3&gt;
+
+&lt;p&gt;关键点在于添加远程机器到信任名单中，方法1是在具有Admin权限的cmd窗口录入&lt;code&gt;winrm set winrm/config/client @{TrustedHosts=”A的IP”}&lt;/code&gt;，方法2是据说这个命令同样可以在具有admin权限的powershell中执行，方法3是powershell窗口录入&lt;code&gt;Set-Item WSMan:\localhost\Client\TrustedHosts -Value &quot;A的IP&quot; -Force&lt;/code&gt;。 注意，为了可以许可所有机器，参数&lt;code&gt;A的IP&lt;/code&gt;可以用通配符&lt;code&gt;*&lt;/code&gt;代替。&lt;br /&gt;
+  检验方法是&lt;code&gt;Get-Item WSMan:\localhost\Client\TrustedHosts&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;x80070005&quot;&gt;0x80070005报错&lt;/h4&gt;
+
+&lt;p&gt;在设定信任名单时有可能会遇到这个报错，解决方法是到注册表下&lt;code&gt;HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System&lt;/code&gt;项目中，设定DWORD类型变量LocalAccountTokenFilterPolicy =&amp;gt;1&lt;/p&gt;
+
+&lt;h2 id=&quot;section-5&quot;&gt;脚本研究&lt;/h2&gt;
+
+&lt;p&gt;远程命令执行当然要用&lt;code&gt;invoke-command&lt;/code&gt;指令，同时为了避免每次重新输入用户名密码，可以采用特殊格式预设定登陆信息&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$Username = &#39;username&#39;
+$Password = &#39;password&#39;
+$pass = ConvertTo-SecureString -AsPlainText $Password -Force
+$Cred = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$pass
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后用Credential参数调用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Invoke-Command -ComputerName A的IP -Credential $Cred -ScriptBlock{set-date &quot;猴年马月&quot;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;windowslinux&quot;&gt;Windows环境下对于Linux脚本的远程调用&lt;/h2&gt;
+
+&lt;p&gt;这个技能在powershell出现之前就存在了，幸运的是powershell同样支持在脚本中混杂这个命令，一个ps1文件就可以全包括。&lt;br /&gt;
+  具体的说，需要通过putty内置的plink.exe调用ssh，呼叫linux下的预定script，完整的命令是：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;PLINK.EXE -ssh  C的用户名@C的IP -pw C的密码 /home/YY/脚本.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在Linux中，如果想用sudo级别的命令又不想费事输入密码的，可以使用如下方案：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo -e &quot;sudo的密码\n&quot; | sudo service ZZ restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;section-6&quot;&gt;脚本的视窗化&lt;/h2&gt;
+
+&lt;p&gt;为了方便传统windows用户（习惯双击鼠标左键），可以设定一个快捷方式到这个脚本；另外为方便检视运行结果，使用参数-NoExit保留powershell窗口。 完整命令如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;powershell -NoExit &quot;c:\脚本.ps1&quot;
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>红米RedMI1S刷机：强大的Lineage OS</title>
-   <link href="http://username.github.io/2017/08/30/android-lineage-os"/>
+   <link href="http://username.github.io/lessons/2017/08/30/android-lineage-os"/>
    <updated>2017-08-30T00:00:00+02:00</updated>
-   <id>http://username.github.io/2017/08/30/android-lineage-os</id>
+   <id>http://username.github.io/lessons/2017/08/30/android-lineage-os</id>
    <content type="html">
 &lt;h2 id=&quot;section&quot;&gt;缘起&lt;/h2&gt;
 
@@ -26,7 +126,7 @@
 
 &lt;p&gt;然后知道了Lineage OS（很多时候简写LOS），竟然对红米RedMi1S这种古董机型都提供系统维护，没二话，就它了。&lt;/p&gt;
 
-&lt;p&gt;说一句题外话，红米RedMi1S这部手机的配置其实相当不错，性价比颇高，在欧洲这边很受追捧。&lt;/p&gt;
+&lt;p&gt;说一句题外话，红米RedMi1S这部手机的配置其实相当靠谱，性价比颇高，在欧洲这边很受追捧。&lt;/p&gt;
 
 &lt;h2 id=&quot;section-1&quot;&gt;准备工作&lt;/h2&gt;
 
@@ -52,7 +152,7 @@
 &lt;pre&gt;&lt;code&gt;fastboot oem unlock
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;开关键选择&lt;/p&gt;
+&lt;p&gt;音量键选择，开关键确认。&lt;/p&gt;
 
 &lt;p&gt;然后刷入TWRP&lt;/p&gt;
 
@@ -61,10 +161,9 @@
 
 &lt;p&gt;fastboot reboot-bootloader&lt;/p&gt;
 
-&lt;p&gt;这一步有争议，成熟的做法是在fastboot本身选择recovery模式启动，从而切换到TWRP引导系统。&lt;/p&gt;
+&lt;p&gt;这一步有争议，可选项是通过命令行切换启动，成熟的做法则是在fastboot本身选择recovery模式启动，从而切换到TWRP引导系统。进而实现安装su.zip。&lt;/p&gt;
 
-&lt;p&gt;从而实现安装su.zip
-  注意在进入TWRP后再传递压缩文件&lt;/p&gt;
+&lt;p&gt;注意在进入TWRP后再传递压缩文件&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;add push SuperSu.zip /sdcard
 &lt;/code&gt;&lt;/pre&gt;
