@@ -65,7 +65,7 @@ tags: [tutorial]
 
 ## 脚本研究
 
-  远程命令执行当然要用`invoke-command`指令，同时为了避免每次重新输入用户名密码，可以采用特殊格式预设定登陆信息  
+  远程命令执行当然要用`invoke-command`指令，同时为了避免每次重新输入用户名密码，可以采用特殊格式预设定登录信息  
   
 	$Username = 'username'
 	$Password = 'password'
