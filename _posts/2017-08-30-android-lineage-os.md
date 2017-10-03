@@ -23,37 +23,42 @@ tags: []
 
   在LOS官网下载了最新版本（14.1 nightly）的系统镜像，大致滤一遍教程：手头现成就有Android的SDK，软件环境的构建没有难度。倒是硬件方面有几个步骤不能省。
   
-  首先到设置->关于->MIUI版本上连击7下，开启开发者模式；然后进入该模式，开启ADB调试模式以及许可调试信息窗口弹出，再连接电脑时会在手机端显示是否许可MAC地址为特定的确认窗空。选择允许。这样涉及刷内核的命令才有可能被执行。这中间还必须登陆一下小米账户，告诉小米官方这台机器将进入ADB调试许可模式。估计是为了在数据库取消售后联保，毕竟刷机风险是应当由用户自己承担的。
+  首先到设置->关于->MIUI版本上连击7下，开启`开发者模式`；然后进入该模式，开启`ADB调试模式`以及`许可调试信息窗口弹出`两个选项，再连接电脑时会在手机端显示是否许可MAC地址为特定值的确认窗口。选择允许。这样涉及刷内核的命令才有可能被执行。这中间还必须登陆一下小米账户，告诉小米官方这台机器将进入ADB调试许可模式。估计是为了在数据库取消售后联保，毕竟刷机风险是应当由用户自己承担的。
   
   这里表扬一下Ubuntu，插上红米adb直连，驱动已经内置！对比windows上四处找驱动，甚至要借助豌豆荚之类第三方，简直弱爆了。
   
   为了刷内核，还要有一个预启动系统，类似与PC端的bios，LOS给出了TWRP的连接，找到匹配机器的最新版本，下载。
   
-  另外为了root，还要有su预制包，一并下载到本地。至此，四个软件包准备完毕。
+  另外为了root，还要有su预制包，一并下载到本地；加上气象信息提供源，至此，四个软件包准备完毕。
   
 ## 安装
 
   命令行执行 
+  
 	adb reboot bootloader
 
   因为第一次刷，还要解锁
+  
 	fastboot oem unlock
 
   开关键选择
 
   然后刷入TWRP
-  fastboot flash recovery twrp-XX.img
+  
+	fastboot flash recovery twrp-XX.img
 
-  fastboot reboot-bootloader
+  fastboot reboot-bootloader 
+  
   这一步有争议，成熟的做法是在fastboot本身选择recovery模式启动，从而切换到TWRP引导系统。
 
   从而实现安装su.zip
   注意在进入TWRP后再传递压缩文件
-  add push SuperSu.zip /sdcard
+  
+	add push SuperSu.zip /sdcard
   
 ## 体验
 
-  因为是副机，加之了解配置在四年前都不算主流，所以根本没有想跑吃资源的东西。安装软件如下：google全家桶之Pico版（目测仅包含google服务框架和Play Store），谷歌键盘，Skype Entreprise， ES Explorer, Yahoo天气服务，以及迅飞输入法
+  因为是副机，加之明确自己的配置在四年前都不算主流，所以根本没有装吃资源的东西。安装软件如下：`google全家桶之Pico版`（目测仅包含google服务框架和Play Store），`谷歌键盘`，`Skype Entreprise`， `ES Explorer`, `Yahoo天气服务`，以及`迅飞输入法`
   
   其他的应用全部使用系统内置的版本，然后发现这是一个完成度非常高的版本
   
@@ -63,7 +68,7 @@ tags: []
 * 通话质量优秀，与MIUI相比没有显著差异
 * 信号强，貌似胜过MIUI
 * 出奇的省电，第一次充电后坚持了4天！！！（有截图为证）
-
+![RedMi1S_LineageOS](/img/Screenshot_20170830-100045.png "红米1s在LOS系统下的耗电情况")
 	
 ## 结论
 
