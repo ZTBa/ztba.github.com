@@ -41,7 +41,7 @@ tags: []
   
 	fastboot oem unlock
 
-  开关键选择
+  音量键选择，开关键确认。
 
   然后刷入TWRP
   
