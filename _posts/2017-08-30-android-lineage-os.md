@@ -33,10 +33,14 @@ tags: [tutorial]
   
 ## 安装
 
+  2017-12-21 部分更正：因为是凭记忆写的安装过程，有几步其实是错误或至少是不完整的，特此更正。
+  
   命令行执行 
   
 	adb reboot bootloader
 
+  实现重启到fastboot界面，这个命令等效于在关机状态下按着音量减+电源进行启动。在fastboot界面下可以使用fastboot命令与手机交互，但有时会提示无权限，这时需要前缀sodu
+  
   因为第一次刷，还要解锁
   
 	fastboot oem unlock
@@ -46,12 +50,11 @@ tags: [tutorial]
   然后刷入TWRP
   
 	fastboot flash recovery twrp-XX.img
-
-  fastboot reboot-bootloader 
+	fastboot reboot-bootloader 
   
-  这一步有争议，可选项是通过命令行切换启动，成熟的做法则是在fastboot本身选择recovery模式启动，从而切换到TWRP引导系统。进而实现安装su.zip。 
+  从而切换到TWRP引导系统。进而实现安装su.zip。这一步的等效操作是在fastboot界面下长按音量增+电源。 
   
-  注意在进入TWRP后再传递压缩文件
+  注意在进入TWRP后再传递压缩文件（其实此前传递也行，但有时需要wipe，则数据不保，所以进入后再传递万无一失）
   
 	add push SuperSu.zip /sdcard
   
