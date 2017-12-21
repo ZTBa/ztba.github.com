@@ -39,7 +39,7 @@ tags: [tutorial]
   
 	adb reboot bootloader
 
-  实现重启到fastboot界面，这个命令等效于在关机状态下按着音量减+电源进行启动。在fastboot界面下可以使用fastboot命令与手机交互，但有时会提示无权限，这时需要前缀sodu
+  实现重启到fastboot界面，这个命令等效于在关机状态下按着音量减+电源进行启动。在fastboot界面下可以使用fastboot命令与手机交互，但有时会提示无权限，这时需要前缀sudo
   
   因为第一次刷，还要解锁
   

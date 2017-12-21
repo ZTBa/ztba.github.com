@@ -170,6 +170,8 @@ Here's a sample "posts list".
 
 <ul class="posts">
   
+    <li><span>21 Dec 2017</span> &raquo; <a href="/lessons/2017/12/21/1slineageos">红米1s运行lineageOS音乐播放问题修正</a></li>
+  
     <li><span>03 Oct 2017</span> &raquo; <a href="/lessons/2017/10/03/powershellwindows">使用powershell远程控制windows服务器</a></li>
   
     <li><span>30 Aug 2017</span> &raquo; <a href="/lessons/2017/08/30/android-lineage-os">红米RedMI1S刷机：强大的Lineage OS</a></li>
@@ -236,101 +238,34 @@ layout: page
     <a href="/index.md.bk">Hello World!</a>
 
 
-    <a href="/lessons/2017/10/03/powershellwindows">使用powershell远程控制windows服务器</a>
+    <a href="/lessons/2017/12/21/1slineageos">红米1s运行lineageOS音乐播放问题修正</a>
 
 </h1>
 <div class="entry-content">
-<h2 id="section">前言</h2>
+<h2 id="section">问题概述</h2>
 
-<p>在UAC还没有出现的年代，windows环境下远程命令调用大约只有PSTools一条路可走，但无可否认的是这条路顺畅无比，长久以来我们使用的自动化脚本都是以此为基石的。<br />
-  然后美好时光结束了。</p>
+<p>红米1s运行LineageOS已经有一段时间了，这样一个搭配完美满足所有工作需求。唯一让我不满的问题出现在娱乐需求方面：在播放内置音乐文件的时候（我使用的是海贝播放器），如果插入耳机线，并且熄屏，会出现随机时长后声音中断的现象，点亮屏幕会发现依然处于播放状态，但耳机里就是没声音；不定时长后（无论熄屏亮屏）声音会重新恢复，乐曲内容连贯，没有跳过一段的感觉。这一点有别于单纯的系统静音。<br />
+  但同样用海贝播放器，如果使用手机喇叭外放，则完全没有中断的情况，蓝牙耳机也播放正常。</p>
 
-<p>最近要在一个非AD环境下实现远程命令调用，操作系统是Server 2008 R2和Windows 7。尽管下载了号称匹配Srv2008的PSTools （v2.45），我依然悲伤的发现童话都是骗人的。<br />
-  于是Powershell成了唯一的选择。</p>
+<h2 id="section-1">问题分析</h2>
 
-<h2 id="section-1">准备工作</h2>
+<p>开始以为是省电模式把后台进程干掉了，专门到开发者模式调高了后台进程许可数量。无效。再到论坛上溜达，发现不少人提到LOS与谷歌热词探测（hotword detection）服务冲突。偏偏我装得全家桶是极简版（pico version），根本没有关闭这项服务的入口。只好遵循<a href="http://www.lineageosdownloads.com/get-google-assistant-lineage-os/">这篇</a>教程刷了遍机，然后到服务参数中关闭语音检测（顺便提一句，ok google这个功能真的挺带感的）。<br />
+  然而，问题依旧。</p>
 
-<h3 id="section-2">网络类型</h3>
+<h2 id="section-2">解决方案</h2>
 
-<p>在非AD环境下，各机器处于WorkGroup环境。为了实现winrm的远程调用，需要将网络类型设定为<code>私有</code>。修改方法多样，可以直接点击修改，也可以不怕麻烦的到注册表下<code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetwarkList\Profiles\XX</code>项目中，设定DWORD类型变量 Category =&gt;1， CategoryType=&gt;0。其中XX对应当前网络连接名称。</p>
+<p>真正奏效的方案是在<a href="https://forum.xda-developers.com/mi-5/help/lineageos-14-1-problem-headphones-sound-t3633885">这个网页</a>上找到的，据说是LOS与小米系统之间的一个配合bug，解决方案简单说来就是</p>
 
-<h3 id="powershell">Powershell的脚本执行许可</h3>
-
-<p>默认的powershell脚本是不可执行的，需要以管理员权限打开powershell端口（这个设定适用于以后所有的powershell命令），键入命令</p>
-
-<pre><code>set-executionpolicy remotesigned  
-</code></pre>
-
-<h3 id="section-3">防火墙开口子</h3>
-
-<p>有时会发现远程测试命令<code>test-rsman  A的IP</code>  怎么都过不去，多数情况是被墙了。解决方案是执行如下命令</p>
-
-<pre><code>winrm quickconfig
-</code></pre>
-
-<p>会添加一个例外规则到防火情上。</p>
-
-<h2 id="section-4">配置各机器</h2>
-
-<p>服务器设为A，操作端设为B。</p>
-
-<h3 id="a">A方配置</h3>
-
-<p>输入命令检测<code>winrm</code>服务的运行状态</p>
-
-<pre><code>get-service winrm
-</code></pre>
-
-<p>如果是running，继续键入</p>
-
-<pre><code>enable-psremoting -force
-</code></pre>
-
-<p>以许可远程控制本地程序。</p>
-
-<h3 id="b">B方配置</h3>
-
-<p>关键点在于添加远程机器到信任名单中，方法1是在具有Admin权限的cmd窗口录入<code>winrm set winrm/config/client @{TrustedHosts=”A的IP”}</code>，方法2是据说这个命令同样可以在具有admin权限的powershell中执行，方法3是powershell窗口录入<code>Set-Item WSMan:\localhost\Client\TrustedHosts -Value "A的IP" -Force</code>。 注意，为了可以许可所有机器，参数<code>A的IP</code>可以用通配符<code>*</code>代替。<br />
-  检验方法是<code>Get-Item WSMan:\localhost\Client\TrustedHosts</code></p>
-
-<h4 id="x80070005">0x80070005报错</h4>
-
-<p>在设定信任名单时有可能会遇到这个报错，解决方法是到注册表下<code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System</code>项目中，设定DWORD类型变量LocalAccountTokenFilterPolicy =&gt;1</p>
-
-<h2 id="section-5">脚本研究</h2>
-
-<p>远程命令执行当然要用<code>invoke-command</code>指令，同时为了避免每次重新输入用户名密码，可以采用特殊格式预设定登录信息</p>
-
-<pre><code>$Username = 'username'
-$Password = 'password'
-$pass = ConvertTo-SecureString -AsPlainText $Password -Force
-$Cred = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$pass
-</code></pre>
-
-<p>然后用Credential参数调用</p>
-
-<pre><code>Invoke-Command -ComputerName A的IP -Credential $Cred -ScriptBlock{set-date "猴年马月"}
-</code></pre>
-
-<h2 id="windowslinux">Windows环境下对于Linux脚本的远程调用</h2>
-
-<p>这个技能在powershell出现之前就存在了，幸运的是powershell同样支持在脚本中混杂这个命令，一个ps1文件就可以全包括。<br />
-  具体的说，需要通过putty内置的plink.exe调用ssh，呼叫linux下的预定script，完整的命令是：</p>
-
-<pre><code>PLINK.EXE -ssh  C的用户名@C的IP -pw C的密码 /home/YY/脚本.sh
-</code></pre>
-
-<p>在Linux中，如果想用sudo级别的命令又不想费事输入密码的，可以使用如下方案：</p>
-
-<pre><code>echo -e "sudo的密码\n" | sudo service ZZ restart
-</code></pre>
-
-<h2 id="section-6">脚本的视窗化</h2>
-
-<p>为了方便传统windows用户（习惯双击鼠标左键），可以设定一个快捷方式到这个脚本；另外为方便检视运行结果，使用参数-NoExit保留powershell窗口。 完整命令如下：</p>
-
-<pre><code>powershell -NoExit "c:\脚本.ps1"
-</code></pre>
+<ul>
+  <li><code>进TWRP</code></li>
+  <li><code>wipe dalvik + cache</code></li>
+  <li><code>安装miui（我是从小米官网下的miui8）</code></li>
+  <li><code>wipe dalvik + cache</code></li>
+  <li><code>安装LOS</code></li>
+  <li><code>wipe dalvik + cache</code></li>
+  <li><code>重启</code><br />
+亲测有效。</li>
+</ul>
 </div>
 
 </div>
