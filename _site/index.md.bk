@@ -170,6 +170,10 @@ Here's a sample "posts list".
 
 <ul class="posts">
   
+    <li><span>29 Sep 2018</span> &raquo; <a href="/lessons/2018/09/29/exchange-accountandroidoffice365">如何在没有Exchange Account选项的Android下添加Office365帐号</a></li>
+  
+    <li><span>01 Jun 2018</span> &raquo; <a href="/%E6%B8%B8%E8%AE%B0/2018/06/01/">西安旅游散记</a></li>
+  
     <li><span>21 Dec 2017</span> &raquo; <a href="/lessons/2017/12/21/1slineageos">红米1s运行lineageOS音乐播放问题修正</a></li>
   
     <li><span>03 Oct 2017</span> &raquo; <a href="/lessons/2017/10/03/powershellwindows">使用powershell远程控制windows服务器</a></li>
@@ -238,34 +242,23 @@ layout: page
     <a href="/index.md.bk">Hello World!</a>
 
 
-    <a href="/lessons/2017/12/21/1slineageos">红米1s运行lineageOS音乐播放问题修正</a>
+    <a href="/lessons/2018/09/29/exchange-accountandroidoffice365">如何在没有Exchange Account选项的Android下添加Office365帐号</a>
 
 </h1>
 <div class="entry-content">
-<h2 id="section">问题概述</h2>
+<p>选择Personal IMAP选项<br />
+邮箱地址填入完整含域名的帐号firstname.lastname@company.com 以及密码</p>
 
-<p>红米1s运行LineageOS已经有一段时间了，这样一个搭配完美满足所有工作需求。唯一让我不满的问题出现在娱乐需求方面：在播放内置音乐文件的时候（我使用的是海贝播放器），如果插入耳机线，并且熄屏，会出现随机时长后声音中断的现象，点亮屏幕会发现依然处于播放状态，但耳机里就是没声音；不定时长后（无论熄屏亮屏）声音会重新恢复，乐曲内容连贯，没有跳过一段的感觉。这一点有别于单纯的系统静音。<br />
-  但同样用海贝播放器，如果使用手机喇叭外放，则完全没有中断的情况，蓝牙耳机也播放正常。</p>
+<p>IMAP服务器<br />
+服务器地址写入outlook.office365.com<br />
+port写入993<br />
+Security Type选SSL/TLS</p>
 
-<h2 id="section-1">问题分析</h2>
-
-<p>开始以为是省电模式把后台进程干掉了，专门到开发者模式调高了后台进程许可数量。无效。再到论坛上溜达，发现不少人提到LOS与谷歌热词探测（hotword detection）服务冲突。偏偏我装得全家桶是极简版（pico version），根本没有关闭这项服务的入口。只好遵循<a href="http://www.lineageosdownloads.com/get-google-assistant-lineage-os/">这篇</a>教程刷了遍机，然后到服务参数中关闭语音检测（顺便提一句，ok google这个功能真的挺带感的）。<br />
-  然而，问题依旧。</p>
-
-<h2 id="section-2">解决方案</h2>
-
-<p>真正奏效的方案是在<a href="https://forum.xda-developers.com/mi-5/help/lineageos-14-1-problem-headphones-sound-t3633885">这个网页</a>上找到的，据说是LOS与小米系统之间的一个配合bug，解决方案简单说来就是</p>
-
-<ul>
-  <li><code>进TWRP</code></li>
-  <li><code>wipe dalvik + cache</code></li>
-  <li><code>安装miui（我是从小米官网下的miui8）</code></li>
-  <li><code>wipe dalvik + cache</code></li>
-  <li><code>安装LOS</code></li>
-  <li><code>wipe dalvik + cache</code></li>
-  <li><code>重启</code><br />
-亲测有效。</li>
-</ul>
+<p>SMTP服务器<br />
+服务器地址写入smtp.office365.com<br />
+port写入587<br />
+Security Type选TLS<br />
+完工！</p>
 </div>
 
 </div>
@@ -282,7 +275,7 @@ layout: page
 
     <footer>
       <div class="container">
-        <p>&copy; 2017 T.Z
+        <p>&copy; 2018 T.Z
           with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
           and <a href="http://github.com/dhulihan/hooligan" target="_blank">The Hooligan Theme</a>
         </p>

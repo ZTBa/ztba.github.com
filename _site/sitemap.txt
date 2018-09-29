@@ -9,6 +9,8 @@ http://username.github.io/rss.xml
 http://username.github.io/sitemap.txt
 http://username.github.io/tags.html
 
+http://username.github.io/lessons/2018/09/29/exchange-accountandroidoffice365
+http://username.github.io/%E6%B8%B8%E8%AE%B0/2018/06/01/
 http://username.github.io/lessons/2017/12/21/1slineageos
 http://username.github.io/lessons/2017/10/03/powershellwindows
 http://username.github.io/lessons/2017/08/30/android-lineage-os

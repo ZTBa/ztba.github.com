@@ -2,7 +2,6 @@
 layout: post
 title: "红米1s运行lineageOS音乐播放问题修正"
 description: "在插入耳机线的情况下熄屏播放无故中断"
-description: "安装笔记"
 category: lessons
 tags: [tutorial]
 ---
