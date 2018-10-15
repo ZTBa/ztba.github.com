@@ -5,8 +5,8 @@
         <description>灵犀一点 Sparkle - T.Z</description>
         <link>http://username.github.io</link>
         <link>http://username.github.io</link>
-        <lastBuildDate>2018-09-29T10:10:40+02:00</lastBuildDate>
-        <pubDate>2018-09-29T10:10:40+02:00</pubDate>
+        <lastBuildDate>2018-10-15T11:53:57+02:00</lastBuildDate>
+        <pubDate>2018-10-15T11:53:57+02:00</pubDate>
         <ttl>1800</ttl>
 
 
@@ -1646,6 +1646,18 @@ git config --global user.email &quot;devy@email.com&quot;
 &lt;p&gt;以上。&lt;/p&gt;
 
 &lt;p&gt;补充：后来发现还有一种选择：gitlab，一个完整的平台，完全仿照github的功能，可以在网页端很酷的展示动态。适合有必要让用户参与开发过程的项目，以及懒人。官网就有&lt;a href=&quot;https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md&quot;&gt;安装教程&lt;/a&gt;，滋不重复。&lt;/p&gt;
+
+&lt;p&gt;补充2：时至今日，最新版本为gitolite3，相应的安装命令和初始化命令都做了修改&lt;br /&gt;
+安装&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install gitolite3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;初始化&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;gitolite setup -a /tmp/git-admin.pub
+&lt;/code&gt;&lt;/pre&gt;
+
 </description>
                 <link>http://username.github.io/lessons/2015/01/13/git</link>
                 <guid>http://username.github.io/lessons/2015/01/13/git</guid>
