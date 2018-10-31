@@ -223,6 +223,33 @@ git config --global user.email "devy@email.com"
 <pre><code>gitolite setup -a /tmp/git-admin.pub
 </code></pre>
 
+<p>注意，我在安装gitolite的过程中，会有一步要求指出rsa公匙位置，对于全新系统来说，这时的安装是不完整的。<br />
+所以在这个版本中，正确的安装顺序应当是首先创建git帐户</p>
+
+<pre><code>sudo adduser --system --group --shell /bin/bash --disabled-password git  
+</code></pre>
+
+<p>然后登陆该账户</p>
+
+<pre><code>sudo su - git  
+</code></pre>
+
+<p>再设置rsa公匙</p>
+
+<pre><code>ssh-keygen -t rsa -C "git@postname"  
+</code></pre>
+
+<p>然后安装gitolite。<br />
+当然，如果错过了这几步也有补救措施</p>
+
+<pre><code>sudo dpkg-reconfigure gitolite3  
+</code></pre>
+
+<p>事实证明，这一步不可省略，即使顺序安装了也要执行，从而设定正常的repositories文件夹，以及authorized_keys文件（默认路径是/var/lib/gitolite3/.ssh/authorized_keys）<br />
+然后就是在这个authorized_keys文件中操作了<br />
+例如我要添加tom@debian9工作站，只需将其自身的rsa公匙和相关命令加入此文件，就可以clone出gitolite-admin项目。<br />
+之后如果要创建新项目，直接修改gitolite-admin项目下conf/gitolite.conf文件，然后clone出空文件夹，自行演化即可</p>
+
 
     <hr>
     <div class="pagination btn-group">
